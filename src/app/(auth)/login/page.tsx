@@ -2,6 +2,7 @@ import { Image } from "next/dist/client/image-component";
 import Link from "next/link";
 import { type Metadata } from "next";
 import { currentUser } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 
 import { OAuthSignIn } from "@/components/auth/oauth-signin";
 import { Shell } from "@/components/shell";
@@ -15,7 +16,6 @@ import {
 import { AuthFooter } from "@/components/layouts/auth-footer";
 import { LoginForm } from "@/components/forms/login-form";
 import { Button } from "@/components/ui/button";
-import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Log in to Facebook",
@@ -62,10 +62,12 @@ export default async function LoginPage() {
         </CardContent>
         <CardFooter>
           <div className="w-full flex justify-center">
-            <Button className="text-base  bg-facebook-secondary">
-              Create new account
-              <span className="sr-only">Create new account</span>
-            </Button>
+            <Link aria-label="Sign up" href="/signup">
+              <Button className="text-base  bg-facebook-secondary">
+                Create new account
+                <span className="sr-only">Create new account</span>
+              </Button>
+            </Link>
           </div>
         </CardFooter>
       </Card>

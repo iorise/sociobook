@@ -2,15 +2,16 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { useSignIn } from "@clerk/nextjs";
+import { useSignUp } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import type { z } from "zod";
+import axios from "axios";
 
 import { catchClerkError } from "@/lib/utils";
-import { loginUserSchema } from "@/lib/validations/auth";
+import { registerUserSchema } from "@/lib/validations/auth";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
@@ -18,21 +19,24 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/icons";
 import { PasswordInput } from "@/components/password-input";
-import { toast } from "react-hot-toast";
 
-type Inputs = z.infer<typeof loginUserSchema>;
+type Inputs = z.infer<typeof registerUserSchema>;
 
-export function LoginForm() {
+export function SignUpForm() {
   const router = useRouter();
-  const { isLoaded, signIn, setActive } = useSignIn();
+  const { isLoaded, signUp } = useSignUp();
   const [isLoading, setIsLoading] = React.useState(false);
 
   // react-hook-form
   const form = useForm<Inputs>({
-    resolver: zodResolver(loginUserSchema),
+    resolver: zodResolver(registerUserSchema),
     defaultValues: {
+      username: "",
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
     },
@@ -40,21 +44,25 @@ export function LoginForm() {
 
   async function onSubmit(data: Inputs) {
     if (!isLoaded) return;
+
     try {
       setIsLoading(true);
-      const result = await signIn.create({
-        identifier: data.email,
+      await signUp.create({
+        username: data.username,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        emailAddress: data.email,
         password: data.password,
       });
-      if (result.status === "complete") {
-        await setActive({ session: result.createdSessionId });
-        router.push(`${window.location.origin}/`);
-      } else {
-        console.log(result);
-      }
-    } catch (err) {
-      catchClerkError(err);
-      form.setValue("password", "");
+
+      await signUp.prepareEmailAddressVerification({
+        strategy: "email_code",
+      });
+
+      router.push("/signup/verify-email");
+      toast.success("Check your email");
+    } catch (error) {
+      catchClerkError(error);
     } finally {
       setIsLoading(false);
     }
@@ -65,6 +73,44 @@ export function LoginForm() {
         className="grid gap-4"
         onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
       >
+        <FormField
+          control={form.control}
+          name="username"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input placeholder="username" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <div className="flex gap-2">
+          <FormField
+            control={form.control}
+            name="firstName"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input placeholder="firstname" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="lastName"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input placeholder="lastname" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <FormField
           control={form.control}
           name="email"
@@ -96,8 +142,8 @@ export function LoginForm() {
               aria-hidden="true"
             />
           )}
-          Log in
-          <span className="sr-only">Log in</span>
+          Sign up
+          <span className="sr-only">Sign up</span>
         </Button>
       </form>
     </Form>
