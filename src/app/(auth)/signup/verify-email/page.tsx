@@ -17,18 +17,20 @@ export const metadata: Metadata = {
 
 export default function VerifyEmailPage() {
   return (
-    <Shell variant="centered">
-      <Card className="w-96">
-        <CardHeader>
-          <CardTitle>Verify email</CardTitle>
-          <CardDescription>
-            Verify your email address to complete your account creation
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <VerifyEmailForm />
-        </CardContent>
-      </Card>
-    </Shell>
+    <>
+      <Shell variant="centered">
+        <Card>
+          <CardHeader>
+            <CardTitle>Verify email</CardTitle>
+            <CardDescription>
+              Verify your email address to complete your account creation
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <VerifyEmailForm />
+          </CardContent>
+        </Card>
+      </Shell>
+    </>
   );
 }

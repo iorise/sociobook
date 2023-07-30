@@ -22,6 +22,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/icons";
 import { PasswordInput } from "@/components/password-input";
+import Link from "next/link";
 
 type Inputs = z.infer<typeof registerUserSchema>;
 
@@ -34,7 +35,6 @@ export function SignUpForm() {
   const form = useForm<Inputs>({
     resolver: zodResolver(registerUserSchema),
     defaultValues: {
-      username: "",
       firstName: "",
       lastName: "",
       email: "",
@@ -48,7 +48,6 @@ export function SignUpForm() {
     try {
       setIsLoading(true);
       await signUp.create({
-        username: data.username,
         firstName: data.firstName,
         lastName: data.lastName,
         emailAddress: data.email,
@@ -73,18 +72,6 @@ export function SignUpForm() {
         className="grid gap-4"
         onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
       >
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input placeholder="username" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <div className="flex gap-2">
           <FormField
             control={form.control}
@@ -92,7 +79,7 @@ export function SignUpForm() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input placeholder="firstname" {...field} />
+                  <Input placeholder="First name" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -104,7 +91,7 @@ export function SignUpForm() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input placeholder="lastname" {...field} />
+                  <Input placeholder="Surname" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -129,12 +116,61 @@ export function SignUpForm() {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <PasswordInput placeholder="Password" {...field} />
+                <PasswordInput placeholder="New password" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+        <div className="grid gap-2">
+          <p className="text-[0.6rem] font-light line-clamp-2">
+            People who use our service may have uploaded your contact
+            information to Facebook.{" "}
+            <span>
+              <Link
+                href="https://www.facebook.com/help/637205020878504"
+                target="_blank"
+                className="hover:underline text-facebook-primary"
+              >
+                Learn more.
+              </Link>
+            </span>
+          </p>
+          <p className="text-[0.6rem] font-light line-clamp-2">
+            By clicking Sign Up, you agree to our{" "}
+            <span>
+              <Link
+                href="https://www.facebook.com/help/637205020878504"
+                target="_blank"
+                className="hover:underline text-facebook-primary"
+              >
+                Terms
+              </Link>
+            </span>
+            ,{" "}
+            <span>
+              <Link
+                href="https://www.facebook.com/privacy/policy/?entry_point=data_policy_redirect&entry=0"
+                target="_blank"
+                className="hover:underline text-facebook-primary"
+              >
+                Privacy Policy
+              </Link>
+            </span>{" "}
+            and{" "}
+            <span>
+              <Link
+                href="https://www.facebook.com/privacy/policies/cookies/?entry_point=cookie_policy_redirect&entry=0"
+                target="_blank"
+                className="hover:underline text-facebook-primary"
+              >
+                Cookies Policy
+              </Link>
+            </span>
+            . You may receive SMS notifications from us and can opt out at any
+            time.
+          </p>
+        </div>
         <Button disabled={isLoading} className="bg-facebook-primary text-lg">
           {isLoading && (
             <Icons.spinner

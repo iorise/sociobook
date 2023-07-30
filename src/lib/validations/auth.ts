@@ -17,9 +17,6 @@ export const loginUserSchema = z.object({
 });
 
 export const registerUserSchema = z.object({
-  username: z.string().min(4, {
-    message: "Username must be at least 4 characters long"
-  }),
   firstName: z.string(),
   lastName: z.string(),
   email: z

@@ -42,7 +42,7 @@ export function OAuthSignIn() {
     }
   }
   return (
-    <div className="grid grid-cols-3 gap-2">
+    <div className="grid sm:grid-cols-3 gap-2 grid-cols-1">
       {oauthProviders.map((provider) => {
         const Icon = Icons[provider.icon];
 
