@@ -18,8 +18,8 @@ import {
   MenuSquare,
 } from "lucide-react";
 
-import { AiFillHome, AiOutlineHome, AiOutlineShop } from "react-icons/ai";
-import { PiVideo, PiVideoFill } from "react-icons/pi";
+import { AiFillHome, AiFillQuestionCircle, AiFillSetting, AiFillShop, AiOutlineHome, AiOutlineShop } from "react-icons/ai";
+import { PiMoonFill, PiVideo, PiVideoFill } from "react-icons/pi";
 import { HiOutlineUserGroup, HiUserGroup } from "react-icons/hi";
 import {
   RiGamepadLine,
