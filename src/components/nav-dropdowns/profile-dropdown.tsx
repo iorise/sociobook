@@ -62,7 +62,7 @@ export function ProfileDropdown({ user }: ProfileDropdownProps) {
         <DropdownMenuGroup className="mx-1">
           <DropdownMenuItem asChild>
             <Link href="">
-              <div className="mr-2 bg-accent brightness-125 rounded-full p-2">
+              <div className="mr-2 bg-accent brightness-110 rounded-full p-2">
                 <Icons.setting
                   className=" h-6 w-6 rounded-full"
                   aria-hidden="true"
@@ -73,7 +73,7 @@ export function ProfileDropdown({ user }: ProfileDropdownProps) {
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link href="">
-              <div className="mr-2 bg-accent brightness-125 rounded-full p-2">
+              <div className="mr-2 bg-accent brightness-110 rounded-full p-2">
                 <Icons.help
                   className=" h-6 w-6 rounded-full"
                   aria-hidden="true"
@@ -84,7 +84,7 @@ export function ProfileDropdown({ user }: ProfileDropdownProps) {
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link href="">
-              <div className="mr-2 bg-accent brightness-125 rounded-full p-2">
+              <div className="mr-2 bg-accent brightness-110 rounded-full p-2">
                 <Icons.moon
                   className=" h-6 w-6 rounded-full"
                   aria-hidden="true"
@@ -95,7 +95,7 @@ export function ProfileDropdown({ user }: ProfileDropdownProps) {
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link href="">
-              <div className="mr-2 bg-accent brightness-125 rounded-full p-2">
+              <div className="mr-2 bg-accent brightness-110 rounded-full p-2">
                 <Icons.feedback
                   className=" h-6 w-6 rounded-full"
                   aria-hidden="true"
@@ -106,9 +106,9 @@ export function ProfileDropdown({ user }: ProfileDropdownProps) {
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link href="/login">
-              <div className="mr-2 bg-accent brightness-125 rounded-full p-2">
+              <div className="mr-2 bg-accent brightness-110 rounded-full p-2">
                 <Icons.logout
-                  className=" h-6 w-6 rounded-full"
+                  className="h-6 w-6 rounded-full"
                   aria-hidden="true"
                 />
               </div>

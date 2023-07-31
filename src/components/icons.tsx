@@ -18,11 +18,23 @@ import {
   MenuSquare,
 } from "lucide-react";
 
-import { AiFillHome, AiOutlineHome, AiOutlineShop } from "react-icons/ai";
-import { PiVideo, PiVideoFill } from "react-icons/pi";
+import {
+  AiFillHome,
+  AiFillQuestionCircle,
+  AiFillSetting,
+  AiFillShop,
+  AiOutlineHome,
+  AiOutlineShop,
+} from "react-icons/ai";
+import { PiVideo, PiVideoFill, PiMoonFill } from "react-icons/pi";
 import { HiOutlineUserGroup, HiUserGroup } from "react-icons/hi";
-import { RiGamepadLine, RiGamepadFill, RiMessengerFill } from "react-icons/ri";
-import { BiSolidBell, BiLogoMessenger } from "react-icons/bi";
+import {
+  RiGamepadLine,
+  RiGamepadFill,
+  RiMessengerFill,
+  RiLogoutBoxRFill,
+} from "react-icons/ri";
+import { BiSolidBell, BiSolidMessageError } from "react-icons/bi";
 
 export const Icons = {
   spinner: Loader2,
@@ -32,17 +44,17 @@ export const Icons = {
   homeFill: AiFillHome,
   video: PiVideo,
   videoFill: PiVideoFill,
-  marketplace: Store,
-  marketplaceFill: AiOutlineShop,
+  marketplace: AiOutlineShop,
+  marketplaceFill: AiFillShop,
   group: HiOutlineUserGroup,
   groupFill: HiUserGroup,
   game: RiGamepadLine,
   gameFill: RiGamepadFill,
-  setting: Settings,
-  help: HelpCircle,
-  moon: Moon,
-  feedback: MessageSquarePlus,
-  logout: LogOut,
+  setting: AiFillSetting,
+  help: AiFillQuestionCircle,
+  moon: PiMoonFill,
+  feedback: BiSolidMessageError,
+  logout: RiLogoutBoxRFill,
   notification: BiSolidBell,
   message: RiMessengerFill,
   menu: MenuSquare,
