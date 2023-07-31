@@ -27,6 +27,7 @@ module.exports = {
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
+        secondaryBackground: "hsl(var(--secondary-background))",
         foreground: "hsl(var(--foreground))",
         facebook: {
           primary: "hsl(var(--facebook-primary-color))",

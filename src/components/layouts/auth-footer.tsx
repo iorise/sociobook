@@ -1,11 +1,11 @@
 "use client";
 import Link from "next/link";
 
-import { siteConfig } from "@/components/config/site";
+import { siteConfig } from "@/config/site";
 import { Shell } from "@/components/shell";
 
 export function AuthFooter() {
-  const links = siteConfig.map((e) => e.authFooterNav).flat();
+  const links = siteConfig.authFooterNav;
   return (
     <footer className="w-full border-t bg-card">
       <Shell>
@@ -15,7 +15,7 @@ export function AuthFooter() {
               <Link
                 className=" hover:underline mr-2 text-xs font-light text-muted-foreground"
                 href={e.href}
-                target={e.external === true ? "_blank" : ""}
+                target={e.external ? "_blank" : ""}
               >
                 {e.title}
               </Link>
