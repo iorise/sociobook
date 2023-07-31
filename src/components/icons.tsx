@@ -25,6 +25,7 @@ import {
 <<<<<<< HEAD
   AiFillShop,
 =======
+  AiFillShopping
 >>>>>>> 9b23703d0237bf42139796da86fcb2765880e8de
   AiOutlineHome,
   AiOutlineShop,
