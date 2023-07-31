@@ -22,7 +22,10 @@ import {
   AiFillHome,
   AiFillQuestionCircle,
   AiFillSetting,
+<<<<<<< HEAD
   AiFillShop,
+=======
+>>>>>>> 9b23703d0237bf42139796da86fcb2765880e8de
   AiOutlineHome,
   AiOutlineShop,
 } from "react-icons/ai";
