@@ -85,7 +85,6 @@ async function handler(req: Request) {
       id,
       first_name,
       last_name,
-      image_url,
       profile_image_url,
       email_addresses,
     } = evt.data;
@@ -98,7 +97,6 @@ async function handler(req: Request) {
         firstName: first_name,
         lastName: last_name,
         profileImage: profile_image_url,
-        coverImage: image_url,
         email: email,
       },
       create: {
@@ -106,7 +104,6 @@ async function handler(req: Request) {
         firstName: first_name,
         lastName: last_name,
         profileImage: profile_image_url,
-        coverImage: image_url,
         email: email,
       },
     });
