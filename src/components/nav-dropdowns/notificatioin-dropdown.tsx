@@ -15,7 +15,11 @@ export function NotificationsDropdown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon" className="rounded-full">
+        <Button
+          variant="outline"
+          size="icon"
+          className="rounded-full active:scale-90 transition-all active:opacity-80 duration-0"
+        >
           <Icons.notification className="w-5 h-5" />
         </Button>
       </DropdownMenuTrigger>
