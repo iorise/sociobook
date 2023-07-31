@@ -18,19 +18,8 @@ import {
   MenuSquare,
 } from "lucide-react";
 
-import {
-  AiFillHome,
-  AiFillQuestionCircle,
-  AiFillSetting,
-<<<<<<< HEAD
-  AiFillShop,
-=======
-  AiFillShopping
->>>>>>> 9b23703d0237bf42139796da86fcb2765880e8de
-  AiOutlineHome,
-  AiOutlineShop,
-} from "react-icons/ai";
-import { PiVideo, PiVideoFill, PiMoonFill } from "react-icons/pi";
+import { AiFillHome, AiOutlineHome, AiOutlineShop } from "react-icons/ai";
+import { PiVideo, PiVideoFill } from "react-icons/pi";
 import { HiOutlineUserGroup, HiUserGroup } from "react-icons/hi";
 import {
   RiGamepadLine,
