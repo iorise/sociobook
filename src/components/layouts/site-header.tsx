@@ -36,10 +36,23 @@ export function SiteHeader({ user }: SiteHeaderProps) {
             <CommandInput placeholder="Search in Facebook" />
           </Command>
         </div>
-        <MainNav items={siteConfig.MainNav} />
+        <div className="flex-1 md:flex-none">
+          <MainNav items={siteConfig.MainNav} />
+        </div>
         <div className="flex items-center space-x-2">
-          <Button variant="outline" size="icon" className="rounded-full">
+          <Button
+            variant="outline"
+            size="icon"
+            className="rounded-full hidden lg:flex"
+          >
             <Icons.menu className="w-5 h-5" />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="rounded-full lg:hidden flex"
+          >
+            <Icons.plus className="w-5 h-5" />
           </Button>
           <Button variant="outline" size="icon" className="rounded-full">
             <Icons.message className="w-5 h-5" />
