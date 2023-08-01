@@ -16,18 +16,48 @@ import {
   Bell,
   MessageCircle,
   MenuSquare,
+  Plus,
 } from "lucide-react";
 
-import { AiFillHome, AiFillQuestionCircle, AiFillSetting, AiFillShop, AiOutlineHome, AiOutlineShop } from "react-icons/ai";
-import { PiMoonFill, PiVideo, PiVideoFill } from "react-icons/pi";
-import { HiOutlineUserGroup, HiUserGroup } from "react-icons/hi";
+import {
+  AiFillHome,
+  AiFillQuestionCircle,
+  AiFillSetting,
+  AiFillShop,
+  AiOutlineHome,
+  AiOutlineShop,
+} from "react-icons/ai";
+import {
+  PiMoonFill,
+  PiNewspaperClippingFill,
+  PiVideo,
+  PiVideoFill,
+} from "react-icons/pi";
+import {
+  HiOutlineUserGroup,
+  HiSpeakerphone,
+  HiUserGroup,
+} from "react-icons/hi";
 import {
   RiGamepadLine,
   RiGamepadFill,
   RiMessengerFill,
   RiLogoutBoxRFill,
 } from "react-icons/ri";
-import { BiSolidBell, BiSolidMessageError } from "react-icons/bi";
+import {
+  BiSolidBell,
+  BiSolidCalendarStar,
+  BiSolidMessageError,
+} from "react-icons/bi";
+import { GiHamburgerMenu } from "react-icons/gi";
+import {
+  BsBookmarkFill,
+  BsFillClockFill,
+  BsFillGrid3X3GapFill,
+  BsFlagFill,
+  BsImageFill,
+  BsPeopleFill,
+} from "react-icons/bs";
 
 export const Icons = {
   spinner: Loader2,
@@ -50,7 +80,17 @@ export const Icons = {
   logout: RiLogoutBoxRFill,
   notification: BiSolidBell,
   message: RiMessengerFill,
-  menu: MenuSquare,
+  menu: BsFillGrid3X3GapFill,
+  hamburger: GiHamburgerMenu,
+  plus: Plus,
+  people: BsPeopleFill,
+  news: PiNewspaperClippingFill,
+  clock: BsFillClockFill,
+  event: BiSolidCalendarStar,
+  ads: BsImageFill,
+  flag: BsFlagFill,
+  speaker: HiSpeakerphone,
+  bookmark: BsBookmarkFill,
 
   rectangle: (props: LucideProps) => (
     <svg xmlns="http://www.w3.org/2000/svg" {...props}>

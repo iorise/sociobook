@@ -1,44 +1,94 @@
-import { Icons } from "@/components/icons";
-import { MainNav } from "@/types";
+import { MainNav, SidebarNav } from "@/types";
 
 export const siteConfig = {
   MainNav: [
     {
       title: "Home",
-      icon: <Icons.home className="w-6 h-6 text-muted-foreground" />,
-      iconFill: <Icons.homeFill className="w-6 h-6 text-facebook-primary" />,
+      icon: "home",
+      iconFill: "homeFill",
       href: "/",
       allowed: true,
+      hidden: false,
+      show: false,
     },
     {
       title: "Video",
-      icon: <Icons.video className="w-6 h-6 text-muted-foreground" />,
-      iconFill: <Icons.videoFill className="w-6 h-6 text-facebook-primary" />,
+      icon: "video",
+      iconFill: "videoFill",
       href: "/video",
       allowed: false,
+      hidden: false,
+      show: false,
     },
     {
       title: "Marketplace",
-      icon: <Icons.marketplace className="w-6 h-6 text-muted-foreground " />,
-      iconFill: <Icons.marketplaceFill className="w-6 h-6 text-facebook-primary" />,
+      icon: "marketplace",
+      iconFill: "marketplaceFill",
       href: "/marketplace",
       allowed: false,
+      hidden: false,
+      show: false,
     },
     {
       title: "Group",
-      icon: <Icons.group className="w-6 h-6 text-muted-foreground" />,
-      iconFill: <Icons.groupFill className="w-6 h-6 text-facebook-primary" />,
+      icon: "group",
+      iconFill: "groupFill",
       href: "/group",
       allowed: false,
+      hidden: false,
+      show: false,
     },
     {
       title: "Games",
-      icon: <Icons.game className="w-6 h-6 text-muted-foreground" />,
-      iconFill: <Icons.gameFill className="w-6 h-6 text-facebook-primary" />,
+      icon: "game",
+      iconFill: "gameFill",
       href: "/games",
       allowed: false,
+      hidden: true,
+      show: false,
+    },
+    {
+      title: "Other",
+      icon: "hamburger",
+      iconFill: "hamburger",
+      href: "/bookmarks",
+      allowed: true,
+      hidden: false,
+      show: true,
     },
   ] satisfies MainNav[],
+  sidebarNav: [
+    {
+      title: "Friends",
+      href: "/friends",
+      icon: "people",
+      disabled: false,
+    },
+    {
+      title: "Group",
+      href: "/group",
+      icon: "groupFill",
+      disabled: true,
+    },
+    {
+      title: "News",
+      href: "/news",
+      icon: "news",
+      disabled: true,
+    },
+    {
+      title: "Marketplace",
+      href: "/marketplace",
+      icon: "marketplaceFill",
+      disabled: true,
+    },
+    {
+      title: "Video",
+      href: "/video",
+      icon: "videoFill",
+      disabled: true,
+    },
+  ] satisfies SidebarNav[],
   authFooterNav: [
     {
       title: "Sign Up",
