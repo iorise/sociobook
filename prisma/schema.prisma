@@ -11,38 +11,55 @@ datasource db {
 }
 
 model User {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  userId String? @unique
-  firstName String?
-  lastName String?
-  email String?
-  profileImage String?
-  coverImage String?
-  image String?
-  bio String?
-  followingIds String[] @db.ObjectId
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  externalId       String?  @unique
+  firstName        String?
+  lastName         String?
+  email            String?
+  profileImage     String?
+  coverImage       String?
+  image            String?
+  bio              String?
+  admin            Boolean?
+  verified         Boolean?
+  friendIds        String[] @db.ObjectId
+  friendRequests   String[] @db.ObjectId
   hasNotifications Boolean?
-  posts Post[]
-  coments Comment[]
-  notification Notification[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  posts            Post[]
+  comments         Comment[]
+  notification     Notification[]
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }
 
 model Post {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  userId String @db.ObjectId
-  user User @relation(fields: [userId], references: [id])
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  text            String
+  userId          String    @db.ObjectId
+  likeIds         String[]  @db.ObjectId
+  image           String?
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comments        Comment[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 }
 
 model Comment {
-   id String   @id @default(auto()) @map("_id") @db.ObjectId
-   userId String @db.ObjectId
-   user User @relation(fields: [userId], references: [id])
+   id             String   @id @default(auto()) @map("_id") @db.ObjectId
+   text           String
+   userId         String   @db.ObjectId
+   user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+   postId         String   @db.ObjectId
+   post           Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+   createdAt      DateTime @default(now())
+   updatedAt      DateTime @updatedAt
 }
 
 model Notification {
-  id String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId String @db.ObjectId
-  user User @relation(fields: [userId], references: [id])
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  text            String
+  userId          String    @db.ObjectId
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt       DateTime  @default(now())
+  readAt          DateTime?
 }
