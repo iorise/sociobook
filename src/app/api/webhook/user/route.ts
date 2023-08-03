@@ -92,7 +92,7 @@ async function handler(req: Request) {
     const email = email_addresses[0].email_address
 
     await prismadb.user.upsert({
-      where: { userId: id },
+      where: { externalId: id },
       update: {
         firstName: first_name,
         lastName: last_name,
@@ -100,7 +100,7 @@ async function handler(req: Request) {
         email: email,
       },
       create: {
-        userId: id,
+        externalId: id,
         firstName: first_name,
         lastName: last_name,
         profileImage: profile_image_url,
