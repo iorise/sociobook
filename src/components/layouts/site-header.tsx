@@ -19,6 +19,7 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/components/ui/command";
+import Image from "next/image";
 
 interface SiteHeaderProps {
   user: User;
@@ -28,9 +29,9 @@ export function SiteHeader({ user }: SiteHeaderProps) {
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-secondaryBackground">
       <div className="mx-6 flex h-14 items-center justify-between">
-        <div className="flex -ml-4 items-center">
+        <div className="flex gap-2 -ml-1 items-center">
           <Link aria-label="Home" href="/">
-            <Icons.logo className="h-16 w-16 p-0" />
+            <Image src="/logo.png" alt="logo" width={55} height={55} />
           </Link>
           <Command className="rounded-full">
             <CommandInput placeholder="Search in Facebook" />
