@@ -17,6 +17,13 @@ import {
   MessageCircle,
   MenuSquare,
   Plus,
+  CheckCheck,
+  ChevronDown,
+  Globe2,
+  Smile,
+  UserSquare2,
+  FileImage,
+  SmilePlus,
 } from "lucide-react";
 
 import {
@@ -91,6 +98,13 @@ export const Icons = {
   flag: BsFlagFill,
   speaker: HiSpeakerphone,
   bookmark: BsBookmarkFill,
+  check: CheckCheck,
+  arrowDown: ChevronDown,
+  world: Globe2,
+  emoji: Smile,
+  user: UserSquare2,
+  fileImage: FileImage,
+  avatar: SmilePlus,
 
   rectangle: (props: LucideProps) => (
     <svg xmlns="http://www.w3.org/2000/svg" {...props}>
