@@ -20,7 +20,7 @@ export default async function ProfilePage({
   return (
     <div>
       <ProfileView initialData={user} user={authUser}/>
-      <InfoView />
+      <InfoView user={authUser} initialData={user}/>
     </div>
   );
 }

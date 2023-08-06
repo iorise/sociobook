@@ -14,8 +14,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Icons } from "@/components/icons";
 import { useModal } from "@/hooks/use-modal";
-import { EditProfile } from "@/components/modal-forms/edit-photo-profile";
+import { EditProfile } from "@/components/modal-forms/edit-profile";
 import { Button } from "@/components/ui/button";
+import { usePostModal } from "@/hooks/use-post-modal";
 
 interface ProfileFormProps {
   initialData: userDb | null;
@@ -24,6 +25,7 @@ interface ProfileFormProps {
 
 export function ProfileView({ initialData, user }: ProfileFormProps) {
   const editPhotoModal = useModal();
+  const postModal = usePostModal()
 
   const currentUser = user?.id === initialData?.externalId;
 
@@ -31,7 +33,7 @@ export function ProfileView({ initialData, user }: ProfileFormProps) {
     initialData?.lastName?.charAt(0) ?? ""
   }`;
   return (
-    <div className=" relative w-full flex flex-col">
+    <div className="relative w-full flex flex-col">
       <div className="w-full flex justify-center">
         {initialData?.coverImage ? (
           <Image
@@ -60,7 +62,7 @@ export function ProfileView({ initialData, user }: ProfileFormProps) {
         -top-10
         relative"
         >
-          <div className="pl-10">
+          <div className="pl-0 md:pl-10">
             {!currentUser ? (
               <Avatar className="cursor-pointer active:scale-95 transition-all active:opacity-80 duration-0 w-44 h-44 border-4 border-secondaryBackground">
                 <AvatarImage
