@@ -1,6 +1,7 @@
 import { currentUser } from "@clerk/nextjs";
 
-import { ProfileForm } from "@/components/profile/profile-form";
+import { ProfileView } from "@/components/profile/profile-view";
+import { InfoView } from "@/components/profile/info-view";
 import prismadb from "@/lib/prismadb";
 
 export default async function ProfilePage({
@@ -18,7 +19,8 @@ export default async function ProfilePage({
 
   return (
     <div>
-      <ProfileForm initialData={user} user={authUser}/>
+      <ProfileView initialData={user} user={authUser}/>
+      <InfoView />
     </div>
   );
 }

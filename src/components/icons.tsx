@@ -24,6 +24,7 @@ import {
   UserSquare2,
   FileImage,
   SmilePlus,
+  Pencil,
 } from "lucide-react";
 
 import {
@@ -105,6 +106,7 @@ export const Icons = {
   user: UserSquare2,
   fileImage: FileImage,
   avatar: SmilePlus,
+  pencil: Pencil,
 
   rectangle: (props: LucideProps) => (
     <svg xmlns="http://www.w3.org/2000/svg" {...props}>

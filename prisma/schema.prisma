@@ -17,6 +17,7 @@ model User {
   lastName         String?
   email            String?
   profileImage     String?
+  externalImage    String?
   coverImage       String?
   image            String?
   bio              String?
