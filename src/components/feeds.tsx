@@ -2,31 +2,30 @@
 
 import * as React from "react";
 import { User } from "@clerk/nextjs/server";
-import { User as userDb } from "@prisma/client";
+import { Post, Prisma, User as userDb } from "@prisma/client";
 import Link from "next/link";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Icons } from "@/components/icons";
 import { PostForm } from "@/components/modal-forms/post-form";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { usePostModal } from "@/hooks/use-post-modal";
+import { Feed } from "@/components/feed";
+import usePosts from "@/hooks/use-posts";
 
 interface FeedsProps {
   user: User | null;
   initialData: userDb | null;
 }
 
+export type PostWithUser = Prisma.PostGetPayload<{ include: {user: true} }>;
+
 export function Feeds({ user, initialData }: FeedsProps) {
   const postModal = usePostModal();
+
+  const { data: posts = [] } = usePosts();
 
   const initials = `${user?.firstName?.charAt(0) ?? ""} ${
     user?.lastName?.charAt(0) ?? ""
@@ -78,35 +77,10 @@ export function Feeds({ user, initialData }: FeedsProps) {
           </Button>
         </CardContent>
       </Card>
-      <PostForm user={user} />
-      <Card>
-        <CardHeader className="space-y-1 p-4">
-          <div className="flex gap-2 items-center">
-            <Avatar>
-              <AvatarImage
-                src={
-                  initialData?.externalImage ??
-                  user?.profileImageUrl ??
-                  user?.imageUrl
-                }
-                alt={user?.firstName ?? ""}
-              />
-            </Avatar>
-            <div className="flex flex-col">
-              <span className="flex text-lg font-medium items-center gap-1">
-                {user?.firstName} {user?.lastName}
-                <span>
-                  <Icons.check className="w-4 h-4 text-facebook-primary" />
-                </span>
-              </span>
-              <span className="font-normal text-muted-foreground text-xs">
-                7 hours
-              </span>
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent></CardContent>
-      </Card>
+      <PostForm user={user} initialData={initialData} />
+      {posts.map((post: PostWithUser) => (
+        <Feed data={post} user={user} key={post.id} />
+      ))}
     </div>
   );
 }
