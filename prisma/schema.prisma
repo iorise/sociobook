@@ -35,11 +35,11 @@ model User {
 
 model Post {
   id              String    @id @default(auto()) @map("_id") @db.ObjectId
-  text            String
-  userId          String    @db.ObjectId
+  text            String?
+  userId          String    
   likeIds         String[]  @db.ObjectId
   image           String?
-  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user            User      @relation(fields: [userId], references: [externalId], onDelete: Cascade)
   comments        Comment[]
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt

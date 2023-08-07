@@ -7,6 +7,7 @@ import { toast } from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
+import { User as userDb } from "@prisma/client";
 
 import { postSchema } from "@/lib/validations/post";
 import {
@@ -17,21 +18,25 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Modal } from "@/components/ui/modal";
-import { useModal } from "@/hooks/use-modal";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 import { PostInput } from "@/components/inputs/post-input";
+import { usePostModal } from "@/hooks/use-post-modal";
+import usePosts from "@/hooks/use-posts";
 
 interface PostForm {
   user: User | null;
+  initialData: userDb | null;
 }
 
 type Inputs = z.infer<typeof postSchema>;
 
-export function PostForm({ user }: PostForm) {
-  const postModal = useModal();
+export function PostForm({ user, initialData }: PostForm) {
+  const postModal = usePostModal();
   const [isLoading, setIsLoading] = React.useState(false);
+  const { mutate: mutatePosts } = usePosts();
+
   const initials = `${user?.firstName?.charAt(0) ?? ""} ${
     user?.lastName?.charAt(0) ?? ""
   }`;
@@ -45,18 +50,20 @@ export function PostForm({ user }: PostForm) {
     },
   });
 
-  async function onSubmit(data: Inputs) {
+  const onSubmit = React.useCallback(async (data: Inputs) => {
     try {
       setIsLoading(true);
       await axios.post("/api/posts", data);
+      postModal.onClose()
       toast.success("Posted");
       form.reset();
+      mutatePosts();
     } catch (error) {
       toast.error("Something went wrong");
     } finally {
       setIsLoading(false);
     }
-  }
+  }, [form, mutatePosts]);
   return (
     <Modal
       title="Create Post"
@@ -66,13 +73,17 @@ export function PostForm({ user }: PostForm) {
       <div className="px-3 flex items-center gap-2">
         <Avatar className="w-8 h-8">
           <AvatarImage
-            src={user?.profileImageUrl ?? user?.imageUrl}
+            src={
+              initialData?.externalImage ??
+              user?.profileImageUrl ??
+              user?.imageUrl
+            }
             alt={user?.firstName ?? ""}
           />
           <AvatarFallback>{initials}</AvatarFallback>
         </Avatar>
         <span className="flex flex-col -space-y-1">
-          <span>
+          <span className="line">
             {user?.firstName} {user?.lastName}
           </span>
           <span>

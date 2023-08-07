@@ -1,8 +1,6 @@
 import * as z from "zod";
 
 export const postSchema = z.object({
-  text: z.string().min(1).nonempty({
-    message: "Post cannot be empty.",
-  }),
+  text: z.string().min(1).optional(),
   image: z.string().optional(),
 });
