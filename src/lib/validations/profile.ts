@@ -1,9 +1,9 @@
 import * as z from "zod";
 
 export const profileSchema = z.object({
-  firstName: z.string().min(1).nonempty({
-    message: "Name must be atleast 1 string.",
-  }),
+  firstName: z.string().min(1).optional(),
   lastName: z.string().min(1).optional(),
-  profileImage: z.string().optional(),
+  bio: z.string().max(99).optional(),
+  externalImage: z.string().optional(),
+  coverImage: z.string().optional(),
 });

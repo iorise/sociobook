@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Inter } from "next/font/google";
+import QueryWrapper from "@/components/providers/provider-client";
 
 import "@/styles/globals.css";
 
@@ -19,6 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
+    <QueryWrapper>
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body className={font.className}>
@@ -27,5 +29,6 @@ export default function RootLayout({
         </body>
       </html>
     </ClerkProvider>
+    </QueryWrapper>
   );
 }

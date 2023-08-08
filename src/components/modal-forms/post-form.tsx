@@ -23,7 +23,8 @@ import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 import { PostInput } from "@/components/inputs/post-input";
 import { usePostModal } from "@/hooks/use-post-modal";
-import usePosts from "@/hooks/use-posts";
+import {usePosts} from "@/hooks/use-posts";
+import { ImageUpload } from "@/components/image-upload";
 
 interface PostForm {
   user: User | null;
@@ -55,7 +56,9 @@ export function PostForm({ user, initialData }: PostForm) {
       setIsLoading(true);
       await axios.post("/api/posts", data);
       postModal.onClose()
-      toast.success("Posted");
+      toast.success("Your post has been published.", {
+        position: "bottom-left"
+      });
       form.reset();
       mutatePosts();
     } catch (error) {
@@ -118,6 +121,22 @@ export function PostForm({ user, initialData }: PostForm) {
                     className="h-40 resize-none border-0 focus-visible:ring-0"
                     placeholder={`What's happening today, ${user?.firstName} ?`}
                     {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="image"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <ImageUpload
+                    disabled={isLoading}
+                    value={field.value}
+                    onChange={field.onChange}
                   />
                 </FormControl>
                 <FormMessage />

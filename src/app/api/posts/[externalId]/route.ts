@@ -3,42 +3,7 @@ import { NextResponse } from "next/server";
 
 import prismadb from "@/lib/prismadb";
 
-export async function POST(req: Request) {
-  try {
-    const user = await currentUser();
-
-    const body = await req.json();
-
-    const { text, image } = body;
-
-    if (!user) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
-
-    if (!user.id) {
-      return new NextResponse("No user id", { status: 401 });
-    }
-
-    if (!text) {
-      return new NextResponse("Text is required", { status: 400 });
-    }
-
-    const newPost = await prismadb.post.create({
-      data: {
-        text,
-        image,
-        userId: user.id,
-      },
-    });
-
-    return NextResponse.json(newPost);
-  } catch (error) {
-    console.log("[POSTS_POST]", error);
-    return new NextResponse("internal error", { status: 500 });
-  }
-}
-
-export async function GET(req: Request) {
+export async function GET(req: Request, {params}: {params: {externalId: string}}) {
 
   try {
     // get page and lastCursor from query
@@ -47,6 +12,9 @@ export async function GET(req: Request) {
     const take = url.searchParams.get("take");
     const lastCursor = url.searchParams.get("lastCursor");
     let posts = await prismadb.post.findMany({
+      where: {
+        userId: params.externalId
+      },
       take: take ? parseInt(take as string) : 10,
       ...(lastCursor && {
         skip: 1,
