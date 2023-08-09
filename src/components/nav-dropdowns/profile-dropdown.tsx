@@ -3,6 +3,7 @@
 import { User } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { SignOutButton } from "@clerk/nextjs";
+import { User as userDb } from "@prisma/client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -17,10 +18,11 @@ import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 
 interface ProfileDropdownProps {
-  user: User;
+  user: User | null;
+  initialData: userDb | null;
 }
 
-export function ProfileDropdown({ user }: ProfileDropdownProps) {
+export function ProfileDropdown({ user, initialData }: ProfileDropdownProps) {
   const initials = `${user?.firstName?.charAt(0) ?? ""} ${
     user?.lastName?.charAt(0) ?? ""
   }`;
@@ -28,10 +30,14 @@ export function ProfileDropdown({ user }: ProfileDropdownProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="rounded-full h-10 w-10 ">
+        <Button variant="ghost" className="rounded-full h-10 w-10">
           <Avatar className="active:scale-95 transition-all active:opacity-80 duration-0">
             <AvatarImage
-              src={user?.profileImageUrl ?? user?.imageUrl}
+              src={
+                initialData?.externalImage ??
+                user?.profileImageUrl ??
+                user?.imageUrl
+              }
               alt={user?.firstName ?? ""}
             />
             <AvatarFallback>{initials}</AvatarFallback>
@@ -41,16 +47,20 @@ export function ProfileDropdown({ user }: ProfileDropdownProps) {
       <DropdownMenuContent className="w-96" align="end" forceMount>
         <DropdownMenuGroup className="mx-4 shadow-lg mb-2">
           <DropdownMenuItem asChild className="text-xl">
-            <Link className="flex gap-2" href="">
+            <Link className="flex gap-2" href={`/profile/${user?.id}`}>
               <Avatar className="w-8 h-8">
                 <AvatarImage
-                  src={user?.profileImageUrl ?? user?.imageUrl}
+                  src={
+                    initialData?.externalImage ??
+                    user?.profileImageUrl ??
+                    user?.imageUrl
+                  }
                   alt={user?.firstName ?? ""}
                 />
                 <AvatarFallback>{initials}</AvatarFallback>
               </Avatar>
               <span>
-                {user.firstName} {user.lastName}
+                {user?.firstName} {user?.lastName}
               </span>
             </Link>
           </DropdownMenuItem>
@@ -117,7 +127,7 @@ export function ProfileDropdown({ user }: ProfileDropdownProps) {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <p className="flex-wrap my-2 text-muted-foreground text-xs mx-6">
-          Privasi · Ketentuan · Iklan · Pilihan Iklan · Cookie · Lainnya · Iori
+          Privasi · Ketentuan · Iklan · Pilihan Iklan · Cookie · Lainnya · Meta
           &copy; 2023
         </p>
       </DropdownMenuContent>

@@ -25,7 +25,6 @@ interface ProfileFormProps {
 
 export function ProfileView({ initialData, user }: ProfileFormProps) {
   const editPhotoModal = useModal();
-  const postModal = usePostModal()
 
   const currentUser = user?.id === initialData?.externalId;
 
@@ -103,7 +102,7 @@ export function ProfileView({ initialData, user }: ProfileFormProps) {
               </DropdownMenu>
             )}
           </div>
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col">
             <h1 className="text-3xl font-bold text-white">
               {initialData?.firstName} {initialData?.lastName}
             </h1>
