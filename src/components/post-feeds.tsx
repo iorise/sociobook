@@ -44,7 +44,7 @@ export function PostFeeds({
                   }
                   alt={user?.firstName ?? ""}
                 />
-                <AvatarFallback>?</AvatarFallback>
+                <AvatarFallback><img src="/images/placeholder.png"/></AvatarFallback>
               </Avatar>
             </Button>
           </Link>

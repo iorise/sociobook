@@ -36,10 +36,10 @@ export function Feed({ data }: FeedProps) {
             <Avatar>
               <AvatarImage
                 src={data.user?.externalImage ?? data.user.profileImage ?? ""}
-                alt={""}
+                alt={data.user?.firstName ?? ""}
               />
               <AvatarFallback>
-                <Icons.people />
+              <img src="/images/placeholder.png"/>
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-col px-[-1rem]">

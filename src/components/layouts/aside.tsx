@@ -16,20 +16,22 @@ export function Aside({ users }: AsideProps) {
     <div className="hidden md:flex py-4">
       <ScrollArea>
         {users.map((user) => (
-            <Link href={`/profile/${user?.externalId}`}>
-          <div className="flex gap-2 items-center" key={user.id}>
-            <Avatar>
-              <AvatarImage
-                src={user?.externalImage ?? ""}
-                alt={user?.firstName ?? ""}
-              />
-              <AvatarFallback>?</AvatarFallback>
-            </Avatar>
-            <p>
-              {user.firstName} {user.lastName}
-            </p>
-          </div>
-            </Link>
+          <Link href={`/profile/${user?.externalId}`}>
+            <div className="flex gap-2 items-center" key={user.id}>
+              <Avatar>
+                <AvatarImage
+                  src={user?.externalImage ?? ""}
+                  alt={user?.firstName ?? ""}
+                />
+                <AvatarFallback>
+                  <img src="/images/placeholder.png" />
+                </AvatarFallback>
+              </Avatar>
+              <p>
+                {user.firstName} {user.lastName}
+              </p>
+            </div>
+          </Link>
         ))}
       </ScrollArea>
     </div>

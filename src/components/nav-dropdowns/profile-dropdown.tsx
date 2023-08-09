@@ -40,7 +40,9 @@ export function ProfileDropdown({ user, initialData }: ProfileDropdownProps) {
               }
               alt={user?.firstName ?? ""}
             />
-            <AvatarFallback>{initials}</AvatarFallback>
+            <AvatarFallback>
+              <img src="/images/placeholder.png"/>
+            </AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>

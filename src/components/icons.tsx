@@ -27,6 +27,7 @@ import {
   Pencil,
   ThumbsUp,
   Forward,
+  UserCircle2,
 } from "lucide-react";
 
 import {

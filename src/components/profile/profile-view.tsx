@@ -28,9 +28,6 @@ export function ProfileView({ initialData, user }: ProfileFormProps) {
 
   const currentUser = user?.id === initialData?.externalId;
 
-  const initials = `${initialData?.firstName?.charAt(0) ?? ""} ${
-    initialData?.lastName?.charAt(0) ?? ""
-  }`;
   return (
     <div className="relative w-full flex flex-col">
       <div className="w-full flex justify-center">
@@ -68,7 +65,7 @@ export function ProfileView({ initialData, user }: ProfileFormProps) {
                   src={initialData?.externalImage || "/images/placeholder.png"}
                   alt={initialData?.firstName ?? ""}
                 />
-                <AvatarFallback>{initials}</AvatarFallback>
+                <AvatarFallback><img src="/images/placeholder.png"/></AvatarFallback>
               </Avatar>
             ) : (
               <DropdownMenu>
@@ -82,7 +79,7 @@ export function ProfileView({ initialData, user }: ProfileFormProps) {
                       }
                       alt={initialData?.firstName ?? ""}
                     />
-                    <AvatarFallback>{initials}</AvatarFallback>
+                    <AvatarFallback><img src="/images/placeholder.png"/></AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-60">
