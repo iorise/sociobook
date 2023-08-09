@@ -55,7 +55,7 @@ export function PostFeeds({
           >
             {currentUser
               ? `What's happening today, ${user?.firstName}`
-              : `Send meesage to ${user?.firstName}`}
+              : `Send message to ${initialData?.firstName}`}
           </Button>
         </CardHeader>
         <Separator />
