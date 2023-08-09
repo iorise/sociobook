@@ -2,8 +2,12 @@
 
 import * as React from "react";
 import { useDropzone } from "react-dropzone";
-import { Avatar, AvatarImage } from "./ui/avatar";
 import Image from "next/image";
+import Cropper, { ReactCropperElement } from "react-cropper";
+
+import "cropperjs/dist/cropper.css";
+
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 interface ImageUploadProps {
   onChange: (base64: string) => void;
@@ -19,6 +23,8 @@ export function ImageUpload({
   isCover,
 }: ImageUploadProps) {
   const [base64, setBase64] = React.useState(value);
+  const [cropData, setCropData] = React.useState<string | null>(null);
+  const cropperRef = React.useRef<ReactCropperElement>(null);
 
   const handleChange = React.useCallback(
     (base64: string) => {
@@ -41,6 +47,20 @@ export function ImageUpload({
     },
     [handleChange]
   );
+
+  const handleCrop = () => {
+    if (cropperRef.current) {
+      const croppedImage = cropperRef.current.cropper.getCroppedCanvas();
+      setCropData(croppedImage.toDataURL());
+    }
+  };
+
+  const handleSave = () => {
+    if (cropData) {
+      handleChange(cropData);
+      setBase64(cropData);
+    }
+  };
 
   const { getRootProps, getInputProps } = useDropzone({
     maxFiles: 1,

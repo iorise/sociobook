@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { User } from "@clerk/nextjs/server";
+import { User as userDb } from "@prisma/client";
 
 import { Icons } from "@/components/icons";
 import { MainNav } from "@/components/layouts/main-nav";
@@ -22,10 +23,11 @@ import {
 import Image from "next/image";
 
 interface SiteHeaderProps {
-  user: User;
+  user: User | null;
+  initialData: userDb | null
 }
 
-export function SiteHeader({ user }: SiteHeaderProps) {
+export function SiteHeader({ user, initialData }: SiteHeaderProps) {
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-secondaryBackground">
       <div className="mx-6 flex h-14 items-center justify-between">
@@ -59,7 +61,7 @@ export function SiteHeader({ user }: SiteHeaderProps) {
             <Icons.message className="w-5 h-5" />
           </Button>
           <NotificationsDropdown />
-          <ProfileDropdown user={user} />
+          <ProfileDropdown user={user} initialData={initialData}/>
         </div>
       </div>
     </header>
