@@ -27,14 +27,18 @@ export function InfoView({ user, initialData }: FeedsProps) {
             {bio ? (
               <div className="w-full text-center flex flex-col gap-2">
                 <p className="break-words flex-wrap">{initialData?.bio}</p>
-                <Button variant="outline" className="w-full">
-                  Edit bio
-                </Button>
+                {currentUser ? (
+                  <Button variant="outline" className="w-full">
+                    Edit bio
+                  </Button>
+                ) : null}
               </div>
-            ) : (
+            ) : currentUser ? (
               <Button variant="outline" className="w-full">
                 Add bio
               </Button>
+            ) : (
+              <p className="w-full text-center">No bio to show.</p>
             )}
           </CardContent>
         </Card>
