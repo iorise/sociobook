@@ -18,6 +18,7 @@ interface FeedsProps {
   user: User | null;
   initialData: userDb | null;
   currentUser?: boolean;
+  externalId?: string | null
 }
 
 export type PostWithUser = Prisma.PostGetPayload<{ include: { user: true } }>;
@@ -26,6 +27,7 @@ export function PostFeeds({
   user,
   initialData,
   currentUser,
+  externalId
 }: FeedsProps) {
   const postModal = usePostModal();
 
@@ -79,7 +81,7 @@ export function PostFeeds({
         </CardContent>
       </Card>
       <PostForm user={user} initialData={initialData} />
-      <Feeds />
+      <Feeds externalId={externalId}/>
     </div>
   );
 }

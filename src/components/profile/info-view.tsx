@@ -48,6 +48,7 @@ export function InfoView({ user, initialData }: FeedsProps) {
           user={user}
           initialData={initialData}
           currentUser={currentUser}
+          externalId={initialData?.externalId}
         />
       </div>
     </div>

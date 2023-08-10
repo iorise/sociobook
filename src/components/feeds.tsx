@@ -11,8 +11,11 @@ import { Feed } from "@/components/feed";
 import { Skeleton } from "@/components/ui/skeleton";
 import { allPosts } from "@/hooks/use-posts";
 
-export function Feeds() {
-  // to know when the last element is in view
+interface FeedsProps {
+  externalId?: string | null
+}
+
+export function Feeds({externalId}: FeedsProps) {
   const { ref, inView } = useInView();
 
   // useInfiniteQuery is a hook that accepts a queryFn and queryKey and returns the result of the queryFn
@@ -26,7 +29,7 @@ export function Feeds() {
     isFetchingNextPage,
   } = useInfiniteQuery({
     queryFn: ({ pageParam = "" }) =>
-      allPosts({ take: 3, lastCursor: pageParam }),
+      allPosts({externalId, take: 3, lastCursor: pageParam }),
     queryKey: ["posts"],
     // getNextPageParam is used to get the cursor of the last element in the current page
     // which is then used as the pageParam in the queryFn
