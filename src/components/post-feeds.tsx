@@ -16,18 +16,20 @@ import { Feeds } from "@/components/feeds";
 
 interface FeedsProps {
   user: User | null;
-  initialData: userDb | null;
-  currentUser?: boolean;
-  externalId?: string | null
+  currentUser: userDb | null;
+  initialData?: userDb | null
+  currentUsers?: boolean;
+  externalId?: string | null;
 }
 
 export type PostWithUser = Prisma.PostGetPayload<{ include: { user: true } }>;
 
 export function PostFeeds({
   user,
-  initialData,
   currentUser,
-  externalId
+  initialData,
+  currentUsers,
+  externalId,
 }: FeedsProps) {
   const postModal = usePostModal();
 
@@ -35,18 +37,18 @@ export function PostFeeds({
     <div className="py-4 flex flex-col gap-5">
       <Card>
         <CardHeader className="flex flex-row items-center gap-2 py-2 px-3">
-          <Link className="flex gap-2" href={`/profile/${user?.id}`}>
+          <Link className="flex gap-2" href={`/profile/${currentUser?.externalId}`}>
             <Button variant="ghost" className="rounded-full h-10 w-10">
               <Avatar className="active:scale-95 transition-all active:opacity-80 duration-0">
                 <AvatarImage
                   src={
-                    initialData?.externalImage ??
-                    user?.profileImageUrl ??
-                    user?.imageUrl
+                    currentUser?.externalImage || ""
                   }
                   alt={user?.firstName ?? ""}
                 />
-                <AvatarFallback><img src="/images/placeholder.png"/></AvatarFallback>
+                <AvatarFallback>
+                  <img src="/images/placeholder.png" />
+                </AvatarFallback>
               </Avatar>
             </Button>
           </Link>
@@ -55,9 +57,9 @@ export function PostFeeds({
             variant="ghost"
             onClick={() => postModal.onOpen()}
           >
-            {currentUser
-              ? `What's happening today, ${user?.firstName}`
-              : `Send message to ${initialData?.firstName}`}
+            {currentUsers
+              ? `What's happening today, ${currentUser?.firstName} ${currentUser?.lastName}`
+              : `Send message to ${initialData?.firstName} ${initialData?.lastName}`}
           </Button>
         </CardHeader>
         <Separator />
@@ -80,8 +82,8 @@ export function PostFeeds({
           </Button>
         </CardContent>
       </Card>
-      <PostForm user={user} initialData={initialData} />
-      <Feeds externalId={externalId}/>
+      <PostForm user={user} currentUser={currentUser} initialData={initialData} currentUsers={currentUsers}/>
+      <Feeds externalId={externalId} />
     </div>
   );
 }

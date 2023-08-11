@@ -9,18 +9,25 @@ export default async function ProfilePage({
 }: {
   params: { userId: string };
 }) {
+
+  const authUser = await currentUser();
   const user = await prismadb.user.findUnique({
     where: {
       externalId: params.userId,
     },
   });
 
-  const authUser = await currentUser();
+  const current = await prismadb.user.findUnique({
+    where: {
+      externalId: authUser?.id
+    }
+  })
+
 
   return (
     <div>
       <ProfileView initialData={user} user={authUser}/>
-      <InfoView user={authUser} initialData={user}/>
+      <InfoView user={authUser} initialData={user} currentUser={current}/>
     </div>
   );
 }

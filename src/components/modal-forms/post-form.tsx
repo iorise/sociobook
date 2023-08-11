@@ -23,17 +23,24 @@ import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 import { PostInput } from "@/components/inputs/post-input";
 import { usePostModal } from "@/hooks/use-post-modal";
-import {usePosts} from "@/hooks/use-posts";
+import { usePosts } from "@/hooks/use-posts";
 import { ImageUpload } from "@/components/image-upload";
 
 interface PostForm {
   user: User | null;
-  initialData: userDb | null;
+  currentUser: userDb | null;
+  initialData?: userDb | null;
+  currentUsers?: boolean;
 }
 
 type Inputs = z.infer<typeof postSchema>;
 
-export function PostForm({ user, initialData }: PostForm) {
+export function PostForm({
+  user,
+  currentUser,
+  initialData,
+  currentUsers,
+}: PostForm) {
   const postModal = usePostModal();
   const [isLoading, setIsLoading] = React.useState(false);
   const { mutate: mutatePosts } = usePosts();
@@ -51,22 +58,25 @@ export function PostForm({ user, initialData }: PostForm) {
     },
   });
 
-  const onSubmit = React.useCallback(async (data: Inputs) => {
-    try {
-      setIsLoading(true);
-      await axios.post("/api/posts", data);
-      postModal.onClose()
-      toast.success("Your post has been published.", {
-        position: "bottom-left"
-      });
-      form.reset();
-      mutatePosts();
-    } catch (error) {
-      toast.error("Something went wrong");
-    } finally {
-      setIsLoading(false);
-    }
-  }, [form, mutatePosts]);
+  const onSubmit = React.useCallback(
+    async (data: Inputs) => {
+      try {
+        setIsLoading(true);
+        await axios.post("/api/posts", data);
+        postModal.onClose();
+        toast.success("Your post has been published.", {
+          position: "bottom-left",
+        });
+        mutatePosts();
+        form.reset();
+      } catch (error) {
+        toast.error("Something went wrong");
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [form, mutatePosts]
+  );
   return (
     <Modal
       title="Create Post"
@@ -76,11 +86,7 @@ export function PostForm({ user, initialData }: PostForm) {
       <div className="px-3 flex items-center gap-2">
         <Avatar className="w-8 h-8">
           <AvatarImage
-            src={
-              initialData?.externalImage ??
-              user?.profileImageUrl ??
-              user?.imageUrl
-            }
+            src={currentUser?.externalImage ?? user?.profileImageUrl}
             alt={user?.firstName ?? ""}
           />
           <AvatarFallback>{initials}</AvatarFallback>
@@ -119,7 +125,11 @@ export function PostForm({ user, initialData }: PostForm) {
                 <FormControl>
                   <PostInput
                     className="h-40 resize-none border-0 focus-visible:ring-0"
-                    placeholder={`What's happening today, ${user?.firstName} ?`}
+                    placeholder={
+                      currentUsers
+                        ? `What's happening today, ${currentUser?.firstName} ?`
+                        : `Send message to ${initialData?.firstName}`
+                    }
                     {...field}
                   />
                 </FormControl>
