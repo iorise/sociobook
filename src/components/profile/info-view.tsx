@@ -12,9 +12,10 @@ interface FeedsProps {
   user: User | null;
   initialData: userDb | null;
   currentUser: userDb | null
+  externalId?: string | null
 }
 
-export function InfoView({ user, initialData, currentUser }: FeedsProps) {
+export function InfoView({ user, initialData, currentUser, externalId }: FeedsProps) {
   const currentUsers = user?.id === initialData?.externalId;
   const bio = initialData?.bio;
 
@@ -51,7 +52,7 @@ export function InfoView({ user, initialData, currentUser }: FeedsProps) {
           currentUser={currentUser}
           initialData={initialData}
           currentUsers={currentUsers}
-          externalId={initialData?.externalId}
+          externalId={externalId}
         />
       </div>
     </div>

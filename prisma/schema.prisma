@@ -37,7 +37,7 @@ model Post {
   id              String    @id @default(auto()) @map("_id") @db.ObjectId
   text            String?
   userId          String    
-  likeIds         String[]  @db.ObjectId
+  likeIds         String[]
   image           String?
   user            User      @relation(fields: [userId], references: [externalId], onDelete: Cascade)
   comments        Comment[]
@@ -48,8 +48,8 @@ model Post {
 model Comment {
    id             String   @id @default(auto()) @map("_id") @db.ObjectId
    text           String
-   userId         String   @db.ObjectId
-   user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+   userId         String   
+   user           User     @relation(fields: [userId], references: [externalId], onDelete: Cascade)
    postId         String   @db.ObjectId
    post           Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
    createdAt      DateTime @default(now())
@@ -59,8 +59,8 @@ model Comment {
 model Notification {
   id              String    @id @default(auto()) @map("_id") @db.ObjectId
   text            String
-  userId          String    @db.ObjectId
-  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String    
+  user            User      @relation(fields: [userId], references: [externalId], onDelete: Cascade)
   createdAt       DateTime  @default(now())
   readAt          DateTime?
 }

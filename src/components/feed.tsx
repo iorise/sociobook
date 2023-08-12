@@ -1,8 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { formatDistanceToNowStrict } from "date-fns";
 import Image from "next/image";
+import { formatDistanceToNowStrict } from "date-fns";
+import axios from "axios";
+import { User } from "@prisma/client";
 
 import {
   Card,
@@ -15,12 +17,46 @@ import { Icons } from "@/components/icons";
 import { PostWithUser } from "@/components/post-feeds";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import usePost from "@/hooks/use-post";
+import { usePosts } from "@/hooks/use-posts";
+import { toast } from "react-hot-toast";
+import { cn } from "@/lib/utils";
 
 interface FeedProps {
   data: PostWithUser;
+  currentUser: User | null;
 }
 
-export function Feed({ data }: FeedProps) {
+export function Feed({ data, currentUser }: FeedProps) {
+  const postId = data.id;
+  const { mutate: mutateFetchedPost } = usePost(postId);
+  const { mutate: mutateFetchedPosts } = usePosts();
+
+  const hasLiked = React.useMemo(() => {
+    const list = data.likeIds || [];
+
+    return list.includes(currentUser?.externalId ?? "");
+  }, [data, currentUser]);
+
+  const toggleLike = React.useCallback(async () => {
+    try {
+      let request;
+
+      if (hasLiked) {
+        request = () => axios.delete(`/api/like`, { data: postId });
+      } else {
+        request = () => axios.post(`/api/like`, postId);
+      }
+
+      await request();
+      mutateFetchedPost();
+      mutateFetchedPosts();
+    } catch (error) {
+      console.log(error);
+      toast.error("something went wrong");
+    }
+  }, [currentUser, hasLiked, postId, mutateFetchedPost, mutateFetchedPosts]);
+
   const createdAt = React.useMemo(() => {
     if (!data?.createdAt) {
       return null;
@@ -28,6 +64,7 @@ export function Feed({ data }: FeedProps) {
 
     return formatDistanceToNowStrict(new Date(data.createdAt));
   }, [data.createdAt]);
+
   return (
     <div className="flex flex-col gap-5">
       <Card>
@@ -39,7 +76,7 @@ export function Feed({ data }: FeedProps) {
                 alt={data.user?.firstName ?? ""}
               />
               <AvatarFallback>
-              <img src="/images/placeholder.png"/>
+                <img src="/images/placeholder.png" />
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-col px-[-1rem]">
@@ -74,11 +111,26 @@ export function Feed({ data }: FeedProps) {
           </div>
         </CardContent>
         <CardFooter className="flex flex-col text-muted-foreground">
+          <div className="flex w-full justify-start text-muted-foreground text-xs mb-1">
+            {data.likeIds.length >= 1 ? (
+              <div className="flex items-center gap-1">
+                <Icons.thumb className="w-4 h-4 text-facebook-primary" />
+                <span>{data.likeIds.length}</span>
+              </div>
+            ) : null}
+          </div>
           <Separator className="mb-2" />
-          <div className="flex w-full">
-            <Button variant="ghost" className="flex-1">
-              <Icons.thumb className="w-6 h-6 mr-2" />
-              <span>Like</span>
+          <div className="flex w-full text-base font-medium">
+            <Button variant="ghost" className="flex-1" onClick={toggleLike}>
+              <span
+                className={cn(
+                  "flex items-center",
+                  hasLiked ? "text-facebook-primary" : "text-muted-foreground"
+                )}
+              >
+                <Icons.thumb className={cn("w-6 h-6 mr-2")} />
+                <span>Like</span>
+              </span>
             </Button>
             <Button variant="ghost" className="flex-1">
               <Icons.comment className="w-6 h-6 mr-2" />

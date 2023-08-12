@@ -41,8 +41,8 @@ export function PostFeeds({
             <Button variant="ghost" className="rounded-full h-10 w-10">
               <Avatar className="active:scale-95 transition-all active:opacity-80 duration-0">
                 <AvatarImage
-                  src={
-                    currentUser?.externalImage || ""
+                  src={currentUser?.externalImage ?? user?.profileImageUrl ??
+                     ""
                   }
                   alt={user?.firstName ?? ""}
                 />
@@ -58,8 +58,8 @@ export function PostFeeds({
             onClick={() => postModal.onOpen()}
           >
             {currentUsers
-              ? `What's happening today, ${currentUser?.firstName} ${currentUser?.lastName}`
-              : `Send message to ${initialData?.firstName} ${initialData?.lastName}`}
+              ? `What's happening today, ${currentUser?.firstName} ${currentUser?.lastName || ""} ?`
+              : `Send message to ${initialData?.firstName} ${initialData?.lastName || ""}`}
           </Button>
         </CardHeader>
         <Separator />
@@ -83,7 +83,7 @@ export function PostFeeds({
         </CardContent>
       </Card>
       <PostForm user={user} currentUser={currentUser} initialData={initialData} currentUsers={currentUsers}/>
-      <Feeds externalId={externalId} />
+      <Feeds externalId={externalId} currentUser={currentUser}/>
     </div>
   );
 }

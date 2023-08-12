@@ -6,6 +6,8 @@ import Link from "next/link";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "../ui/button";
+import { cn } from "@/lib/utils";
 
 interface AsideProps {
   users: User[];
@@ -13,12 +15,16 @@ interface AsideProps {
 
 export function Aside({ users }: AsideProps) {
   return (
-    <div className="hidden md:flex py-4">
-      <ScrollArea>
+    <>
+      <ScrollArea className="w-full h-full">
         {users.map((user) => (
-          <Link href={`/profile/${user?.externalId}`}>
-            <div className="flex gap-2 items-center" key={user.id}>
-              <Avatar>
+          <Link key={user.externalId} href={`/profile/${user?.externalId}`}>
+            <span
+              className={cn(
+                "group flex w-full items-center rounded-md border border-transparent px-2 py-2.5 hover:bg-accent hover:text-foreground"
+              )}
+            >
+              <Avatar className="w-9 h-9">
                 <AvatarImage
                   src={user?.externalImage ?? ""}
                   alt={user?.firstName ?? ""}
@@ -27,13 +33,13 @@ export function Aside({ users }: AsideProps) {
                   <img src="/images/placeholder.png" />
                 </AvatarFallback>
               </Avatar>
-              <p>
+              <span className="ml-3 text-white text-lg">
                 {user.firstName} {user.lastName}
-              </p>
-            </div>
+              </span>
+            </span>
           </Link>
         ))}
       </ScrollArea>
-    </div>
+    </>
   );
 }

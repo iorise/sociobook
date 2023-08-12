@@ -48,27 +48,41 @@ export function EditProfile({ user, initialData }: EditPhotoProfileProps) {
   const form = useForm<Inputs>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      externalImage: initialData?.externalImage || "",
+      externalImage:
+        initialData?.externalImage ||
+        user?.profileImageUrl ||
+        "",
       coverImage: initialData?.coverImage || "",
       bio: initialData?.bio || "",
     },
   });
 
-  const onSubmit = React.useCallback(async (data: Inputs) => {
-    try {
-      setIsLoading(true);
-      await axios.patch("/api/edit", data);
-      MutateFetchedUser();
-      toast.success("Profile Updated");
-      editProfileModal.onClose();
-      form.reset();
-    } catch (error) {
-      toast.error("Something went wrong");
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [form, MutateFetchedUser, editProfileModal]);
+  React.useEffect(() => {
+    form.reset({
+      externalImage: initialData?.externalImage || user?.profileImageUrl || initialData?.profileImage || "",
+      coverImage: initialData?.coverImage || "",
+      bio: initialData?.bio || "",
+    });
+  }, [initialData, user?.profileImageUrl, form]);
+
+  const onSubmit = React.useCallback(
+    async (data: Inputs) => {
+      try {
+        setIsLoading(true);
+        await axios.patch("/api/edit", data);
+        MutateFetchedUser();
+        toast.success("Profile Updated");
+        editProfileModal.onClose();
+        form.reset();
+      } catch (error) {
+        toast.error("Something went wrong");
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [form, MutateFetchedUser, editProfileModal]
+  );
   return (
     <Modal
       title="Edit profile"

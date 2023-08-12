@@ -4,7 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import useSWR from "swr";
 
-export function usePosts(externalId?: string) {
+export function usePosts(externalId?: string | null) {
   const url = externalId ? `/api/posts/${externalId}` : `/api/posts`;
 
   const { data, error, isLoading, mutate } = useSWR(url, fetcher);

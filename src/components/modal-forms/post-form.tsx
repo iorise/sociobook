@@ -127,8 +127,8 @@ export function PostForm({
                     className="h-40 resize-none border-0 focus-visible:ring-0"
                     placeholder={
                       currentUsers
-                        ? `What's happening today, ${currentUser?.firstName} ?`
-                        : `Send message to ${initialData?.firstName}`
+                        ? `What's happening today, ${currentUser?.firstName} ${currentUser?.lastName || ""} ?`
+                        : `Send message to ${initialData?.firstName} ${initialData?.lastName || ""}`
                     }
                     {...field}
                   />

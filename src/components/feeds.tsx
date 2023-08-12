@@ -10,12 +10,14 @@ import { PostWithUser } from "@/components/post-feeds";
 import { Feed } from "@/components/feed";
 import { Skeleton } from "@/components/ui/skeleton";
 import { allPosts } from "@/hooks/use-posts";
+import { User } from "@prisma/client";
 
 interface FeedsProps {
   externalId?: string | null;
+  currentUser: User | null
 }
 
-export function Feeds({ externalId }: FeedsProps) {
+export function Feeds({ externalId, currentUser }: FeedsProps) {
   const { ref, inView } = useInView();
 
   // useInfiniteQuery is a hook that accepts a queryFn and queryKey and returns the result of the queryFn
@@ -47,6 +49,7 @@ export function Feeds({ externalId }: FeedsProps) {
   if (error as any) {
     return <div>{`An error has occured: ` + (error as any).message}</div>;
   }
+
   return (
     <div className="flex flex-col gap-5">
       {isSuccess &&
@@ -56,11 +59,11 @@ export function Feeds({ externalId }: FeedsProps) {
             if (page.data.length === index + 1) {
               return (
                 <div ref={ref} key={index}>
-                  <Feed data={post} />
+                  <Feed data={post} currentUser={currentUser}/>
                 </div>
               );
             } else {
-              return <Feed data={post} />;
+              return <Feed data={post} currentUser={currentUser}/>;
             }
           })
         )}
@@ -76,7 +79,7 @@ export function Feeds({ externalId }: FeedsProps) {
                     <Skeleton className="h-4 w-[190px]" />
                   </div>
                 </div>
-                <div className="flex justify-center gap-36">
+                <div className="flex justify-center gap-16 md:gap-36">
                   <Skeleton className="h-4 w-20" />
                   <Skeleton className="h-4 w-20" />
                   <Skeleton className="h-4 w-20" />
@@ -94,7 +97,7 @@ export function Feeds({ externalId }: FeedsProps) {
                     <Skeleton className="h-4 w-[140px]" />
                   </div>
                 </div>
-                <div className="flex justify-center gap-36 ">
+                <div className="flex justify-center gap-16 sm:gap-36 ">
                   <Skeleton className="h-4 w-20" />
                   <Skeleton className="h-4 w-20" />
                   <Skeleton className="h-4 w-20" />
@@ -104,6 +107,14 @@ export function Feeds({ externalId }: FeedsProps) {
           </Card>
         </div>
       )}
+      {!isLoading &&
+        !isFetchingNextPage &&
+        !hasNextPage &&
+        data?.pages[data.pages.length - 1]?.data.length === 0 && (
+          <div className="flex justify-center text-muted-foreground">
+            No more post to load.
+          </div>
+        )}
     </div>
   );
 }

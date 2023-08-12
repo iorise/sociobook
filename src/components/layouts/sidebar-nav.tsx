@@ -23,7 +23,7 @@ export function SidebarNav({ items }: SidebarNavProps) {
             <Link key={index} href={item.href}>
               <span
                 className={cn(
-                  "group flex w-full items-center rounded-md border border-transparent px-2 py-3 hover:bg-accent hover:text-foreground",
+                  "group flex w-full items-center rounded-md border border-transparent px-2 py-2.5 hover:bg-accent hover:text-foreground",
                   item.disabled && "cursor-not-allowed"
                 )}
               >
