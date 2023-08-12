@@ -16,7 +16,11 @@ import { Icons } from "@/components/icons";
 import { useModal } from "@/hooks/use-modal";
 import { EditProfile } from "@/components/modal-forms/edit-profile";
 import { Button } from "@/components/ui/button";
-import { usePostModal } from "@/hooks/use-post-modal";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 interface ProfileFormProps {
   initialData: userDb | null;
@@ -35,9 +39,10 @@ export function ProfileView({ initialData, user }: ProfileFormProps) {
           <Image
             src={initialData?.coverImage}
             alt="Cover image"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             width={1200}
             height={200}
-            className="relative aspect-[3/1.3] md:aspect-[4/1.3] overflow-hidden bg-center rounded-md"
+            className="relative aspect-[3/1.3] md:aspect-[4/1.3] overflow-hidden bg-center rounded-md object-cover"
           />
         ) : (
           <div className="w-[100%] relative aspect-[3/1.3] md:aspect-[4/1.3] overflow-hidden bg-center rounded-md bg-accent mx-0 xl:mx-20 brightness-150" />
@@ -64,12 +69,15 @@ export function ProfileView({ initialData, user }: ProfileFormProps) {
                 <AvatarImage
                   src={initialData?.externalImage || "/images/placeholder.png"}
                   alt={initialData?.firstName ?? ""}
+                  className="object-cover"
                 />
-                <AvatarFallback><img src="/images/placeholder.png"/></AvatarFallback>
+                <AvatarFallback>
+                  <img src="/images/placeholder.png" />
+                </AvatarFallback>
               </Avatar>
             ) : (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
+              <Popover>
+                <PopoverTrigger asChild>
                   <Avatar className="cursor-pointer active:scale-95 transition-all active:opacity-80 duration-0 w-40 h-40 border-4 border-secondaryBackground">
                     <AvatarImage
                       src={
@@ -79,24 +87,29 @@ export function ProfileView({ initialData, user }: ProfileFormProps) {
                       }
                       alt={initialData?.firstName ?? ""}
                     />
-                    <AvatarFallback><img src="/images/placeholder.png"/></AvatarFallback>
+                    <AvatarFallback>
+                      <img src="/images/placeholder.png" />
+                    </AvatarFallback>
                   </Avatar>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-60">
-                  <DropdownMenuItem>
+                </PopoverTrigger>
+                <PopoverContent className="w-60">
+                  <div className="grid gap-5">
+
+                  <div className="flex">
                     <Icons.user className="mr-2 w-5 h-5" />
                     <span>See profile photo</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => editPhotoModal.onOpen()}>
+                  </div>
+                  <div className="flex" onClick={() => editPhotoModal.onOpen()}>
                     <Icons.fileImage className="mr-2 w-5 h-5" />
                     <span>Update photo</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  </div>
+                  <div className="flex">
                     <Icons.avatar className="mr-2 w-5 h-5" />
                     <span>Create avatar profile</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                  </div>
+                  </div>
+                </PopoverContent>
+              </Popover>
             )}
           </div>
           <div className="flex flex-col">
