@@ -44,24 +44,49 @@ export async function GET(req: Request) {
     // get page and lastCursor from query
     const url = new URL(req.url);
 
+    const userId = url.searchParams.get("userId")
     const take = url.searchParams.get("take");
     const lastCursor = url.searchParams.get("lastCursor");
-    let posts = await prismadb.post.findMany({
-      take: take ? parseInt(take as string) : 10,
-      ...(lastCursor && {
-        skip: 1,
-        cursor: {
-          id: lastCursor as string
-        }
-      }),
-      include: {
-        user: true,
-        comments: true,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
+
+    let posts
+    if (userId) {
+      posts = await prismadb.post.findMany({
+        where: {
+          userId: userId
+        },
+        take: take ? parseInt(take as string) : 10,
+        ...(lastCursor && {
+          skip: 1,
+          cursor: {
+            id: lastCursor as string
+          }
+        }),
+        include: {
+          user: true,
+          comments: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+    } else {
+      posts = await prismadb.post.findMany({
+        take: take ? parseInt(take as string) : 10,
+        ...(lastCursor && {
+          skip: 1,
+          cursor: {
+            id: lastCursor as string
+          }
+        }),
+        include: {
+          user: true,
+          comments: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+    }
 
     if (posts.length === 0) {
       return new Response(

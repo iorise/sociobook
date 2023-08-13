@@ -24,7 +24,7 @@ export async function allPosts({
   lastCursor,
 }: UserQueryParams) {
   const response = await axios.get(
-    !externalId ? "/api/posts" : `/api/posts/${externalId}`,
+    !externalId ? "/api/posts" : `/api/posts?userId=${externalId}`,
     {
       params: { take, lastCursor },
     }

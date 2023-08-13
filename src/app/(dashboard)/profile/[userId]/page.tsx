@@ -26,9 +26,9 @@ export default async function ProfilePage({
 
 
   return (
-    <div>
+    <>
       <ProfileView initialData={user} user={authUser}/>
       <InfoView user={authUser} initialData={user} currentUser={current} externalId={user?.externalId}/>
-    </div>
+    </>
   );
 }

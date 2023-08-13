@@ -70,7 +70,7 @@ export function PostForm({
         mutatePosts();
         form.reset();
       } catch (error) {
-        toast.error("Something went wrong");
+          
       } finally {
         setIsLoading(false);
       }
