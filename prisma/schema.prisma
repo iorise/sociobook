@@ -23,8 +23,8 @@ model User {
   bio              String?
   admin            Boolean?
   verified         Boolean?
-  friendIds        String[] @db.ObjectId
-  friendRequests   String[] @db.ObjectId
+  friendIds        String[]
+  friendRequests   String[]
   hasNotifications Boolean?
   posts            Post[]
   comments         Comment[]
@@ -49,7 +49,7 @@ model Comment {
    id             String   @id @default(auto()) @map("_id") @db.ObjectId
    text           String
    userId         String   
-   user           User     @relation(fields: [userId], references: [externalId], onDelete: Cascade)
+   author         User     @relation(fields: [userId], references: [externalId], onDelete: Cascade)
    postId         String   @db.ObjectId
    post           Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
    createdAt      DateTime @default(now())
