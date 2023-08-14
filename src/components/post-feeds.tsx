@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { User } from "@clerk/nextjs/server";
-import { Prisma, User as userDb } from "@prisma/client";
+import { User as userDb } from "@prisma/client";
 import Link from "next/link";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -21,8 +21,6 @@ interface FeedsProps {
   currentUsers?: boolean;
   externalId?: string | null;
 }
-
-export type PostWithUser = Prisma.PostGetPayload<{ include: { user: true } }>;
 
 export function PostFeeds({
   user,

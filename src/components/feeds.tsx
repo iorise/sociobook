@@ -1,16 +1,14 @@
 "use client";
 
 import * as React from "react";
-import axios from "axios";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
-
-import { Card, CardContent } from "@/components/ui/card";
-import { PostWithUser } from "@/components/post-feeds";
-import { Feed } from "@/components/feed";
-import { Skeleton } from "@/components/ui/skeleton";
-import { allPosts } from "@/hooks/use-posts";
 import { User } from "@prisma/client";
+
+import { extendedPost } from "@/types";
+import { Feed } from "@/components/feed";
+import { allPosts } from "@/hooks/use-posts";
+import { PostLoader } from "@/components/ui/post-loader";
 
 interface FeedsProps {
   externalId?: string | null;
@@ -33,8 +31,6 @@ export function Feeds({ externalId, currentUser }: FeedsProps) {
     queryFn: ({ pageParam = "" }) =>
       allPosts({ externalId, take: 6, lastCursor: pageParam }),
     queryKey: ["posts"],
-    // getNextPageParam is used to get the cursor of the last element in the current page
-    // which is then used as the pageParam in the queryFn
     getNextPageParam: (lastPage) => {
       return lastPage?.metaData.lastCursor;
     },
@@ -54,57 +50,23 @@ export function Feeds({ externalId, currentUser }: FeedsProps) {
     <div className="flex flex-col gap-5">
       {isSuccess &&
         data.pages.map((page) =>
-          page.data.map((post: PostWithUser, index: number) => {
+          page.data.map((post: extendedPost, index: number) => {
             // if the last element in the page is in view, add a ref to it
             if (page.data.length === index + 1) {
               return (
                 <div ref={ref} key={index}>
-                  <Feed data={post} currentUser={currentUser}/>
+                  <Feed data={post} currentUser={currentUser} comments={post.comments}/>
                 </div>
               );
             } else {
-              return <Feed data={post} currentUser={currentUser}/>;
+              return <Feed data={post} currentUser={currentUser} comments={post.comments}/>;
             }
           })
         )}
       {(isLoading || isFetchingNextPage) && (
         <div className="flex flex-col gap-5">
-          <Card>
-            <CardContent>
-              <div className="flex flex-col gap-48">
-                <div className="flex items-center mt-5">
-                  <Skeleton className="h-10 w-10 rounded-full mr-4" />
-                  <div className="space-y-2 w-full">
-                    <Skeleton className="h-4 w-[80px]" />
-                    <Skeleton className="h-4 w-[190px]" />
-                  </div>
-                </div>
-                <div className="flex justify-center gap-16 md:gap-36">
-                  <Skeleton className="h-4 w-20" />
-                  <Skeleton className="h-4 w-20" />
-                  <Skeleton className="h-4 w-20" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent>
-              <div className="flex flex-col gap-48">
-                <div className="flex items-center mt-5">
-                  <Skeleton className="h-10 w-10 rounded-full mr-4" />
-                  <div className="space-y-2 w-full">
-                    <Skeleton className="h-4 w-[80px]" />
-                    <Skeleton className="h-4 w-[140px]" />
-                  </div>
-                </div>
-                <div className="flex justify-center gap-16 sm:gap-36 ">
-                  <Skeleton className="h-4 w-20" />
-                  <Skeleton className="h-4 w-20" />
-                  <Skeleton className="h-4 w-20" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <PostLoader/>
+          <PostLoader/>
         </div>
       )}
       {!isLoading &&

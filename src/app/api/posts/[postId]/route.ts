@@ -15,7 +15,11 @@ export async function GET(
       },
       include: {
         user: true,
-        comments: true,
+        comments: {
+          include: {
+            author: true
+          }
+        },
       },
     });
     return NextResponse.json(post);

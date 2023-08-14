@@ -63,7 +63,11 @@ export async function GET(req: Request) {
         }),
         include: {
           user: true,
-          comments: true,
+          comments: {
+            include: {
+              author: true
+            }
+          },
         },
         orderBy: {
           createdAt: "desc",
@@ -80,7 +84,11 @@ export async function GET(req: Request) {
         }),
         include: {
           user: true,
-          comments: true,
+          comments: {
+            include: {
+              author: true
+            }
+          },
         },
         orderBy: {
           createdAt: "desc",

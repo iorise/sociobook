@@ -1,6 +1,4 @@
 import fetcher from "@/lib/fetcher";
-import { Post } from "@prisma/client";
-import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import useSWR from "swr";
 
@@ -31,3 +29,4 @@ export async function allPosts({
   );
   return response.data;
 }
+

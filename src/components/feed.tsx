@@ -4,7 +4,7 @@ import * as React from "react";
 import Image from "next/image";
 import { formatDistanceToNowStrict } from "date-fns";
 import axios from "axios";
-import { User } from "@prisma/client";
+import { Comment, User } from "@prisma/client";
 
 import {
   Card,
@@ -14,23 +14,42 @@ import {
 } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Icons } from "@/components/icons";
-import { PostWithUser } from "@/components/post-feeds";
+import {
+  CommentWithUser,
+  PostWithUser,
+  extendedComment,
+  extendedPost,
+} from "@/types";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import usePost from "@/hooks/use-post";
 import { usePosts } from "@/hooks/use-posts";
 import { toast } from "react-hot-toast";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { CommentForm } from "@/components/forms/comment-form";
+import { PostComment } from "@/components/post-comment";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { commentSchema } from "@/lib/validations/comment";
+import useComment from "@/hooks/use-comment";
 
 interface FeedProps {
-  data: PostWithUser;
+  data: extendedPost;
   currentUser: User | null;
+  comments: Comment[];
 }
 
-export function Feed({ data, currentUser }: FeedProps) {
+export function Feed({ data, currentUser, comments }: FeedProps) {
   const postId = data.id;
+  const [isComment, setIsComment] = React.useState(false);
   const { mutate: mutateFetchedPost } = usePost(postId);
   const { mutate: mutateFetchedPosts } = usePosts();
+
+  const {
+    data: commentsData,
+    isLoading: commentsLoading,
+    error: commentsError,
+  } = useComment(postId);
 
   const hasLiked = React.useMemo(() => {
     const list = data.likeIds || [];
@@ -61,9 +80,12 @@ export function Feed({ data, currentUser }: FeedProps) {
     if (!data?.createdAt) {
       return null;
     }
-
     return formatDistanceToNowStrict(new Date(data.createdAt));
   }, [data.createdAt]);
+
+  const toggleComment = React.useCallback(() => {
+    setIsComment((prev) => !prev);
+  }, []);
 
   return (
     <div className="flex flex-col gap-5">
@@ -96,7 +118,7 @@ export function Feed({ data, currentUser }: FeedProps) {
         </CardHeader>
         <CardContent>
           <div className="w-full">
-            {data.text}
+            <Link href={`/post/${data.id}`}>{data.text}</Link>
             {data.image ? (
               <Image
                 src={data.image}
@@ -111,13 +133,16 @@ export function Feed({ data, currentUser }: FeedProps) {
           </div>
         </CardContent>
         <CardFooter className="flex flex-col text-muted-foreground">
-          <div className="flex w-full justify-start text-muted-foreground text-xs mb-1">
+          <div className="flex w-full justify-between text-muted-foreground text-xs mb-1">
             {data.likeIds.length >= 1 ? (
               <div className="flex items-center gap-1">
-                <Icons.thumb className="w-4 h-4 text-facebook-primary" />
+                <Icons.thumbFill className="w-4 h-4 text-facebook-primary" />
                 <span>{data.likeIds.length}</span>
               </div>
             ) : null}
+            <p className="w-full flex justify-end hover:underline cursor-pointer">
+              {data.comments.length} comments
+            </p>
           </div>
           <Separator className="mb-2" />
           <div className="flex w-full text-base font-medium">
@@ -132,7 +157,7 @@ export function Feed({ data, currentUser }: FeedProps) {
                 <span>Like</span>
               </span>
             </Button>
-            <Button variant="ghost" className="flex-1">
+            <Button variant="ghost" className="flex-1" onClick={toggleComment}>
               <Icons.comment className="w-6 h-6 mr-2" />
               <span>Comment</span>
             </Button>
@@ -141,6 +166,24 @@ export function Feed({ data, currentUser }: FeedProps) {
               <span>Share</span>
             </Button>
           </div>
+          {isComment ? (
+            <div className="flex flex-col w-full pt-2 gap-2">
+              {commentsData && commentsData.length > 0 ? (
+                <ScrollArea className="w-full h-44 rounded-lg">
+                  <div className="p-2">
+                    {commentsData
+                      ? commentsData.map((comment: CommentWithUser) => (
+                          <PostComment data={comment} />
+                        ))
+                      : commentsLoading
+                      ? "Loading comments..."
+                      : "Error loading comments."}
+                  </div>
+                </ScrollArea>
+              ) : null}
+              <CommentForm currentUser={currentUser} postId={data.id} />
+            </div>
+          ) : null}
         </CardFooter>
       </Card>
     </div>

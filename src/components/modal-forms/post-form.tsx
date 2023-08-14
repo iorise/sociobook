@@ -25,6 +25,7 @@ import { PostInput } from "@/components/inputs/post-input";
 import { usePostModal } from "@/hooks/use-post-modal";
 import { usePosts } from "@/hooks/use-posts";
 import { ImageUpload } from "@/components/image-upload";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface PostForm {
   user: User | null;
@@ -43,7 +44,18 @@ export function PostForm({
 }: PostForm) {
   const postModal = usePostModal();
   const [isLoading, setIsLoading] = React.useState(false);
-  const { mutate: mutatePosts } = usePosts();
+
+  const queryClient = useQueryClient();
+
+  const { mutateAsync: addPostMutation } = useMutation({
+    mutationFn: async (data: Inputs) => await axios.post("/api/posts", data),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["posts"]);
+      toast.success("Your post has been published.", {
+        position: "bottom-left",
+      });
+    },
+  });
 
   const initials = `${user?.firstName?.charAt(0) ?? ""} ${
     user?.lastName?.charAt(0) ?? ""
@@ -62,20 +74,15 @@ export function PostForm({
     async (data: Inputs) => {
       try {
         setIsLoading(true);
-        await axios.post("/api/posts", data);
+        await addPostMutation(data);
         postModal.onClose();
-        toast.success("Your post has been published.", {
-          position: "bottom-left",
-        });
-        mutatePosts();
         form.reset();
       } catch (error) {
-          
       } finally {
         setIsLoading(false);
       }
     },
-    [form, mutatePosts]
+    [form, addPostMutation]
   );
   return (
     <Modal
@@ -127,8 +134,12 @@ export function PostForm({
                     className="h-40 resize-none border-0 focus-visible:ring-0"
                     placeholder={
                       currentUsers
-                        ? `What's happening today, ${currentUser?.firstName} ${currentUser?.lastName || ""} ?`
-                        : `Send message to ${initialData?.firstName} ${initialData?.lastName || ""}`
+                        ? `What's happening today, ${currentUser?.firstName} ${
+                            currentUser?.lastName || ""
+                          } ?`
+                        : `Send message to ${initialData?.firstName} ${
+                            initialData?.lastName || ""
+                          }`
                     }
                     {...field}
                   />
