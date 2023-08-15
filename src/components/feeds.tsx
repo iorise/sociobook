@@ -7,7 +7,7 @@ import { User } from "@prisma/client";
 
 import { extendedPost } from "@/types";
 import { Feed } from "@/components/feed";
-import { allPosts } from "@/hooks/use-posts";
+import { fetchPosts } from "@/app/_action/posts";
 import { PostLoader } from "@/components/ui/post-loader";
 
 interface FeedsProps {
@@ -29,7 +29,7 @@ export function Feeds({ externalId, currentUser }: FeedsProps) {
     isFetchingNextPage,
   } = useInfiniteQuery({
     queryFn: ({ pageParam = "" }) =>
-      allPosts({ externalId, take: 6, lastCursor: pageParam }),
+      fetchPosts({ externalId, take: 6, lastCursor: pageParam }),
     queryKey: ["posts"],
     getNextPageParam: (lastPage) => {
       return lastPage?.metaData.lastCursor;
@@ -55,11 +55,11 @@ export function Feeds({ externalId, currentUser }: FeedsProps) {
             if (page.data.length === index + 1) {
               return (
                 <div ref={ref} key={index}>
-                  <Feed data={post} currentUser={currentUser} comments={post.comments}/>
+                  <Feed data={post} currentUser={currentUser}/>
                 </div>
               );
             } else {
-              return <Feed data={post} currentUser={currentUser} comments={post.comments}/>;
+              return <Feed data={post} currentUser={currentUser}/>;
             }
           })
         )}

@@ -1,11 +1,17 @@
-import useSWR from "swr";
+import { User } from "@prisma/client";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
-import fetcher from "@/lib/fetcher";
+export async function getCurrentUser(): Promise<User> {
+  const {data} = await axios.get("/api/current");
+  return data;
+}
 
-const useCurrentUser = (externalId?: string | undefined) => {
-  const { data, error, isLoading, mutate } = useSWR(externalId ? "/api/current" : null, fetcher);
+export function useCurrentUser() {
+  const {data, isLoading} = useQuery({
+    queryFn: () => getCurrentUser(),
+    queryKey: ["currentUser"]
+  });
 
-  return { data, error, isLoading, mutate };
-};
-
-export default useCurrentUser;
+  return {data, isLoading}
+}

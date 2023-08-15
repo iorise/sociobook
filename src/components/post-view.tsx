@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from 'react'
-import { PostWithUser } from './post-feeds'
+import { PostWithUser } from '@/types'
 
 interface PostView {
     data: PostWithUser | null

@@ -1,16 +1,11 @@
-import useSWR from 'swr';
+import { fetchPost } from '@/app/_action/posts';
+import { useQuery } from '@tanstack/react-query';
 
-import fetcher from '@/lib/fetcher';
+export function usePost(postId: string) {
+  const { data, isLoading, isError, isSuccess } = useQuery({
+    queryFn: () => fetchPost(postId),
+    queryKey: ["post", postId],
+  });
 
-const usePost = (postId: string) => {
-  const { data, error, isLoading, mutate } = useSWR(postId ? `/api/posts/${postId}` : null, fetcher);
-
-  return {
-    data,
-    error,
-    isLoading,
-    mutate
-  }
-};
-
-export default usePost;
+  return { data, isLoading, isError, isSuccess };
+}

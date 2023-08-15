@@ -1,18 +1,11 @@
-import useSWR from 'swr';
+import { useQuery } from "@tanstack/react-query";
+import { fetchComments } from "@/app/_action/comment";
 
-import fetcher from '@/lib/fetcher';
-import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
+export function useComment(postId: string) {
+  const { data, isLoading } = useQuery({
+    queryFn: async () => await fetchComments(postId),
+    queryKey: ["comment", postId],
+  });
 
-const useComment = (postId: string) => {
-  const { data, error, isLoading, mutate } = useSWR(postId ? `/api/comment?postId=${postId}` : null, fetcher);
-
-  return {
-    data,
-    error,
-    isLoading,
-    mutate
-  }
-};
-
-export default useComment;
+  return { data, isLoading };
+}

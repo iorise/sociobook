@@ -27,11 +27,6 @@ export type PostWithUser = Prisma.PostGetPayload<{
   include: { user: true; comments: true };
 }>;
 
-export type extendedComment = Comment & {
-  author: User;
- 
-};
-
 export type extendedPost = Post & {
     user: User
     comments: Comment[]

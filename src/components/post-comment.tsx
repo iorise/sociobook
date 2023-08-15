@@ -1,9 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { CommentWithUser, extendedComment } from "@/types";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { formatDistanceToNowStrict } from "date-fns";
+
+import { CommentWithUser } from "@/types";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface PostCommentProps {
   data: CommentWithUser;
@@ -27,11 +28,11 @@ export function PostComment({ data }: PostCommentProps) {
         </AvatarFallback>
       </Avatar>
       <div>
-        <div className="flex flex-col bg-accent rounded-xl p-1">
+        <div className="flex flex-col bg-accent rounded-xl p-2">
           <p className="text-sm font-medium text-foreground">
             {data.author.firstName} {data.author.lastName}
           </p>
-          <p className="text-xs">{data.text}</p>
+          <p className="text-sm font-normal text-foreground">{data.text}</p>
         </div>
         <div className="flex ml-2 gap-3 text-xs font-medium text-muted-foreground">
           <p>Like</p>
