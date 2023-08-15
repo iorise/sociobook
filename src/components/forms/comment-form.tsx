@@ -34,6 +34,7 @@ export function CommentForm({ currentUser, postId }: CommentFormProps) {
     onSuccess: () => {
       queryClient.invalidateQueries(["comment", postId]);
       queryClient.invalidateQueries(["posts"]);
+      queryClient.invalidateQueries(["post", postId]);
       toast.success("Your Comment has been published.", {
         position: "bottom-left",
       });
