@@ -34,7 +34,8 @@ export const useLike = ({
       await request();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["post", postId, "posts", "like"]);
+      queryClient.invalidateQueries(["posts"]);
+      queryClient.invalidateQueries(["post", postId]);
       toast.success(hasLiked ? "Unliked" : "Liked", {
         position: "bottom-left",
       });
