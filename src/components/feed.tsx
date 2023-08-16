@@ -2,9 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { formatDistanceToNowStrict } from "date-fns";
-import axios from "axios";
-import { Comment, User } from "@prisma/client";
+import { User } from "@prisma/client";
 
 import {
   Card,
@@ -20,12 +18,11 @@ import {
 } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
+import { cn, formatDates } from "@/lib/utils";
 import Link from "next/link";
 import { CommentForm } from "@/components/forms/comment-form";
 import { PostComment } from "@/components/post-comment";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { commentSchema } from "@/lib/validations/comment";
 import {useComment} from "@/hooks/use-comment";
 import { useLike } from "@/hooks/use-like";
 
@@ -35,9 +32,9 @@ interface FeedProps {
 }
 
 export function Feed({ data, currentUser }: FeedProps) {
-  const postId = data.id;
-
   const [isComment, setIsComment] = React.useState(false);
+  
+  const postId = data.id;
 
   const { data: commentsData, isLoading: commentsLoading } = useComment(postId);
 
@@ -47,11 +44,8 @@ export function Feed({ data, currentUser }: FeedProps) {
   });
 
   const createdAt = React.useMemo(() => {
-    if (!data?.createdAt) {
-      return null;
-    }
-    return formatDistanceToNowStrict(new Date(data.createdAt));
-  }, [data.createdAt]);
+      return formatDates(data.createdAt)
+  }, [data.createdAt])
 
   const toggleComment = React.useCallback(() => {
     setIsComment((prev) => !prev);
@@ -104,7 +98,7 @@ export function Feed({ data, currentUser }: FeedProps) {
         </CardContent>
         <CardFooter className="flex flex-col text-muted-foreground">
           <div className="flex w-full justify-between text-muted-foreground text-xs mb-1">
-            {hasLiked ?? data.likeIds.length > 0 ? (
+            {hasLiked ?? data.likeIds.length != 0 ? (
               <div className="flex items-center gap-1">
                 <Icons.thumbFill className="w-4 h-4 text-facebook-primary" />
                 <span>{data.likeIds.length}</span>

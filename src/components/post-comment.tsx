@@ -1,10 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { formatDistanceToNowStrict } from "date-fns";
 
 import { CommentWithUser } from "@/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { formatDates } from "@/lib/utils";
 
 interface PostCommentProps {
   data: CommentWithUser;
@@ -12,11 +12,9 @@ interface PostCommentProps {
 
 export function PostComment({ data }: PostCommentProps) {
   const createdAt = React.useMemo(() => {
-    if (!data?.createdAt) {
-      return null;
-    }
-    return formatDistanceToNowStrict(new Date(data.createdAt));
+    return formatDates(data.createdAt)
   }, [data.createdAt]);
+
   return (
     <div className="flex gap-2">
       <Avatar className="h-6 w-6">
