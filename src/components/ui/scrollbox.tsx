@@ -11,7 +11,7 @@ export function Scrollbox({ children, className }: ScrollboxProps) {
   return (
     <div
       className={cn(
-        `flex flex-col overflow-x-hidden overflow-y-scroll max-h-56 md:max-h-72 scrollbar-thin scrollbar-thumb-input scrollbar-track-card scrollbar-track-rounded-xl scrollbar-thumb-rounded-xl`,
+        `flex flex-col overflow-x-hidden overflow-y-scroll max-h-56 md:max-h-[19rem] scrollbar-thin scrollbar-thumb-input scrollbar-track-card scrollbar-track-rounded-xl scrollbar-thumb-rounded-xl`,
         className
       )}
     >
