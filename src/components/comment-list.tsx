@@ -9,13 +9,29 @@ import { Scrollbox } from "@/components/ui/scrollbox";
 import { CommentItem } from "@/components/comment-item";
 import { CommentsLoader } from "@/components/ui/comments-loader";
 import { Icons } from "@/components/icons";
+import { useInView } from "react-intersection-observer";
 
 interface PostCommentProps {
   postId: string;
 }
 
 export function CommentList({ postId }: PostCommentProps) {
-  const { data: comments, isLoading, error } = useComments(postId);
+  const { ref, inView } = useInView();
+  const {
+    data,
+    error,
+    isLoading,
+    hasNextPage,
+    fetchNextPage,
+    isSuccess,
+    isFetchingNextPage,
+  } = useComments(postId);
+
+  React.useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [hasNextPage, inView, fetchNextPage]);
 
   if (isLoading) {
     return (
@@ -35,12 +51,28 @@ export function CommentList({ postId }: PostCommentProps) {
   }
 
   return (
-    <div className={cn(comments.length !== 0 ? "mt-1 mb-3" : "mt-0 mb-0")}>
+    <div className={cn(data?.pages.length !== 0 ? "mt-1 mb-3" : "mt-0 mb-0")}>
       <Scrollbox>
         <div className="flex flex-col gap-1">
-          {comments.map((comment: CommentWithUser) => (
-            <CommentItem key={comment.id} comment={comment} />
-          ))}
+          {isSuccess &&
+            data?.pages.map((page) =>
+              page.data.map((comment: CommentWithUser, index: number) => {
+                if (page.data.length === index + 1) {
+                  return (
+                    <div ref={ref} key={index}>
+                      <CommentItem comment={comment} key={comment.id} />
+                    </div>
+                  );
+                } else {
+                  return <CommentItem comment={comment} key={comment.id} />;
+                }
+              })
+            )}
+          {isFetchingNextPage && hasNextPage && !isLoading && (
+            <div className="w-full">
+              <Icons.spinner className="my-2 mx-auto w-6 h-6 animate-spin" />
+            </div>
+          )}
         </div>
       </Scrollbox>
     </div>

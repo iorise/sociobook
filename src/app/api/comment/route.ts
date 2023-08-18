@@ -38,21 +38,64 @@ export async function GET(req: Request) {
   try {
     const url = new URL(req.url);
     const postId = url.searchParams.get("postId");
+    const take = url.searchParams.get("take");
+    const lastCursor = url.searchParams.get("lastCursor");
 
     if (!postId) {
       return new NextResponse("No post found", { status: 400 });
     }
 
     const comments = await prismadb.comment.findMany({
+      take: take ? parseInt(take as string) : 10,
+      ...(lastCursor && {
+        skip: 1,
+        cursor: {
+          id: lastCursor as string,
+        },
+      }),
       where: {
         postId,
       },
       include: {
         author: true,
       },
+      orderBy: {
+        createdAt: "asc",
+      },
     });
 
-    return NextResponse.json(comments);
+    if (comments.length === 0) {
+      return new Response(
+        JSON.stringify({
+          data: [],
+          metaData: {
+            lastCursor: null,
+            hasNextPage: false,
+          },
+        }),
+        { status: 200 }
+      );
+    }
+
+    const lastPostInResults: any = comments[comments.length - 1];
+    const cursor: any = lastPostInResults.id;
+
+    const nextPage = await prismadb.comment.findMany({
+      take: take ? parseInt(take as string) : 7,
+      skip: 1,
+      cursor: {
+        id: cursor,
+      },
+    });
+
+    const data = {
+      data: comments, metaData: {
+        lastCursor: cursor,
+        hasNextPage: nextPage.length > 0
+      }
+    }
+
+    return new Response(JSON.stringify(data), {status:200})
   } catch (error) {
     console.log("[COMMENT_GET]", error);
     return new NextResponse("Internal error", { status: 500 });

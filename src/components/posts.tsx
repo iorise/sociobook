@@ -52,11 +52,11 @@ export function Posts({ externalId, currentUser }: PostsProps) {
             if (page.data.length === index + 1) {
               return (
                 <div ref={ref} key={index}>
-                  <Post data={post} currentUser={currentUser} />
+                  <Post data={post} currentUser={currentUser} key={post.id}/>
                 </div>
               );
             } else {
-              return <Post data={post} currentUser={currentUser} />;
+              return <Post data={post} currentUser={currentUser} key={post.id}/>;
             }
           })
         )}
