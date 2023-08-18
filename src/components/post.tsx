@@ -99,19 +99,13 @@ export function Post({ data, currentUser }: PostProps) {
             ) : null}
             {data.comments.length !== 0 ? (
               <div className="flex w-full justify-end">
-                <Button
-                  onClick={toggleComment}
-                  variant="none"
-                  className="hover:underline"
-                >
-                  <div className="flex items-center gap-1 text-muted-foreground">
-                    {data.comments.length}
-                    <span>
-                      <Icons.comment className="w-4 h-4 block md:hidden" />
-                      <p className="text-xs hidden md:block">Comments</p>
-                    </span>
-                  </div>
-                </Button>
+                <div>
+                  <span className="flex items-center gap-1">
+                    <p className="text-sm">{data.comments.length}</p>
+                    <Icons.comment className="w-4 h-4 md:hidden" />
+                    <p className="text-sm hidden md:block">Comments</p>
+                  </span>
+                </div>
               </div>
             ) : null}
           </div>
@@ -150,10 +144,13 @@ export function Post({ data, currentUser }: PostProps) {
             </Button>
           </div>
           {showComment && (
-            <div className="w-full flex flex-col pt-2">
-              <CommentList postId={postId} />
-              <CommentForm currentUser={currentUser} postId={postId} />
-            </div>
+            <>
+              <Separator className="mt-2" />
+              <div className="w-full flex flex-col pt-2">
+                <CommentList postId={postId} />
+                <CommentForm currentUser={currentUser} postId={postId} />
+              </div>
+            </>
           )}
         </CardFooter>
       </Card>

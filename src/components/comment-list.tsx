@@ -8,6 +8,7 @@ import { useComments } from "@/hooks/use-comments";
 import { Scrollbox } from "@/components/ui/scrollbox";
 import { CommentItem } from "@/components/comment-item";
 import { CommentsLoader } from "@/components/ui/comments-loader";
+import { Icons } from "@/components/icons";
 
 interface PostCommentProps {
   postId: string;
@@ -26,7 +27,10 @@ export function CommentList({ postId }: PostCommentProps) {
 
   if (error) {
     return (
-      <div className="w-full text-center h-24 py-3">Cannot fetch comment</div>
+      <div className="w-full flex flex-col items-center justify-center h-56 py-3 text-muted-foreground">
+        <Icons.comment className="w-16 h-16" />
+        <p className="text-xl">Something went wrong.</p>
+      </div>
     );
   }
 
