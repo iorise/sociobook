@@ -1,24 +1,23 @@
 "use client";
 
 import * as React from "react";
-import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 import { User } from "@prisma/client";
 
 import { extendedPost } from "@/types";
-import { Feed } from "@/components/feed";
-import { fetchPosts } from "@/app/_action/posts";
+import { Post } from "@/components/post";
 import { PostLoader } from "@/components/ui/post-loader";
+import { useInfinitePosts } from "@/hooks/use-posts";
+import { Icons } from "./icons";
 
-interface FeedsProps {
+interface PostsProps {
   externalId?: string | null;
-  currentUser: User | null
+  currentUser: User | null;
 }
 
-export function Feeds({ externalId, currentUser }: FeedsProps) {
+export function Posts({ externalId, currentUser }: PostsProps) {
   const { ref, inView } = useInView();
 
-  // useInfiniteQuery is a hook that accepts a queryFn and queryKey and returns the result of the queryFn
   const {
     data,
     error,
@@ -27,14 +26,7 @@ export function Feeds({ externalId, currentUser }: FeedsProps) {
     fetchNextPage,
     isSuccess,
     isFetchingNextPage,
-  } = useInfiniteQuery({
-    queryFn: ({ pageParam = "" }) =>
-      fetchPosts({ externalId, take: 6, lastCursor: pageParam }),
-    queryKey: ["posts"],
-    getNextPageParam: (lastPage) => {
-      return lastPage?.metaData.lastCursor;
-    },
-  });
+  } = useInfinitePosts(externalId ?? "");
 
   React.useEffect(() => {
     if (inView && hasNextPage) {
@@ -42,31 +34,36 @@ export function Feeds({ externalId, currentUser }: FeedsProps) {
     }
   }, [hasNextPage, inView, fetchNextPage]);
 
-  if (error as any) {
-    return <div>{`An error has occured: ` + (error as any).message}</div>;
+  if (error) {
+    return (
+      <div className="py-4 w-full flex flex-col justify-center items-center mx-auto gap-3 text-muted-foreground">
+        <Icons.activity className="w-16 h-16 md:w-24 md:h-24" />
+        <p className="text-xl md:text-2xl">Something went wrong.</p>
+      </div>
+    );
   }
 
   return (
     <div className="flex flex-col gap-5">
       {isSuccess &&
-        data.pages.map((page) =>
+        data?.pages.map((page) =>
           page.data.map((post: extendedPost, index: number) => {
             // if the last element in the page is in view, add a ref to it
             if (page.data.length === index + 1) {
               return (
                 <div ref={ref} key={index}>
-                  <Feed data={post} currentUser={currentUser}/>
+                  <Post data={post} currentUser={currentUser} />
                 </div>
               );
             } else {
-              return <Feed data={post} currentUser={currentUser}/>;
+              return <Post data={post} currentUser={currentUser} />;
             }
           })
         )}
       {(isLoading || isFetchingNextPage) && (
         <div className="flex flex-col gap-5">
-          <PostLoader/>
-          <PostLoader/>
+          <PostLoader />
+          <PostLoader />
         </div>
       )}
       {!isLoading &&

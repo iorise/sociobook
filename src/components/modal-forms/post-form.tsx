@@ -23,7 +23,6 @@ import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 import { PostInput } from "@/components/inputs/post-input";
 import { usePostModal } from "@/hooks/use-post-modal";
-import { usePosts } from "@/hooks/use-posts";
 import { ImageUpload } from "@/components/image-upload";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -43,17 +42,18 @@ export function PostForm({
   currentUsers,
 }: PostForm) {
   const postModal = usePostModal();
-  const [isLoading, setIsLoading] = React.useState(false);
 
   const queryClient = useQueryClient();
 
-  const { mutateAsync: addPostMutation } = useMutation({
+  const { mutateAsync: addPostMutation, isLoading } = useMutation({
     mutationFn: async (data: Inputs) => await axios.post("/api/posts", data),
     onSuccess: () => {
       queryClient.invalidateQueries(["posts"]);
       toast.success("Your post has been published.", {
         position: "bottom-left",
       });
+      postModal.onClose();
+      form.reset();
     },
   });
 
@@ -72,15 +72,7 @@ export function PostForm({
 
   const onSubmit = React.useCallback(
     async (data: Inputs) => {
-      try {
-        setIsLoading(true);
-        await addPostMutation(data);
-        postModal.onClose();
-        form.reset();
-      } catch (error) {
-      } finally {
-        setIsLoading(false);
-      }
+      await addPostMutation(data)
     },
     [form, addPostMutation]
   );

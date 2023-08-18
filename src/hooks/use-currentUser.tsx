@@ -1,11 +1,5 @@
-import { User } from "@prisma/client";
+import { getCurrentUser } from "@/app/_action/users";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-
-export async function getCurrentUser(): Promise<User> {
-  const {data} = await axios.get("/api/current");
-  return data;
-}
 
 export function useCurrentUser() {
   const {data, isLoading} = useQuery({

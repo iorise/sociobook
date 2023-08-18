@@ -1,4 +1,4 @@
-import { currentUser as current, useSession } from "@clerk/nextjs";
+import { currentUser as current } from "@clerk/nextjs";
 
 import { SidebarNav } from "@/components/layouts/sidebar-nav";
 import { PostFeeds } from "@/components/post-feeds";

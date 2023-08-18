@@ -3,6 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import { User } from "@prisma/client";
+import Link from "next/link";
 
 import {
   Card,
@@ -12,31 +13,23 @@ import {
 } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Icons } from "@/components/icons";
-import {
-  CommentWithUser,
-  extendedPost,
-} from "@/types";
+import { extendedPost } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { cn, formatDates } from "@/lib/utils";
-import Link from "next/link";
 import { CommentForm } from "@/components/forms/comment-form";
-import { PostComment } from "@/components/post-comment";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import {useComment} from "@/hooks/use-comment";
+import { CommentList } from "@/components/comment-list";
 import { useLike } from "@/hooks/use-like";
 
-interface FeedProps {
+interface PostProps {
   data: extendedPost;
   currentUser: User | null;
 }
 
-export function Feed({ data, currentUser }: FeedProps) {
-  const [isComment, setIsComment] = React.useState(false);
-  
-  const postId = data.id;
+export function Post({ data, currentUser }: PostProps) {
+  const [showComment, setShowComment] = React.useState(false);
 
-  const { data: commentsData, isLoading: commentsLoading } = useComment(postId);
+  const postId = data.id;
 
   const { hasLiked, toggleLike } = useLike({
     postId,
@@ -44,11 +37,11 @@ export function Feed({ data, currentUser }: FeedProps) {
   });
 
   const createdAt = React.useMemo(() => {
-      return formatDates(data.createdAt)
-  }, [data.createdAt])
+    return formatDates(data.createdAt);
+  }, [data.createdAt]);
 
   const toggleComment = React.useCallback(() => {
-    setIsComment((prev) => !prev);
+    setShowComment((prev) => !prev);
   }, []);
 
   return (
@@ -134,24 +127,12 @@ export function Feed({ data, currentUser }: FeedProps) {
               <span>Share</span>
             </Button>
           </div>
-          {isComment ? (
-            <div className="flex flex-col w-full pt-2 gap-2">
-              {commentsData && commentsData.length > 0 ? (
-                <ScrollArea className="w-full h-44 rounded-lg">
-                  <div className="p-2">
-                    {commentsData
-                      ? commentsData.map((comment: CommentWithUser) => (
-                          <PostComment data={comment} />
-                        ))
-                      : commentsLoading
-                      ? "Loading comments..."
-                      : "Error loading comments."}
-                  </div>
-                </ScrollArea>
-              ) : null}
-              <CommentForm currentUser={currentUser} postId={data.id} />
+          {showComment && (
+            <div className="w-full flex flex-col pt-2">
+              <CommentList postId={postId} />
+              <CommentForm currentUser={currentUser} postId={postId} />
             </div>
-          ) : null}
+          )}
         </CardFooter>
       </Card>
     </div>

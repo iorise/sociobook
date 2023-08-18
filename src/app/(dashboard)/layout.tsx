@@ -5,11 +5,11 @@ import { SiteHeader } from "@/components/layouts/site-header";
 import { ThemeProvider } from "@/components/theme-provider";
 import prismadb from "@/lib/prismadb";
 
-interface LobbyLayoutProps {
+interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 
-export default async function LobbyLayout({ children }: LobbyLayoutProps) {
+export default async function DashboardLayout({ children }: DashboardLayoutProps) {
   const user = await currentUser();
 
   if (!user) {

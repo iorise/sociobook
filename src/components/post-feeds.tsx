@@ -12,7 +12,7 @@ import { PostForm } from "@/components/modal-forms/post-form";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { usePostModal } from "@/hooks/use-post-modal";
-import { Feeds } from "@/components/feeds";
+import { Posts } from "@/components/posts";
 
 interface FeedsProps {
   user: User | null;
@@ -81,7 +81,7 @@ export function PostFeeds({
         </CardContent>
       </Card>
       <PostForm user={user} currentUser={currentUser} initialData={initialData} currentUsers={currentUsers}/>
-      <Feeds externalId={externalId} currentUser={currentUser}/>
+      <Posts externalId={externalId} currentUser={currentUser}/>
     </div>
   );
 }

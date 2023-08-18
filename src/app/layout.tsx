@@ -20,15 +20,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <QueryWrapper>
     <ClerkProvider>
+      <QueryWrapper>
       <html lang="en" suppressHydrationWarning>
         <body className={font.className}>
           {children}
           <Toaster />
         </body>
       </html>
-    </ClerkProvider>
     </QueryWrapper>
+    </ClerkProvider>
   );
 }

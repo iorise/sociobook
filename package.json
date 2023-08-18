@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.8.0",
     "@clerk/nextjs": "^4.23.1",
     "@hookform/resolvers": "^3.1.1",
     "@mantine/hooks": "^6.0.18",
@@ -63,6 +64,7 @@
     "zustand": "^4.4.0"
   },
   "devDependencies": {
-    "prisma": "^5.0.0"
+    "prisma": "^5.0.0",
+    "tailwind-scrollbar": "^3.0.5"
   }
 }

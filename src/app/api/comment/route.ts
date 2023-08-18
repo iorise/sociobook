@@ -48,8 +48,8 @@ export async function GET(req: Request) {
         postId,
       },
       include: {
-        author: true
-      }
+        author: true,
+      },
     });
 
     return NextResponse.json(comments);
