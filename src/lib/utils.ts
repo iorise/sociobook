@@ -44,7 +44,7 @@ export function formatDates(date: Date) {
     .replace("seconds", "s")
     .replace("minutes", "m")
     .replace("hours", "h")
-    .replace("days,", "d")
+    .replace("days", "d")
     .replace("months", "mo")
     .replace("years", "y");
 
