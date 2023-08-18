@@ -1,7 +1,9 @@
+"use client"
+
+import * as React from "react"
 import { formatDates } from "@/lib/utils";
 import { CommentWithUser } from "@/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import React from "react";
 
 interface CommentItemProps {
   comment: CommentWithUser;

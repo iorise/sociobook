@@ -12,13 +12,7 @@ import { ProfileDropdown } from "@/components/nav-dropdowns/profile-dropdown";
 import { NotificationsDropdown } from "@/components/nav-dropdowns/notificatioin-dropdown";
 import {
   Command,
-  CommandEmpty,
-  CommandGroup,
   CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
-  CommandShortcut,
 } from "@/components/ui/command";
 import Image from "next/image";
 

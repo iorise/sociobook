@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import type { z } from "zod";
-import axios from "axios";
+import Link from "next/link";
 
 import { catchClerkError } from "@/lib/utils";
 import { registerUserSchema } from "@/lib/validations/auth";
@@ -22,7 +22,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/icons";
 import { PasswordInput } from "@/components/inputs/password-input";
-import Link from "next/link";
 
 type Inputs = z.infer<typeof registerUserSchema>;
 

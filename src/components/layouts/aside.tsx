@@ -1,12 +1,10 @@
 "use client";
 
 import { User } from "@prisma/client";
-import React from "react";
 import Link from "next/link";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 
 interface AsideProps {

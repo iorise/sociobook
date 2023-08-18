@@ -6,10 +6,8 @@ import { useInputState } from "@mantine/hooks";
 import type { z } from "zod";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { useForm } from "react-hook-form";
 
 import { commentSchema } from "@/lib/validations/comment";
-import { CommentInput } from "@/components/inputs/comment-input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";

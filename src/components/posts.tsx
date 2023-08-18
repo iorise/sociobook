@@ -8,7 +8,7 @@ import { extendedPost } from "@/types";
 import { Post } from "@/components/post";
 import { PostLoader } from "@/components/ui/post-loader";
 import { useInfinitePosts } from "@/hooks/use-posts";
-import { Icons } from "./icons";
+import { Icons } from "@/components/icons";
 
 interface PostsProps {
   externalId?: string | null;

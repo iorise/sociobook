@@ -91,15 +91,29 @@ export function Post({ data, currentUser }: PostProps) {
         </CardContent>
         <CardFooter className="flex flex-col text-muted-foreground">
           <div className="flex w-full justify-between text-muted-foreground text-xs mb-1">
-            {hasLiked ?? data.likeIds.length != 0 ? (
+            {hasLiked ?? data.likeIds.length !== 0 ? (
               <div className="flex items-center gap-1">
                 <Icons.thumbFill className="w-4 h-4 text-facebook-primary" />
                 <span>{data.likeIds.length}</span>
               </div>
             ) : null}
-            <p className="w-full flex justify-end hover:underline cursor-pointer">
-              {data.comments.length} comments
-            </p>
+            {data.comments.length !== 0 ? (
+              <div className="flex w-full justify-end">
+                <Button
+                  onClick={toggleComment}
+                  variant="none"
+                  className="hover:underline"
+                >
+                  <div className="flex items-center gap-1 text-muted-foreground">
+                    {data.comments.length}
+                    <span>
+                      <Icons.comment className="w-4 h-4 block md:hidden" />
+                      <p className="text-xs hidden md:block">Comments</p>
+                    </span>
+                  </div>
+                </Button>
+              </div>
+            ) : null}
           </div>
           <Separator className="mb-2" />
           <div className="flex w-full text-base font-medium">
@@ -118,11 +132,19 @@ export function Post({ data, currentUser }: PostProps) {
                 <span>Like</span>
               </span>
             </Button>
-            <Button variant="ghost" className="flex-1" onClick={toggleComment}>
+            <Button
+              variant="ghost"
+              className="flex-1 active:scale-95"
+              onClick={toggleComment}
+            >
               <Icons.comment className="w-6 h-6 mr-2" />
               <span>Comment</span>
             </Button>
-            <Button variant="ghost" className="flex-1 sm:flex">
+            <Button
+              variant="ghost"
+              className="flex-1 sm:flex cursor-not-allowed"
+              disabled
+            >
               <Icons.share className="w-6 h-6 mr-2" />
               <span>Share</span>
             </Button>

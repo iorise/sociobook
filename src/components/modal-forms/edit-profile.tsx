@@ -6,10 +6,8 @@ import { useForm } from "react-hook-form";
 import type { z } from "zod";
 import { User } from "@clerk/nextjs/server";
 import { User as userDb } from "@prisma/client";
-import { generateReactHelpers } from "@uploadthing/react/hooks";
-import { OurFileRouter } from "@/app/api/uploadthing/core";
 import { toast } from "react-hot-toast";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 
 import { Modal } from "@/components/ui/modal";
@@ -25,10 +23,9 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
-import { Input } from "@/components/ui/input";
 import { ImageUpload } from "@/components/image-upload";
 import useUser from "@/hooks/use-user";
-import { Textarea } from "../ui/textarea";
+import { Textarea } from "@/components/ui/textarea";
 
 type Inputs = z.infer<typeof profileSchema>;
 

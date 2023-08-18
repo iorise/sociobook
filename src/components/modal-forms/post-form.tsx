@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { User as userDb } from "@prisma/client";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { postSchema } from "@/lib/validations/post";
 import {
@@ -24,7 +25,6 @@ import { Icons } from "@/components/icons";
 import { PostInput } from "@/components/inputs/post-input";
 import { usePostModal } from "@/hooks/use-post-modal";
 import { ImageUpload } from "@/components/image-upload";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface PostForm {
   user: User | null;
