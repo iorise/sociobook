@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { User } from "@clerk/nextjs/server";
 import { User as userDb } from "@prisma/client";
+import Image from "next/image";
 
 import { Icons } from "@/components/icons";
 import { MainNav } from "@/components/layouts/main-nav";
@@ -14,7 +15,6 @@ import {
   Command,
   CommandInput,
 } from "@/components/ui/command";
-import Image from "next/image";
 
 interface SiteHeaderProps {
   user: User | null;
@@ -54,7 +54,7 @@ export function SiteHeader({ user, initialData }: SiteHeaderProps) {
           <Button variant="outline" size="icon" className="rounded-full">
             <Icons.message className="w-5 h-5" />
           </Button>
-          <NotificationsDropdown />
+          <NotificationsDropdown externalId={user?.id}/>
           <ProfileDropdown user={user} initialData={initialData}/>
         </div>
       </div>

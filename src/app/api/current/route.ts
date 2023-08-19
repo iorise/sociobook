@@ -12,6 +12,11 @@ export async function GET(req: Request) {
       where: {
         externalId: userId,
       },
+      include: {
+        comments: true,
+        notification: true,
+        posts: true,
+      }
       
     });
     return NextResponse.json(currentUser);

@@ -90,20 +90,21 @@ export function Post({ data, currentUser }: PostProps) {
           </div>
         </CardContent>
         <CardFooter className="flex flex-col text-muted-foreground">
-          <div className="flex w-full justify-between text-muted-foreground text-xs mb-1">
-            {hasLiked ?? data.likeIds.length !== 0 ? (
+          <div className="flex w-full justify-between text-muted-foreground text-sm mb-1">
+            {data.likeIds.length !== 0 && (
               <div className="flex items-center gap-1">
-                <Icons.thumbFill className="w-4 h-4 text-facebook-primary" />
+                <Icons.thumbFill className="text-facebook-primary w-4 h-4" />
                 <span>{data.likeIds.length}</span>
               </div>
-            ) : null}
+            )}
+
             {data.comments.length !== 0 ? (
               <div className="flex w-full justify-end">
                 <div>
                   <span className="flex items-center gap-1">
-                    <p className="text-sm">{data.comments.length}</p>
+                    <p>{data.comments.length}</p>
                     <Icons.comment className="w-4 h-4 md:hidden" />
-                    <p className="text-sm hidden md:block">Comments</p>
+                    <p className="hidden md:block">Comments</p>
                   </span>
                 </div>
               </div>

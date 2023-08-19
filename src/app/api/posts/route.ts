@@ -1,9 +1,9 @@
 import { currentUser } from "@clerk/nextjs";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import prismadb from "@/lib/prismadb";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const user = await currentUser();
 
@@ -38,7 +38,7 @@ export async function POST(req: Request) {
   }
 }
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
 
   try {
     // get page and lastCursor from query
@@ -127,9 +127,9 @@ export async function GET(req: Request) {
       }
     }
 
-    return new Response(JSON.stringify(data), {status:200})
+    return new NextResponse(JSON.stringify(data), {status:200})
   } catch (error: any) {
     console.log(error);
-    return new Response(JSON.stringify(JSON.stringify({ error: error.message })), { status: 403 });
+    return new NextResponse(JSON.stringify(JSON.stringify({ error: error.message })), { status: 403 });
   }
 }

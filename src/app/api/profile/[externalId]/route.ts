@@ -1,10 +1,10 @@
 import { auth } from "@clerk/nextjs";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import prismadb from "@/lib/prismadb";
 
 export async function GET(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { externalId: string } }
 ) {
   const { userId } = auth();
@@ -21,6 +21,11 @@ export async function GET(
       where: {
         externalId: params.externalId,
       },
+      include: {
+        posts: true,
+        comments: true,
+        notification: true,
+      }
     });
 
     return NextResponse.json(user);
@@ -31,7 +36,7 @@ export async function GET(
 }
 
 export async function PATCH(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { externalId: string } }
 ) {
   try {

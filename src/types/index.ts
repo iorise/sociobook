@@ -31,3 +31,7 @@ export type extendedPost = Post & {
     user: User
     comments: Comment[]
 }
+
+export type NotificationWithUser = Prisma.NotificationGetPayload<{
+  include: {user: true}
+}>

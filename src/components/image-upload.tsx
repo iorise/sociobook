@@ -72,7 +72,7 @@ export function ImageUpload({
     },
   });
   return (
-    <div {...getRootProps({ className: "w-full" })}>
+    <div {...getRootProps()}>
       <input {...getInputProps()} />
       {base64 ? (
         <div className="flex items-center justify-center">
@@ -95,6 +95,30 @@ export function ImageUpload({
       ) : (
         <div className="text-center">
           <p>Upload</p>
+        </div>
+      )}
+      {base64 && (
+        <div className="mt-4">
+          <Cropper
+            ref={cropperRef}
+            src={base64}
+            aspectRatio={isCover ? 4 / 1.5 : 1}
+            guides={true}
+          />
+          <div className="mt-2">
+            <button
+              onClick={handleCrop}
+              className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2"
+            >
+              Crop
+            </button>
+            <button
+              onClick={handleSave}
+              className="bg-green-500 text-white px-4 py-2 rounded-md"
+            >
+              Save
+            </button>
+          </div>
         </div>
       )}
     </div>

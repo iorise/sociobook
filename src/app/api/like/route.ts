@@ -1,13 +1,11 @@
 import prismadb from "@/lib/prismadb";
 import { auth } from "@clerk/nextjs";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(
-  req: Request,
-) {
+export async function POST(req: NextRequest) {
   const { userId } = auth();
-  const body = await req.text()
-  const postId = body
+  const body = await req.text();
+  const postId = body;
 
   if (!userId) {
     throw new Error("No user found");
@@ -26,32 +24,52 @@ export async function POST(
 
     let updatedLikeIds = [...(post.likeIds || [])];
 
+    updatedLikeIds.push(userId);
 
-      updatedLikeIds.push(userId);
+    await prismadb.post.update({
+      where: {
+        id: postId,
+      },
+      data: {
+        likeIds: updatedLikeIds,
+      },
+    });
 
-      await prismadb.post.update({
-        where: {
-          id: postId,
-        },
+    // Nofitications start
+
+    if (post.userId) {
+      await prismadb.notification.create({
         data: {
-          likeIds: updatedLikeIds,
+          text: "Someone liked your post",
+          userId: post.userId,
         },
       });
 
-      return new Response(JSON.stringify(updatedLikeIds), {status:200})
+      await prismadb.user.update({
+        where: {
+          externalId: post.userId,
+        },
+        data: {
+          hasNotifications: true,
+        },
+      });
+    }
 
+    // Notification end
+
+    return new NextResponse(JSON.stringify(updatedLikeIds), { status: 200 });
   } catch (error) {
     console.log("[LIKE_POST]", error);
-    return new Response(JSON.stringify({ error: "Internal error" }), { status: 500 });
+    return new NextResponse(JSON.stringify({ error: "Internal error" }), {
+      status: 500,
+    });
   }
 }
 
-export async function DELETE(
-  req: Request,
-) {
+export async function DELETE(req: NextRequest) {
   const { userId } = auth();
-  const body = await req.text()
-  const postId = body
+  const body = await req.text();
+  const postId = body;
 
   if (!userId) {
     throw new Error("No user found");

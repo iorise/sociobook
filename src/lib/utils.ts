@@ -42,11 +42,17 @@ export function formatDates(date: Date) {
   const distance = formatDistanceToNowStrict(new Date(date));
   const formattedDistance = distance
     .replace("seconds", "s")
+    .replace("second", "s")
     .replace("minutes", "m")
+    .replace("minute", "m")
     .replace("hours", "h")
+    .replace("hour", "h")
     .replace("days", "d")
+    .replace("day", "d")
     .replace("months", "mo")
-    .replace("years", "y");
+    .replace("month", "mo")
+    .replace("years", "y")
+    .replace("year", "y");
 
     return formattedDistance
 }

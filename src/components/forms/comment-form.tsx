@@ -6,12 +6,12 @@ import { useInputState } from "@mantine/hooks";
 import type { z } from "zod";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { commentSchema } from "@/lib/validations/comment";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Input } from "@/components/ui/input";
 
 interface CommentFormProps {
@@ -23,6 +23,11 @@ type Inputs = z.infer<typeof commentSchema>;
 
 export function CommentForm({ currentUser, postId }: CommentFormProps) {
   const [commentValue, setCommentValue] = useInputState("");
+  const inputRef = React.useRef<HTMLInputElement | null>(null)
+
+  React.useEffect(() => {
+      inputRef.current?.focus()
+  }, [])
 
   const queryClient = useQueryClient();
 
@@ -62,6 +67,7 @@ export function CommentForm({ currentUser, postId }: CommentFormProps) {
       </Avatar>
       <Input
         className="rounded-full text-foreground focus-visible:ring-0"
+        ref={inputRef}
         type="text"
         placeholder="Write a comment..."
         value={commentValue}
