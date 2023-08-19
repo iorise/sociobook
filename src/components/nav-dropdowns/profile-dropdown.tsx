@@ -29,8 +29,11 @@ export function ProfileDropdown({ user, initialData }: ProfileDropdownProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="ghost" className="rounded-full h-10 w-10">
-          <Avatar className="active:scale-95 transition-all active:opacity-80 duration-0">
+        <Button
+          variant="ghost"
+          className="rounded-full h-10 w-10 active:scale-95 active:brightness-90 "
+        >
+          <Avatar >
             <AvatarImage
               src={
                 initialData?.externalImage ??
@@ -46,9 +49,12 @@ export function ProfileDropdown({ user, initialData }: ProfileDropdownProps) {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-96" align="end" forceMount>
-        <div className="px-4 py-6 shadow-lg grid gap-2 rounded-lg">
-          <Link className="flex gap-2" href={`/profile/${user?.id}`}>
-            <Avatar className="w-8 h-8">
+        <div className="grid mx-1 mb-3 shadow-lg rounded-lg">
+          <Link
+            className="flex gap-2 items-center"
+            href={`/profile/${user?.id}`}
+          >
+            <Avatar className="w-9 h-9">
               <AvatarImage
                 src={
                   initialData?.externalImage ??
@@ -59,12 +65,14 @@ export function ProfileDropdown({ user, initialData }: ProfileDropdownProps) {
               />
               <AvatarFallback>{initials}</AvatarFallback>
             </Avatar>
-            <span>
+            <span className="text-xl font-semibold">
               {user?.firstName} {user?.lastName}
             </span>
           </Link>
-          <Separator className="mx-4" />
-          <div className="px-2 text-facebook-primary">See All Profile</div>
+          <Separator className="my-2" />
+          <div className="text-facebook-primary cursor-not-allowed">
+            See All Profile
+          </div>
         </div>
         <div className="relative mx-1 flex flex-col">
           <DropdownList
