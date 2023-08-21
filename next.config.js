@@ -7,7 +7,8 @@ const nextConfig = {
       "lh3.googleusercontent.com",
       "tenor.com",
       "encrypted-tbn0.gstatic.com",
-      "i0.wp.com"
+      "i0.wp.com",
+      "uploadthing.com"
     ],
   },
 };
