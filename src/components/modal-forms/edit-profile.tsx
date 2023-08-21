@@ -7,7 +7,6 @@ import type { z } from "zod";
 import { User } from "@clerk/nextjs/server";
 import { User as userDb } from "@prisma/client";
 import { toast } from "react-hot-toast";
-import { useRouter } from "next/navigation";
 import axios from "axios";
 
 import { Modal } from "@/components/ui/modal";
@@ -39,7 +38,6 @@ export function EditProfile({ user, initialData }: EditPhotoProfileProps) {
   const { mutate: MutateFetchedUser } = useUser(externalId);
   const [isLoading, setIsLoading] = React.useState(false);
   const editProfileModal = useModal();
-  const router = useRouter();
 
   // react-hook-form
   const form = useForm<Inputs>({
@@ -47,7 +45,7 @@ export function EditProfile({ user, initialData }: EditPhotoProfileProps) {
     defaultValues: {
       externalImage:
         initialData?.externalImage ||
-        user?.profileImageUrl ||
+        initialData?.profileImage ||
         "",
       coverImage: initialData?.coverImage || "",
       bio: initialData?.bio || "",
@@ -56,7 +54,7 @@ export function EditProfile({ user, initialData }: EditPhotoProfileProps) {
 
   React.useEffect(() => {
     form.reset({
-      externalImage: initialData?.externalImage || user?.profileImageUrl || initialData?.profileImage || "",
+      externalImage: initialData?.externalImage || initialData?.profileImage || "",
       coverImage: initialData?.coverImage || "",
       bio: initialData?.bio || "",
     });

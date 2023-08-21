@@ -17,11 +17,10 @@ import {
 } from "@/components/ui/command";
 
 interface SiteHeaderProps {
-  user: User | null;
-  initialData: userDb | null
+  currentUser: userDb | null
 }
 
-export function SiteHeader({ user, initialData }: SiteHeaderProps) {
+export function SiteHeader({ currentUser }: SiteHeaderProps) {
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-secondaryBackground">
       <div className="mx-6 flex h-14 items-center justify-between">
@@ -54,8 +53,8 @@ export function SiteHeader({ user, initialData }: SiteHeaderProps) {
           <Button variant="outline" size="icon" className="rounded-full">
             <Icons.message className="w-5 h-5" />
           </Button>
-          <NotificationsDropdown externalId={user?.id}/>
-          <ProfileDropdown user={user} initialData={initialData}/>
+          <NotificationsDropdown externalId={currentUser?.id}/>
+          <ProfileDropdown currentUser={currentUser}/>
         </div>
       </div>
     </header>

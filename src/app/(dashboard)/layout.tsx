@@ -1,4 +1,4 @@
-import { currentUser } from "@clerk/nextjs";
+import { auth, currentUser as current } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
 import { SiteHeader } from "@/components/layouts/site-header";
@@ -10,22 +10,22 @@ interface DashboardLayoutProps {
 }
 
 export default async function DashboardLayout({ children }: DashboardLayoutProps) {
-  const user = await currentUser();
+  const {userId} = auth();
 
-  if (!user) {
+  if (!userId) {
     redirect("/login");
   }
 
   const initialData = await prismadb.user.findUnique({
     where: {
-      externalId: user.id,
+      externalId: userId,
     },
   });
 
   return (
     <div>
       <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-        <SiteHeader user={user} initialData={initialData} />
+        <SiteHeader currentUser={initialData} />
         {children}
       </ThemeProvider>
     </div>

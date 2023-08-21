@@ -1,6 +1,5 @@
 "use client";
 
-import { User } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { SignOutButton } from "@clerk/nextjs";
 import { User as userDb } from "@prisma/client";
@@ -17,15 +16,10 @@ import { Separator } from "@/components/ui/separator";
 import { DropdownList } from "@/components/ui/dropdown-list";
 
 interface ProfileDropdownProps {
-  user: User | null;
-  initialData: userDb | null;
+  currentUser: userDb | null;
 }
 
-export function ProfileDropdown({ user, initialData }: ProfileDropdownProps) {
-  const initials = `${user?.firstName?.charAt(0) ?? ""} ${
-    user?.lastName?.charAt(0) ?? ""
-  }`;
-
+export function ProfileDropdown({ currentUser }: ProfileDropdownProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -33,14 +27,12 @@ export function ProfileDropdown({ user, initialData }: ProfileDropdownProps) {
           variant="ghost"
           className="rounded-full h-10 w-10 active:scale-95 active:brightness-90 "
         >
-          <Avatar >
+          <Avatar>
             <AvatarImage
               src={
-                initialData?.externalImage ??
-                user?.profileImageUrl ??
-                user?.imageUrl
+                currentUser?.externalImage ?? currentUser?.profileImage ?? ""
               }
-              alt={user?.firstName ?? ""}
+              alt={currentUser?.firstName ?? ""}
             />
             <AvatarFallback>
               <img src="/images/placeholder.png" />
@@ -52,21 +44,21 @@ export function ProfileDropdown({ user, initialData }: ProfileDropdownProps) {
         <div className="grid mx-1 mb-3 shadow-lg rounded-lg">
           <Link
             className="flex gap-2 items-center"
-            href={`/profile/${user?.id}`}
+            href={`/profile/${currentUser?.id}`}
           >
             <Avatar className="w-9 h-9">
               <AvatarImage
                 src={
-                  initialData?.externalImage ??
-                  user?.profileImageUrl ??
-                  user?.imageUrl
+                  currentUser?.externalImage ?? currentUser?.profileImage ?? ""
                 }
-                alt={user?.firstName ?? ""}
+                alt={currentUser?.firstName ?? ""}
               />
-              <AvatarFallback>{initials}</AvatarFallback>
+              <AvatarFallback>
+                <img src="/images/placeholder.png" alt="" />
+              </AvatarFallback>
             </Avatar>
             <span className="text-xl font-semibold">
-              {user?.firstName} {user?.lastName}
+              {currentUser?.firstName} {currentUser?.lastName}
             </span>
           </Link>
           <Separator className="my-2" />

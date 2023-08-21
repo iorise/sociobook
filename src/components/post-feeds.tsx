@@ -15,7 +15,6 @@ import { usePostModal } from "@/hooks/use-post-modal";
 import { Posts } from "@/components/posts";
 
 interface FeedsProps {
-  user: User | null;
   currentUser: userDb | null;
   initialData?: userDb | null
   currentUsers?: boolean;
@@ -23,7 +22,6 @@ interface FeedsProps {
 }
 
 export function PostFeeds({
-  user,
   currentUser,
   initialData,
   currentUsers,
@@ -39,10 +37,10 @@ export function PostFeeds({
             <Button variant="ghost" className="rounded-full h-10 w-10">
               <Avatar className="active:scale-95 transition-all active:opacity-80 duration-0">
                 <AvatarImage
-                  src={currentUser?.externalImage ?? user?.profileImageUrl ??
+                  src={currentUser?.externalImage ?? currentUser?.profileImage ??
                      ""
                   }
-                  alt={user?.firstName ?? ""}
+                  alt={currentUser?.firstName ?? ""}
                 />
                 <AvatarFallback>
                   <img src="/images/placeholder.png" />
@@ -80,7 +78,7 @@ export function PostFeeds({
           </Button>
         </CardContent>
       </Card>
-      <PostForm user={user} currentUser={currentUser} initialData={initialData} currentUsers={currentUsers}/>
+      <PostForm currentUser={currentUser} initialData={initialData} currentUsers={currentUsers}/>
       <Posts externalId={externalId} currentUser={currentUser}/>
     </div>
   );
