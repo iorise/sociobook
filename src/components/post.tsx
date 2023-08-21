@@ -20,6 +20,8 @@ import { cn, formatDates } from "@/lib/utils";
 import { CommentForm } from "@/components/forms/comment-form";
 import { CommentList } from "@/components/comment-list";
 import { useLike } from "@/hooks/use-like";
+import { UserName } from "./ui/user-name";
+import { ImageList } from "./image-list";
 
 interface PostProps {
   data: extendedPost;
@@ -28,6 +30,7 @@ interface PostProps {
 
 export function Post({ data, currentUser }: PostProps) {
   const [showComment, setShowComment] = React.useState(false);
+  const [showMoreText, setShowMoreText] = React.useState(false);
 
   const postId = data.id;
 
@@ -42,6 +45,10 @@ export function Post({ data, currentUser }: PostProps) {
 
   const toggleComment = React.useCallback(() => {
     setShowComment((prev) => !prev);
+  }, []);
+
+  const toggleShowMoreText = React.useCallback(() => {
+    setShowMoreText((prev) => !prev);
   }, []);
 
   return (
@@ -59,14 +66,12 @@ export function Post({ data, currentUser }: PostProps) {
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-col px-[-1rem]">
-              <span className="flex text-lg font-medium items-center gap-1">
-                {data.user?.firstName} {data.user?.lastName}
-                <span>
-                  {data.user.verified && (
-                    <Icons.verified className="w-[0.87rem] h-[0.87rem] ml-1" />
-                  )}
-                </span>
-              </span>
+              <UserName
+                firstName={currentUser?.firstName}
+                lastName={currentUser?.lastName}
+                verified={currentUser?.verified}
+                className="text-lg font-medium"
+              />
               <span className="font-normal text-muted-foreground text-xs">
                 {createdAt}
               </span>
@@ -75,18 +80,49 @@ export function Post({ data, currentUser }: PostProps) {
         </CardHeader>
         <CardContent>
           <div className="w-full">
-            <Link href={`/post/${data.id}`}>{data.text}</Link>
-            {data.image ? (
-              <Image
-                src={data.image}
-                alt="image"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                width={300}
-                height={300}
-                className="object-cover w-full aspect-square object-center"
-                loading="lazy"
-              />
-            ) : null}
+            <p
+              onClick={toggleShowMoreText}
+              className={cn(
+                "mb-2",
+                showMoreText ? "line-clamp-none" : "line-clamp-3"
+              )}
+            >
+              {data.text}
+            </p>
+            {data?.images?.length > 1 ? (
+              <div className="w-full grid grid-cols-2 gap-1 relative rounded-md">
+                {data.images.map((image, i) => (
+                  <Image
+                    key={i}
+                    src={image.url || ""}
+                    alt="image"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    width={300}
+                    height={300}
+                    className={cn(
+                      "object-cover object-center w-full h-full",
+                      data.images.length === 3 && i === 2
+                        ? "col-span-2 aspect-[2/1]"
+                        : "col-span-1"
+                    )}
+                    loading="lazy"
+                  />
+                ))}
+              </div>
+            ) : (
+              data.images.map((image, i) => (
+                <Image
+                  key={i}
+                  src={image.url || ""}
+                  alt="image"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  width={300}
+                  height={300}
+                  className="object-cover object-center w-full h-full rounded-md"
+                  loading="lazy"
+                />
+              ))
+            )}
           </div>
         </CardContent>
         <CardFooter className="flex flex-col text-muted-foreground">

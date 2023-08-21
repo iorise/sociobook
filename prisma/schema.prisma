@@ -19,7 +19,7 @@ model User {
   profileImage     String?
   externalImage    String?
   coverImage       String?
-  image            String?
+  images           Image[]
   bio              String?
   admin            Boolean?
   verified         Boolean?
@@ -38,7 +38,7 @@ model Post {
   text            String?
   userId          String    
   likeIds         String[]
-  image           String?
+  images          Image[]
   user            User      @relation(fields: [userId], references: [externalId], onDelete: Cascade)
   comments        Comment[]
   createdAt       DateTime  @default(now())
@@ -63,4 +63,16 @@ model Notification {
   user            User      @relation(fields: [userId], references: [externalId], onDelete: Cascade)
   createdAt       DateTime  @default(now())
   readAt          DateTime?
+}
+
+model Image {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  imageId         String
+  userId          String
+  user            User     @relation(fields: [userId], references: [externalId], onDelete: Cascade)
+  postId          String   @db.ObjectId
+  post            Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  url             String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }

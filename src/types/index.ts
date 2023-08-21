@@ -1,5 +1,6 @@
 import { Icons } from "@/components/icons";
-import { Comment, Post, Prisma, User } from "@prisma/client";
+import { Comment, Image, Post, Prisma, User } from "@prisma/client";
+import { FileWithPath } from "react-dropzone";
 
 export interface MainNav {
   title: string;
@@ -30,8 +31,13 @@ export type PostWithUser = Prisma.PostGetPayload<{
 export type extendedPost = Post & {
     user: User
     comments: Comment[]
+    images: Image[]
 }
 
 export type NotificationWithUser = Prisma.NotificationGetPayload<{
   include: {user: true}
 }>
+
+export type FileWithPreview = FileWithPath & {
+  preview: string
+}

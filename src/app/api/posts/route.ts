@@ -2,6 +2,7 @@ import { currentUser } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 
 import prismadb from "@/lib/prismadb";
+import { Image } from "@prisma/client";
 
 export async function POST(req: NextRequest) {
   try {
@@ -9,7 +10,7 @@ export async function POST(req: NextRequest) {
 
     const body = await req.json();
 
-    const { text, image } = body;
+    const { text, images } = body;
 
     if (!user) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -26,10 +27,25 @@ export async function POST(req: NextRequest) {
     const newPost = await prismadb.post.create({
       data: {
         text,
-        image,
         userId: user.id,
       },
     });
+    
+    let newImages: { imageId: string, url: string, userId: string, postId: string }[] = [];
+    if (Array.isArray(images)) {
+      newImages = images.map((image: { imageId: string, url: string }) => ({
+        imageId: image.imageId,
+        url: image.url,
+        userId: user.id,
+        postId: newPost.id,
+      }));
+    }
+
+    if (newImages.length > 0) {
+      await prismadb.image.createMany({
+        data: newImages,
+      });
+    }
 
     return NextResponse.json(newPost);
   } catch (error) {
@@ -39,35 +55,35 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET(req: NextRequest) {
-
   try {
     // get page and lastCursor from query
     const url = new URL(req.url);
 
-    const userId = url.searchParams.get("userId")
+    const userId = url.searchParams.get("userId");
     const take = url.searchParams.get("take");
     const lastCursor = url.searchParams.get("lastCursor");
 
-    let posts
+    let posts;
     if (userId) {
       posts = await prismadb.post.findMany({
         where: {
-          userId: userId
+          userId: userId,
         },
         take: take ? parseInt(take as string) : 10,
         ...(lastCursor && {
           skip: 1,
           cursor: {
-            id: lastCursor as string
-          }
+            id: lastCursor as string,
+          },
         }),
         include: {
           user: true,
           comments: {
             include: {
-              author: true
-            }
+              author: true,
+            },
           },
+          images: true,
         },
         orderBy: {
           createdAt: "desc",
@@ -79,16 +95,17 @@ export async function GET(req: NextRequest) {
         ...(lastCursor && {
           skip: 1,
           cursor: {
-            id: lastCursor as string
-          }
+            id: lastCursor as string,
+          },
         }),
         include: {
           user: true,
           comments: {
             include: {
-              author: true
-            }
+              author: true,
+            },
           },
+          images:true
         },
         orderBy: {
           createdAt: "desc",
@@ -108,28 +125,32 @@ export async function GET(req: NextRequest) {
         { status: 200 }
       );
     }
-    
-    const lastPostInResults: any = posts[posts.length - 1]
-    const cursor: any = lastPostInResults.id
+
+    const lastPostInResults: any = posts[posts.length - 1];
+    const cursor: any = lastPostInResults.id;
 
     const nextPage = await prismadb.post.findMany({
       take: take ? parseInt(take as string) : 7,
       skip: 1,
       cursor: {
         id: cursor,
-      }
-    })
+      },
+    });
 
     const data = {
-      data: posts, metaData: {
+      data: posts,
+      metaData: {
         lastCursor: cursor,
-        hasNextPage: nextPage.length > 0
-      }
-    }
+        hasNextPage: nextPage.length > 0,
+      },
+    };
 
-    return new NextResponse(JSON.stringify(data), {status:200})
+    return new NextResponse(JSON.stringify(data), { status: 200 });
   } catch (error: any) {
     console.log(error);
-    return new NextResponse(JSON.stringify(JSON.stringify({ error: error.message })), { status: 403 });
+    return new NextResponse(
+      JSON.stringify(JSON.stringify({ error: error.message })),
+      { status: 403 }
+    );
   }
 }

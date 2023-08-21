@@ -20,6 +20,7 @@ export async function GET(
             author: true
           }
         },
+        images: true
       },
     });
     return NextResponse.json(post);
