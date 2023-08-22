@@ -12,15 +12,16 @@ import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { NotificationWithUser } from "@/types";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { NotificationLoader } from "@/components/ui/notification-loader";
 import { useCurrentUser } from "@/hooks/use-currentUser";
 
-interface Props {
-  externalId: string | undefined;
+interface NotificationsDropdownProps {
+  externalId: string | null | undefined;
 }
 
-export function NotificationsDropdown({ externalId }: Props) {
+export function NotificationsDropdown({
+  externalId,
+}: NotificationsDropdownProps) {
   const { data: currentUser } = useCurrentUser();
   const {
     data: notifications,
@@ -43,7 +44,7 @@ export function NotificationsDropdown({ externalId }: Props) {
         >
           <Icons.notification className="w-5 h-5" />
           {currentUser?.hasNotifications && (
-            <div className="w-4 h-4 rounded-full absolute bg-red-600 -top-1 -right-1" />
+            <div className="w-3 h-3 rounded-full border border-border absolute bg-red-600 -top-1 -right-1" />
           )}
         </Button>
       </PopoverTrigger>
@@ -55,17 +56,7 @@ export function NotificationsDropdown({ externalId }: Props) {
           {notifications?.map((notification: NotificationWithUser) => (
             <div key={notification.id} className="py-3 mx-1">
               <div className="flex items-center gap-2">
-                <Avatar>
-                  <AvatarImage
-                    src={
-                      notification.user.externalImage ??
-                      notification.user.profileImage ??
-                      ""
-                    }
-                    alt={notification.user.firstName ?? ""}
-                    loading="lazy"
-                  />
-                </Avatar>
+                <Icons.thumbFill className="w-6 h-6" />
                 <p className="text-lg line-clamp-3 break-words text-foreground/80">
                   {notification.text.toLowerCase()}
                 </p>

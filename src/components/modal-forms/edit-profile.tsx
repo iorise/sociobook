@@ -4,10 +4,10 @@ import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
-import { User } from "@clerk/nextjs/server";
 import { User as userDb } from "@prisma/client";
 import { toast } from "react-hot-toast";
 import axios from "axios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { Modal } from "@/components/ui/modal";
 import { profileSchema } from "@/lib/validations/profile";
@@ -23,61 +23,58 @@ import {
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 import { ImageUpload } from "@/components/image-upload";
-import useUser from "@/hooks/use-user";
 import { Textarea } from "@/components/ui/textarea";
 
 type Inputs = z.infer<typeof profileSchema>;
 
 interface EditPhotoProfileProps {
-  user: User | null;
-  initialData: userDb | null;
+  currentUser: userDb | null ;
+  externalId: string;
 }
 
-export function EditProfile({ user, initialData }: EditPhotoProfileProps) {
-  const externalId = user?.id;
-  const { mutate: MutateFetchedUser } = useUser(externalId);
-  const [isLoading, setIsLoading] = React.useState(false);
+export function EditProfile({
+  currentUser,
+  externalId,
+}: EditPhotoProfileProps) {
   const editProfileModal = useModal();
+  const queryClient = useQueryClient();
 
   // react-hook-form
   const form = useForm<Inputs>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
       externalImage:
-        initialData?.externalImage ||
-        initialData?.profileImage ||
-        "",
-      coverImage: initialData?.coverImage || "",
-      bio: initialData?.bio || "",
+        currentUser?.externalImage || currentUser?.profileImage || "",
+      coverImage: currentUser?.coverImage || "",
+      bio: currentUser?.bio || "",
     },
   });
 
   React.useEffect(() => {
     form.reset({
-      externalImage: initialData?.externalImage || initialData?.profileImage || "",
-      coverImage: initialData?.coverImage || "",
-      bio: initialData?.bio || "",
+      externalImage:
+        currentUser?.externalImage || currentUser?.profileImage || "",
+      coverImage: currentUser?.coverImage || "",
+      bio: currentUser?.bio || "",
     });
-  }, [initialData, user?.profileImageUrl, form]);
+  }, [currentUser, form]);
 
-  const onSubmit = React.useCallback(
-    async (data: Inputs) => {
-      try {
-        setIsLoading(true);
-        await axios.patch("/api/edit", data);
-        MutateFetchedUser();
-        toast.success("Profile Updated");
-        editProfileModal.onClose();
-        form.reset();
-      } catch (error) {
-        toast.error("Something went wrong");
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
+  const { isLoading, mutateAsync: editProfileMutate } = useMutation({
+    mutationFn: async (data: Inputs) => await axios.patch(`/api/edit`, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["currentUser"]);
+      queryClient.invalidateQueries(["posts"]);
+      toast.success("Profile updated !");
+      editProfileModal.onClose();
     },
-    [form, MutateFetchedUser, editProfileModal]
-  );
+    onError: () => {
+      toast.error("Can't update profile, Something went wrong !");
+    },
+  });
+
+  const onSubmit = async (data: Inputs) => {
+    await editProfileMutate(data);
+  };
   return (
     <Modal
       title="Edit profile"
@@ -142,7 +139,6 @@ export function EditProfile({ user, initialData }: EditPhotoProfileProps) {
             )}
           />
           <Button
-            type="submit"
             disabled={isLoading}
             size="sm"
             className="bg-facebook-primary text-white"

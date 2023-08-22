@@ -3,11 +3,9 @@
 import * as React from "react";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
-import Cropper, { ReactCropperElement } from "react-cropper";
-
-import "cropperjs/dist/cropper.css";
 
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Icons } from "./icons";
 
 interface ImageUploadProps {
   onChange: (base64: string) => void;
@@ -23,8 +21,6 @@ export function ImageUpload({
   isCover,
 }: ImageUploadProps) {
   const [base64, setBase64] = React.useState(value);
-  const [cropData, setCropData] = React.useState<string | null>(null);
-  const cropperRef = React.useRef<ReactCropperElement>(null);
 
   const handleChange = React.useCallback(
     (base64: string) => {
@@ -34,7 +30,7 @@ export function ImageUpload({
   );
 
   const handleDrop = React.useCallback(
-    (files: any) => {
+    (files: File[]) => {
       const file = files[0];
       const reader = new FileReader();
 
@@ -48,34 +44,25 @@ export function ImageUpload({
     [handleChange]
   );
 
-  const handleCrop = () => {
-    if (cropperRef.current) {
-      const croppedImage = cropperRef.current.cropper.getCroppedCanvas();
-      setCropData(croppedImage.toDataURL());
-    }
-  };
-
-  const handleSave = () => {
-    if (cropData) {
-      handleChange(cropData);
-      setBase64(cropData);
-    }
-  };
-
   const { getRootProps, getInputProps } = useDropzone({
     maxFiles: 1,
+    maxSize: 1024 * 1024 * 4,
     onDrop: handleDrop,
     disabled,
     accept: {
       "image/jpeg": [],
       "image/png": [],
+      "image/gif": [],
     },
   });
   return (
-    <div {...getRootProps()}>
-      <input {...getInputProps()} />
+    <div>
       {base64 ? (
-        <div className="flex items-center justify-center">
+        <div
+          className="w-full flex items-center justify-center"
+          {...getRootProps()}
+        >
+          <input {...getInputProps()} />
           {isCover ? (
             <div>
               <Image
@@ -83,7 +70,9 @@ export function ImageUpload({
                 alt="Uploaded image"
                 width={400}
                 height={100}
-                className="rounded-md bg-contain aspect-[4/1.5]"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="rounded-md bg-cover object-cover aspect-[4/1.5]"
+                loading="lazy"
               />
             </div>
           ) : (
@@ -93,34 +82,55 @@ export function ImageUpload({
           )}
         </div>
       ) : (
-        <div className="text-center">
-          <p>Upload</p>
-        </div>
-      )}
-      {base64 && (
-        <div className="mt-4">
-          <Cropper
-            ref={cropperRef}
-            src={base64}
-            aspectRatio={isCover ? 4 / 1.5 : 1}
-            guides={true}
-          />
-          <div className="mt-2">
-            <button
-              onClick={handleCrop}
-              className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2"
-            >
-              Crop
-            </button>
-            <button
-              onClick={handleSave}
-              className="bg-green-500 text-white px-4 py-2 rounded-md"
-            >
-              Save
-            </button>
+        <div
+          {...getRootProps()}
+          className="group w-full rounded-md border border-border cursor-pointer"
+        >
+          <input {...getInputProps()} />
+          <div className="grid place-items-center gap-1 sm:px-5">
+            <Icons.upload
+              className="h-8 w-8 text-muted-foreground"
+              aria-hidden="true"
+            />
+            <p className="mt-2 text-base font-medium text-foreground">
+              Add Profile Image
+            </p>
+            <p className="text-center text-xs text-muted-foreground">
+              or drag and drop here
+            </p>
           </div>
         </div>
       )}
     </div>
+    // <div
+    //   {...getRootProps()}
+    //   className="hover:brightness-50 cursor-pointer rounded-md border-border border"
+    // >
+    //   <input {...getInputProps()} />
+    //   {base64 ? (
+    //     <div className="flex items-center justify-center">
+    //       {isCover ? (
+    //         <div>
+    //           <Image
+    //             src={base64}
+    //             alt="Uploaded image"
+    //             width={400}
+    //             height={100}
+    //             className="rounded-md bg-cover aspect-[4/1.5]"
+    //             loading="lazy"
+    //           />
+    //         </div>
+    //       ) : (
+    //         <Avatar className="w-40 h-40">
+    //           <AvatarImage src={base64} alt="Uploaded image" />
+    //         </Avatar>
+    //       )}
+    //     </div>
+    //   ) : (
+    //     <div className="text-center">
+    //       <p>Upload</p>
+    //     </div>
+    //   )}
+    // </div>
   );
 }

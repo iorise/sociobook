@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 import { Separator } from "@/components/ui/separator";
 import { DropdownList } from "@/components/ui/dropdown-list";
+import { UserName } from "@/components/ui/user-name";
 
 interface ProfileDropdownProps {
   currentUser: userDb | null;
@@ -44,7 +45,7 @@ export function ProfileDropdown({ currentUser }: ProfileDropdownProps) {
         <div className="grid mx-1 mb-3 shadow-lg rounded-lg">
           <Link
             className="flex gap-2 items-center"
-            href={`/profile/${currentUser?.id}`}
+            href={`/profile/${currentUser?.externalId}`}
           >
             <Avatar className="w-9 h-9">
               <AvatarImage
@@ -57,9 +58,12 @@ export function ProfileDropdown({ currentUser }: ProfileDropdownProps) {
                 <img src="/images/placeholder.png" alt="" />
               </AvatarFallback>
             </Avatar>
-            <span className="text-xl font-semibold">
-              {currentUser?.firstName} {currentUser?.lastName}
-            </span>
+            <UserName
+              firstName={currentUser?.firstName}
+              lastName={currentUser?.lastName}
+              verified={currentUser?.verified}
+              className="text-xl font-semibold"
+            />
           </Link>
           <Separator className="my-2" />
           <div className="text-facebook-primary cursor-not-allowed">

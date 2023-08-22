@@ -11,7 +11,7 @@ import { useInfinitePosts } from "@/hooks/use-posts";
 import { Icons } from "@/components/icons";
 
 interface PostsProps {
-  externalId?: string | null;
+  externalId?: string | null | undefined;
   currentUser: User | null;
 }
 

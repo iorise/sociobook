@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { User } from "@clerk/nextjs/server";
 import { User as userDb } from "@prisma/client";
 import Image from "next/image";
 
@@ -53,7 +52,7 @@ export function SiteHeader({ currentUser }: SiteHeaderProps) {
           <Button variant="outline" size="icon" className="rounded-full">
             <Icons.message className="w-5 h-5" />
           </Button>
-          <NotificationsDropdown externalId={currentUser?.id}/>
+          <NotificationsDropdown externalId={currentUser?.externalId}/>
           <ProfileDropdown currentUser={currentUser}/>
         </div>
       </div>

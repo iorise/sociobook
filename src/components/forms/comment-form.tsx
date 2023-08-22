@@ -23,11 +23,11 @@ type Inputs = z.infer<typeof commentSchema>;
 
 export function CommentForm({ currentUser, postId }: CommentFormProps) {
   const [commentValue, setCommentValue] = useInputState("");
-  const inputRef = React.useRef<HTMLInputElement | null>(null)
+  const inputRef = React.useRef<HTMLInputElement | null>(null);
 
   React.useEffect(() => {
-      inputRef.current?.focus()
-  }, [])
+    inputRef.current?.focus();
+  }, []);
 
   const queryClient = useQueryClient();
 

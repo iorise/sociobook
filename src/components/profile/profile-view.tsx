@@ -3,7 +3,6 @@
 import React from "react";
 import Image from "next/image";
 import { User as userDb } from "@prisma/client";
-import { User } from "@clerk/nextjs/server";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Icons } from "@/components/icons";
@@ -15,16 +14,22 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { UserName } from "@/components/ui/user-name";
 
 interface ProfileFormProps {
+  currentUser: userDb | null;
   initialData: userDb | null;
-  user: User | null;
+  userId: string;
+  isCurrentUser: boolean;
 }
 
-export function ProfileView({ initialData, user }: ProfileFormProps) {
+export function ProfileView({
+  userId,
+  currentUser,
+  initialData,
+  isCurrentUser,
+}: ProfileFormProps) {
   const editPhotoModal = useModal();
-
-  const currentUser = user?.id === initialData?.externalId;
 
   return (
     <div className="relative w-full container px-10 xl:px-36 grid grid-cols-1 ">
@@ -32,15 +37,15 @@ export function ProfileView({ initialData, user }: ProfileFormProps) {
         <div className="w-full flex ">
           {initialData?.coverImage ? (
             <Image
-              src={initialData?.coverImage}
+              src={initialData.coverImage}
               alt="Cover image"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               width={1200}
-              height={200}
+              height={300}
               className="px-0 relative aspect-[3/1.3] md:aspect-[4/1.3] overflow-hidden bg-center rounded-md object-cover"
             />
           ) : (
-            <div className="w-[100%] relative aspect-[3/1.3] md:aspect-[4/1.3] overflow-hidden bg-center rounded-md bg-accent mx-0 xl:mx-20 brightness-150" />
+            <div className="w-full relative aspect-[3/1.3] md:aspect-[4/1.3] overflow-hidden bg-center rounded-md bg-accent brightness-150" />
           )}
         </div>
         <div className="flex-col md:flex">
@@ -59,7 +64,7 @@ export function ProfileView({ initialData, user }: ProfileFormProps) {
         relative"
           >
             <div className="pl-0 md:pl-10">
-              {!currentUser ? (
+              {!isCurrentUser ? (
                 <Button
                   variant="none"
                   className="active:scale-95 active:brightness-90 hover:brightness-110 w-44 h-44 rounded-full"
@@ -67,9 +72,11 @@ export function ProfileView({ initialData, user }: ProfileFormProps) {
                   <Avatar className="w-44 h-44 border-4 border-secondaryBackground">
                     <AvatarImage
                       src={
-                        initialData?.externalImage || "/images/placeholder.png"
+                        initialData?.externalImage ??
+                        initialData?.profileImage ??
+                        ""
                       }
-                      alt={initialData?.firstName ?? ""}
+                      alt="Profile image"
                       className="object-cover"
                     />
                     <AvatarFallback>
@@ -88,7 +95,7 @@ export function ProfileView({ initialData, user }: ProfileFormProps) {
                         <AvatarImage
                           src={
                             initialData?.externalImage ??
-                            user?.profileImageUrl ??
+                            initialData?.profileImage ??
                             ""
                           }
                           alt={initialData?.firstName ?? ""}
@@ -121,17 +128,26 @@ export function ProfileView({ initialData, user }: ProfileFormProps) {
                 </Popover>
               )}
             </div>
-            <div className="flex flex-col mt-0 md:mt-10">
-              <h1 className="text-3xl font-bold text-white">
-                {initialData?.firstName} {initialData?.lastName}
-              </h1>
-              <p className="text-muted-foreground">0 friends</p>
+            <div className="flex flex-col pt-0 md:pt-10">
+              <UserName
+                firstName={initialData?.firstName}
+                lastName={initialData?.lastName}
+                verified={initialData?.verified}
+                className="text-3xl font-bold text-white line-clamp-1"
+                iconClassName="w-16"
+              />
+              <p className="text-muted-foreground">
+                {initialData?.friendIds.length} Friends
+              </p>
             </div>
           </div>
           <div className="w-full flex gap-2 justify-end">
-            {currentUser ? (
+            {isCurrentUser ? (
               <>
-                <Button className="bg-facebook-primary text-white flex-1 md:flex-none">
+                <Button
+                  disabled
+                  className="bg-facebook-primary text-white flex-1 md:flex-none"
+                >
                   <Icons.plus className="w-4 h-4 mr-2" />
                   <span>Add to story</span>
                 </Button>
@@ -158,7 +174,7 @@ export function ProfileView({ initialData, user }: ProfileFormProps) {
           </div>
         </div>
       </div>
-      <EditProfile user={user} initialData={initialData} />
+      <EditProfile currentUser={currentUser} externalId={userId} />
     </div>
   );
 }

@@ -32,16 +32,16 @@ import { cn, isArrayOfFile } from "@/lib/utils";
 import { Scrollbox } from "@/components/ui/scrollbox";
 
 interface PostForm {
-  currentUser: userDb | null;
+  currentUser: userDb | null | undefined;
   initialData?: userDb | null;
-  currentUsers?: boolean;
+  isCurrentUser?: boolean;
 }
 
 type Inputs = z.infer<typeof postSchema>;
 
 const { useUploadThing } = generateReactHelpers<OurFileRouter>();
 
-export function PostForm({ currentUser, initialData, currentUsers }: PostForm) {
+export function PostForm({ currentUser, initialData, isCurrentUser }: PostForm) {
   const [files, setFiles] = React.useState<FileWithPreview[] | null>(null);
   const { isUploading, startUpload } = useUploadThing("imageUploader");
   const postModal = usePostModal();
@@ -162,7 +162,7 @@ export function PostForm({ currentUser, initialData, currentUsers }: PostForm) {
                         files?.length ? "h-16" : "h-36"
                       )}
                       placeholder={
-                        currentUsers
+                        isCurrentUser
                           ? `What's happening today, ${
                               currentUser?.firstName
                             } ${currentUser?.lastName || ""} ?`

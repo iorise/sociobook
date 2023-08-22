@@ -3,7 +3,6 @@
 import * as React from "react";
 import Image from "next/image";
 import { User } from "@prisma/client";
-import Link from "next/link";
 
 import {
   Card,
@@ -20,12 +19,11 @@ import { cn, formatDates } from "@/lib/utils";
 import { CommentForm } from "@/components/forms/comment-form";
 import { CommentList } from "@/components/comment-list";
 import { useLike } from "@/hooks/use-like";
-import { UserName } from "./ui/user-name";
-import { ImageList } from "./image-list";
+import { UserName } from "@/components/ui/user-name";
 
 interface PostProps {
   data: extendedPost;
-  currentUser: User | null;
+  currentUser: User | null ;
 }
 
 export function Post({ data, currentUser }: PostProps) {
@@ -34,10 +32,7 @@ export function Post({ data, currentUser }: PostProps) {
 
   const postId = data.id;
 
-  const { hasLiked, toggleLike } = useLike({
-    postId,
-    userId: currentUser?.externalId ?? "",
-  });
+  const { hasLiked, toggleLike } = useLike(postId);
 
   const createdAt = React.useMemo(() => {
     return formatDates(data.createdAt);

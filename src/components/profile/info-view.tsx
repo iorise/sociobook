@@ -1,22 +1,25 @@
 "use client";
 
 import * as React from "react";
-import { User } from "@clerk/nextjs/server";
 import { User as userDb } from "@prisma/client";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PostFeeds } from "@/components/post-feeds";
 
-interface FeedsProps {
-  user: User | null;
+interface infoViewProps {
+  currentUser: userDb | null;
   initialData: userDb | null;
-  currentUser: userDb | null
-  externalId?: string | null
+  externalId?: string | null;
+  isCurrentUser?: boolean;
 }
 
-export function InfoView({ user, initialData, currentUser, externalId }: FeedsProps) {
-  const currentUsers = user?.id === initialData?.externalId;
+export function InfoView({
+  initialData,
+  externalId,
+  isCurrentUser,
+  currentUser,
+}: infoViewProps) {
   const bio = initialData?.bio;
 
   return (
@@ -28,15 +31,17 @@ export function InfoView({ user, initialData, currentUser, externalId }: FeedsPr
           </CardHeader>
           <CardContent className="px-8 ">
             {bio ? (
-              <div className="w-full text-center flex flex-col gap-2">
-                <p className="break-words flex-wrap">{initialData?.bio}</p>
-                {currentUsers ? (
-                  <Button variant="outline" className="w-full">
-                    Edit bio
-                  </Button>
+              <div className="w-full text-center">
+                {isCurrentUser ? (
+                  <div className="flex flex-col gap-2">
+                    <p className="break-words flex-wrap">{currentUser?.bio}</p>
+                    <Button variant="outline" className="w-full">
+                      Edit bio
+                    </Button>
+                  </div>
                 ) : null}
               </div>
-            ) : currentUsers ? (
+            ) : isCurrentUser ? (
               <Button variant="outline" className="w-full">
                 Add bio
               </Button>
@@ -48,10 +53,9 @@ export function InfoView({ user, initialData, currentUser, externalId }: FeedsPr
       </aside>
       <div>
         <PostFeeds
-          user={user}
           currentUser={currentUser}
           initialData={initialData}
-          currentUsers={currentUsers}
+          isCurrentUser={isCurrentUser}
           externalId={externalId}
         />
       </div>

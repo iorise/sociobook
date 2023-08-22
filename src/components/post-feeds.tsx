@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { User } from "@clerk/nextjs/server";
 import { User as userDb } from "@prisma/client";
 import Link from "next/link";
 
@@ -15,16 +14,16 @@ import { usePostModal } from "@/hooks/use-post-modal";
 import { Posts } from "@/components/posts";
 
 interface FeedsProps {
-  currentUser: userDb | null;
+  currentUser: userDb | null
   initialData?: userDb | null
-  currentUsers?: boolean;
+  isCurrentUser?: boolean;
   externalId?: string | null;
 }
 
 export function PostFeeds({
   currentUser,
   initialData,
-  currentUsers,
+  isCurrentUser,
   externalId,
 }: FeedsProps) {
   const postModal = usePostModal();
@@ -49,11 +48,12 @@ export function PostFeeds({
             </Button>
           </Link>
           <Button
-            className="w-full bg-accent rounded-full hover:brightness-110 text-left justify-start text-muted-foreground text-sm py-2"
+            className="w-full bg-accent rounded-full hover:brightness-110 text-left justify-start text-muted-foreground text-sm py-2 line-clamp-2"
             variant="ghost"
             onClick={() => postModal.onOpen()}
+            disabled={!isCurrentUser}
           >
-            {currentUsers
+            {isCurrentUser
               ? `What's happening today, ${currentUser?.firstName} ${currentUser?.lastName || ""} ?`
               : `Send message to ${initialData?.firstName} ${initialData?.lastName || ""}`}
           </Button>
@@ -68,17 +68,18 @@ export function PostFeeds({
             variant="ghost"
             className="flex-1"
             onClick={() => postModal.onOpen()}
+            disabled={!isCurrentUser}
           >
             <Icons.fileImage className="w-6 h-6 mr-2 text-[#58c472]" />
             <span>Photo/Video</span>
           </Button>
-          <Button variant="ghost" className="flex-1 hidden sm:flex">
+          <Button variant="ghost" className="flex-1 hidden sm:flex lg:hidden xl:flex">
             <Icons.emoji className="w-6 h-6 mr-2 text-[#f8c03e]" />
             <span>Feels/activity</span>
           </Button>
         </CardContent>
       </Card>
-      <PostForm currentUser={currentUser} initialData={initialData} currentUsers={currentUsers}/>
+      <PostForm currentUser={currentUser} initialData={initialData} isCurrentUser={isCurrentUser}/>
       <Posts externalId={externalId} currentUser={currentUser}/>
     </div>
   );

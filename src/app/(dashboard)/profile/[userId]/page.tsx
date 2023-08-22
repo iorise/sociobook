@@ -1,8 +1,9 @@
-import { currentUser } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs";
 
 import { ProfileView } from "@/components/profile/profile-view";
 import { InfoView } from "@/components/profile/info-view";
 import prismadb from "@/lib/prismadb";
+import { redirect } from "next/navigation";
 
 export default async function ProfilePage({
   params,
@@ -10,25 +11,29 @@ export default async function ProfilePage({
   params: { userId: string };
 }) {
 
-  const authUser = await currentUser();
+  const {userId} = auth()
 
-  const user = await prismadb.user.findUnique({
+  if (!userId) {
+    redirect("/login")
+  }
+
+  const initialData = await prismadb.user.findUnique({
     where: {
       externalId: params.userId,
     },
   });
 
-  const current = await prismadb.user.findUnique({
+  const currentUser = await prismadb.user.findUnique({
     where: {
-      externalId: authUser?.id
+      externalId: userId
     }
   })
 
-
+  const isCurrentUser = userId === params.userId
   return (
     <>
-      <ProfileView initialData={user} user={authUser}/>
-      <InfoView user={authUser} initialData={user} currentUser={current} externalId={user?.externalId}/>
+      <ProfileView isCurrentUser={isCurrentUser} currentUser={currentUser} userId={userId} initialData={initialData}/>
+      <InfoView isCurrentUser={isCurrentUser} currentUser={currentUser} externalId={params.userId} initialData={initialData}/>
     </>
   );
 }
