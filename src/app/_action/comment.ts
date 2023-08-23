@@ -11,8 +11,8 @@ export async function fetchComments({
   take,
   lastCursor,
 }: CommentQueryParams) {
-  const { data } = await axios.get(`/api/comment?postId=${postId}`, {
-    params: { take, lastCursor },
-  });
-  return data;
+  const url = `/api/comment?postId=${postId}`;
+  const params = { take, lastCursor };
+  const response = await axios.get(url, { params });
+  return response.data;
 }

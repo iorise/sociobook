@@ -86,10 +86,6 @@ export function PostForm({ currentUser, initialData, isCurrentUser }: PostForm) 
     },
   });
 
-  const initials = `${currentUser?.firstName?.charAt(0) ?? ""} ${
-    currentUser?.lastName?.charAt(0) ?? ""
-  }`;
-
   // react-hook-form
   const form = useForm<Inputs>({
     resolver: zodResolver(postSchema),
@@ -118,9 +114,9 @@ export function PostForm({ currentUser, initialData, isCurrentUser }: PostForm) 
               src={
                 currentUser?.externalImage ?? currentUser?.profileImage ?? ""
               }
-              alt={currentUser?.firstName ?? ""}
+              alt={`${currentUser?.firstName ?? ""} ${currentUser?.lastName}`}
             />
-            <AvatarFallback>{initials}</AvatarFallback>
+            <AvatarFallback><img src="/images/placeholder.png" alt="" /></AvatarFallback>
           </Avatar>
           <span className="flex flex-col -space-y-1">
             <UserName

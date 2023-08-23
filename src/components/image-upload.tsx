@@ -5,7 +5,7 @@ import { useDropzone } from "react-dropzone";
 import Image from "next/image";
 
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Icons } from "./icons";
+import { Icons } from "@/components/icons";
 
 interface ImageUploadProps {
   onChange: (base64: string) => void;
@@ -102,35 +102,5 @@ export function ImageUpload({
         </div>
       )}
     </div>
-    // <div
-    //   {...getRootProps()}
-    //   className="hover:brightness-50 cursor-pointer rounded-md border-border border"
-    // >
-    //   <input {...getInputProps()} />
-    //   {base64 ? (
-    //     <div className="flex items-center justify-center">
-    //       {isCover ? (
-    //         <div>
-    //           <Image
-    //             src={base64}
-    //             alt="Uploaded image"
-    //             width={400}
-    //             height={100}
-    //             className="rounded-md bg-cover aspect-[4/1.5]"
-    //             loading="lazy"
-    //           />
-    //         </div>
-    //       ) : (
-    //         <Avatar className="w-40 h-40">
-    //           <AvatarImage src={base64} alt="Uploaded image" />
-    //         </Avatar>
-    //       )}
-    //     </div>
-    //   ) : (
-    //     <div className="text-center">
-    //       <p>Upload</p>
-    //     </div>
-    //   )}
-    // </div>
   );
 }

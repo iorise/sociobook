@@ -12,16 +12,14 @@ export async function fetchPosts({
   take,
   lastCursor,
 }: UserQueryParams) {
-  const {data} = await axios.get(
-    !externalId ? "/api/posts" : `/api/posts?userId=${externalId}`,
-    {
-      params: { take, lastCursor },
-    }
-  );
-  return data;
+  const url = externalId ? `/api/posts?userId=${externalId}` : "/api/posts";
+  const params = { take, lastCursor };
+  const response = await axios.get(url, { params });
+  return response.data;
 }
 
 export async function fetchPost(postId: string): Promise<Post> {
-  const { data } = await axios.get(`/api/posts/${postId}`);
-  return data;
+  const response = await axios.get(`/api/posts/${postId}`);
+  const post = response.data;
+  return post;
 }
