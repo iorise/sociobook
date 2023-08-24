@@ -14,6 +14,9 @@ export async function GET(req: NextRequest) {
         externalId: {
           not: userId
         }
+      },
+      include: {
+        posts: true
       }
     })
 

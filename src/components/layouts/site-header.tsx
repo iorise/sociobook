@@ -10,10 +10,7 @@ import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
 import { ProfileDropdown } from "@/components/nav-dropdowns/profile-dropdown";
 import { NotificationsDropdown } from "@/components/nav-dropdowns/notificatioin-dropdown";
-import {
-  Command,
-  CommandInput,
-} from "@/components/ui/command";
+import { SearchBar } from "@/components/search-bar";
 
 interface SiteHeaderProps {
   currentUser: userDb | null
@@ -27,9 +24,7 @@ export function SiteHeader({ currentUser }: SiteHeaderProps) {
           <Link aria-label="Home" href="/">
             <Image src="/logo.png" alt="logo" width={55} height={55} />
           </Link>
-          <Command className="rounded-full">
-            <CommandInput placeholder="Search in Facebook" />
-          </Command>
+          <SearchBar />
         </div>
         <div className="flex-1 md:flex-none">
           <MainNav items={siteConfig.MainNav} />
@@ -52,7 +47,7 @@ export function SiteHeader({ currentUser }: SiteHeaderProps) {
           <Button variant="outline" size="icon" className="rounded-full">
             <Icons.message className="w-5 h-5" />
           </Button>
-          <NotificationsDropdown externalId={currentUser?.externalId}/>
+          <NotificationsDropdown externalId={currentUser?.externalId} hasNotifications={currentUser?.hasNotifications}/>
           <ProfileDropdown currentUser={currentUser}/>
         </div>
       </div>

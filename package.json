@@ -40,6 +40,7 @@
     "date-fns": "^2.30.0",
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.12",
+    "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.263.1",
     "next": "13.4.12",
     "next-themes": "^0.2.1",
@@ -64,6 +65,7 @@
     "zustand": "^4.4.0"
   },
   "devDependencies": {
+    "@types/lodash.debounce": "^4.0.7",
     "prisma": "^5.0.0",
     "tailwind-scrollbar": "^3.0.5"
   }

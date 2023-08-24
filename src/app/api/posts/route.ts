@@ -2,7 +2,6 @@ import { currentUser } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 
 import prismadb from "@/lib/prismadb";
-import { Image } from "@prisma/client";
 
 export async function POST(req: NextRequest) {
   try {

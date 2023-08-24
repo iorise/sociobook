@@ -13,27 +13,33 @@ import { Icons } from "@/components/icons";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { NotificationWithUser } from "@/types";
 import { NotificationLoader } from "@/components/ui/notification-loader";
-import { useCurrentUser } from "@/hooks/use-currentUser";
+import { NotificationItems } from "@/components/notifications-item";
 
 interface NotificationsDropdownProps {
   externalId: string | null | undefined;
+  hasNotifications: boolean | null | undefined;
 }
 
 export function NotificationsDropdown({
   externalId,
+  hasNotifications,
 }: NotificationsDropdownProps) {
-  const { data: currentUser } = useCurrentUser();
+  const queryKey = ["notifications", externalId];
+
   const {
     data: notifications,
+    refetch,
     isLoading,
     error,
-  } = useQuery({
+  } = useQuery<NotificationWithUser[]>({
+    queryKey,
     queryFn: async () => {
       const { data } = await axios.get(`/api/notifications/${externalId}`);
       return data;
     },
-    queryKey: ["notifications", externalId],
+    enabled: false,
   });
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -41,9 +47,10 @@ export function NotificationsDropdown({
           variant="outline"
           size="icon"
           className="rounded-full active:scale-95 transition-all active:opacity-80 duration-0 relative"
+          onClick={() => refetch()}
         >
           <Icons.notification className="w-5 h-5" />
-          {currentUser?.hasNotifications && (
+          {hasNotifications && (
             <div className="w-3 h-3 rounded-full border border-border absolute bg-red-600 -top-1 -right-1" />
           )}
         </Button>
@@ -51,18 +58,17 @@ export function NotificationsDropdown({
       <PopoverContent className="w-96" align="end" forceMount>
         <ScrollArea className="h-[40rem] w-full rounded-md">
           <div className="text-xl font-bold">Notifications</div>
-          {isLoading && <NotificationLoader />}
-          {error && <div>Something went wrong</div>}
-          {notifications?.map((notification: NotificationWithUser) => (
-            <div key={notification.id} className="py-3 mx-1">
-              <div className="flex items-center gap-2">
-                <Icons.thumbFill className="w-6 h-6" />
-                <p className="text-lg line-clamp-3 break-words text-foreground/80">
-                  {notification.text.toLowerCase()}
-                </p>
+          {isLoading ? (
+            <NotificationLoader />
+          ) : error ? (
+            <div className="w-full text-center pt-5">Something went wrong</div>
+          ) : (
+            notifications?.map((notification) => (
+              <div key={notification.id} className="py-3 mx-1">
+                <NotificationItems notification={notification} />
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </ScrollArea>
       </PopoverContent>
     </Popover>
