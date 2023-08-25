@@ -6,22 +6,24 @@ import { toast } from "react-hot-toast";
 import { useCurrentUser } from "@/hooks/use-currentUser";
 import { usePost } from "@/hooks/use-post";
 
+interface PostData {
+  likeIds: string[];
+}
+
 export const useLike = (postId: string) => {
   const { data: currentUser } = useCurrentUser();
+  const { data: fetchedPost } = usePost(postId);
   const queryClient = useQueryClient();
 
-  const externalId = currentUser?.externalId ?? ""
-
-  const { data: fetchedPost } = usePost(postId);
+  const externalId = currentUser?.externalId;
 
   const hasLiked = React.useMemo(() => {
     const list = fetchedPost?.likeIds || [];
-
-    return list.includes(externalId);
-  }, [fetchedPost?.likeIds, currentUser]);
+    return externalId !== undefined && externalId !== null && list.includes(externalId);
+  }, [fetchedPost?.likeIds, externalId]);
 
   const { mutateAsync } = useMutation({
-    mutationKey: (["like"]),
+    mutationKey: ["like"],
     mutationFn: async () => {
       let request;
       hasLiked
@@ -30,20 +32,47 @@ export const useLike = (postId: string) => {
 
       await request();
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries(["posts"]);
-      queryClient.invalidateQueries(["post", postId]);
-      queryClient.invalidateQueries(["notifications", externalId]);
-      toast.success(hasLiked ? "Unliked" : "Liked", {
-        position: "bottom-left",
-      });
+    onMutate: async () => {
+      const previousPostData = queryClient.getQueryData<PostData | undefined>([
+        "post",
+        postId,
+      ]);
+      await Promise.all([
+        queryClient.cancelQueries(["posts"]),
+        queryClient.cancelQueries(["post", postId]),
+      ]);
+
+      queryClient.setQueryData<PostData | undefined>(
+        ["post", postId],
+        (oldData) => {
+          if (oldData && externalId !== undefined && externalId !== null) {
+            return {
+              ...oldData,
+              likeIds: hasLiked
+                ? oldData.likeIds.filter((id) => id !== externalId)
+                : [...oldData.likeIds, externalId],
+            };
+          }
+          return oldData;
+        }
+      );
+
+      return { previousPostData };
     },
-    onError: () => {
-      toast.error("Something went wrong", {
+    onSettled: () => {
+      queryClient.invalidateQueries(["posts"]);
+    },
+    onError: (_, variables, context) => {
+      queryClient.setQueryData(["post", postId], context?.previousPostData);
+      toast.error("Like failed", {
         position: "bottom-left",
       });
     },
   });
+
+  const likeCount = React.useMemo(() => {
+    return fetchedPost?.likeIds.length ?? 0;
+  }, [fetchedPost]);
 
   const toggleLike = React.useCallback(async () => {
     await mutateAsync();
@@ -52,5 +81,6 @@ export const useLike = (postId: string) => {
   return {
     hasLiked,
     toggleLike,
+    likeCount,
   };
 };
