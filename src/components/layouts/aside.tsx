@@ -31,7 +31,7 @@ export function Aside({ users }: AsideProps) {
                   <img src="/images/placeholder.png" />
                 </AvatarFallback>
               </Avatar>
-              <span className="ml-3 text-white text-lg">
+              <span className="ml-3 text-white text-lg line-clamp-1">
                 {user.firstName} {user.lastName}
               </span>
             </span>
