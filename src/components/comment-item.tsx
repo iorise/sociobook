@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import { formatDates } from "@/lib/utils";
 import { CommentWithUser } from "@/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -26,7 +26,7 @@ export function CommentItem({ comment }: CommentItemProps) {
             <img src="/images/placeholder.png" alt="Placeholder" />
           </AvatarFallback>
         </Avatar>
-        <div>
+        <div className="flex flex-col gap-1">
           <div className="flex flex-col bg-accent rounded-xl p-2">
             <p className="text-sm font-medium text-foreground">
               {comment.author.firstName} {comment.author.lastName}
