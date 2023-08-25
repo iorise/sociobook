@@ -41,7 +41,11 @@ type Inputs = z.infer<typeof postSchema>;
 
 const { useUploadThing } = generateReactHelpers<OurFileRouter>();
 
-export function PostForm({ currentUser, initialData, isCurrentUser }: PostForm) {
+export function PostForm({
+  currentUser,
+  initialData,
+  isCurrentUser,
+}: PostForm) {
   const [files, setFiles] = React.useState<FileWithPreview[] | null>(null);
   const { isUploading, startUpload } = useUploadThing("imageUploader");
   const postModal = usePostModal();
@@ -56,7 +60,6 @@ export function PostForm({ currentUser, initialData, isCurrentUser }: PostForm) 
               imageId: image.fileKey,
               url: image.fileUrl,
             }));
-            console.log("Formatted Images:", formattedImages);
             return formattedImages ?? null;
           })
         : null;
@@ -69,7 +72,6 @@ export function PostForm({ currentUser, initialData, isCurrentUser }: PostForm) 
             url: image.url,
           })) || [],
       };
-      console.log("Post Data:", postData);
       await axios.post("/api/posts", postData);
     },
     onSuccess: () => {
@@ -116,7 +118,9 @@ export function PostForm({ currentUser, initialData, isCurrentUser }: PostForm) 
               }
               alt={`${currentUser?.firstName ?? ""} ${currentUser?.lastName}`}
             />
-            <AvatarFallback><img src="/images/placeholder.png" alt="" /></AvatarFallback>
+            <AvatarFallback>
+              <img src="/images/placeholder.png" alt="" />
+            </AvatarFallback>
           </Avatar>
           <span className="flex flex-col -space-y-1">
             <UserName
