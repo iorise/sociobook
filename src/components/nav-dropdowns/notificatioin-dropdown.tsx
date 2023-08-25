@@ -37,7 +37,7 @@ export function NotificationsDropdown({
     if (onOpen) {
       refetch();
     }
-  }, []);
+  }, [onOpen]);
 
   const {
     data: notifications,

@@ -78,7 +78,11 @@ export function SearchBar() {
             <CommandItem
               key={user.externalId}
               value={`${user.firstName || ""} ${user.lastName || ""}`.trim()}
-              onSelect={() => router.push(`/profile/${user.externalId}`)}
+              onSelect={() => {
+                router.push(`/profile/${user.externalId}`);
+                router.refresh();
+              }}
+              className="cursor-pointer"
             >
               <Avatar className="w-6 h-6 mr-2">
                 <AvatarImage

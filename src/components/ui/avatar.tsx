@@ -27,6 +27,7 @@ const AvatarImage = React.forwardRef<
   <AvatarPrimitive.Image
     ref={ref}
     className={cn("aspect-square h-full w-full", className)}
+    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
     {...props}
   />
 ))

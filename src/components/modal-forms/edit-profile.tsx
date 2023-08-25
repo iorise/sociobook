@@ -24,6 +24,7 @@ import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 import { ImageUpload } from "@/components/image-upload";
 import { Textarea } from "@/components/ui/textarea";
+import { useRouter } from "next/navigation";
 
 type Inputs = z.infer<typeof profileSchema>;
 
@@ -38,6 +39,7 @@ export function EditProfile({
 }: EditPhotoProfileProps) {
   const editProfileModal = useModal();
   const queryClient = useQueryClient();
+  const router = useRouter()
 
   // react-hook-form
   const form = useForm<Inputs>({
@@ -62,8 +64,8 @@ export function EditProfile({
   const { isLoading, mutateAsync: editProfileMutate } = useMutation({
     mutationFn: async (data: Inputs) => await axios.patch(`/api/edit`, data),
     onSuccess: () => {
-      queryClient.invalidateQueries(["currentUser"]);
       queryClient.invalidateQueries(["posts"]);
+      router.refresh()
       toast.success("Profile updated !");
       editProfileModal.onClose();
     },
