@@ -95,7 +95,7 @@ export async function GET(req: Request) {
       }
     }
 
-    return new Response(JSON.stringify(data), {status:200})
+    return new NextResponse(JSON.stringify(data), {status:200})
   } catch (error) {
     console.log("[COMMENT_GET]", error);
     return new NextResponse("Internal error", { status: 500 });

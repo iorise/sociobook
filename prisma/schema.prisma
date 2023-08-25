@@ -28,7 +28,7 @@ model User {
   hasNotifications Boolean?
   posts            Post[]
   comments         Comment[]
-  notification     Notification[]
+  notifications     Notification[]
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 }

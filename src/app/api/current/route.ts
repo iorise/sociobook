@@ -14,7 +14,7 @@ export async function GET(req: Request) {
       },
       include: {
         comments: true,
-        notification: true,
+        notifications: true,
         posts: true,
       }
       

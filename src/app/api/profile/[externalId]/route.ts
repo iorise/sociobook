@@ -24,7 +24,7 @@ export async function GET(
       include: {
         posts: true,
         comments: true,
-        notification: true,
+        notifications: true,
       }
     });
 

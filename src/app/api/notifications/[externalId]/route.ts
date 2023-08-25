@@ -34,13 +34,41 @@ export async function GET(
         externalId: params.externalId,
       },
       data: {
-        hasNotifications: false,  
+        hasNotifications: false,
       },
     });
 
     return NextResponse.json(notifications);
   } catch (error) {
     console.log("[NOTIFICATION_GET]", error);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+}
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { externalId: string } }
+) {
+  const { userId } = auth();
+
+  if (!userId) {
+    return new NextResponse("No user found", { status: 400 });
+  }
+
+  try {
+    if (!params.externalId) {
+      return new NextResponse("No user found", { status: 400 });
+    }
+
+    const notification = await prismadb.notification.deleteMany({
+      where: {
+        userId: params.externalId,
+      },
+    });
+
+    return NextResponse.json(notification);
+  } catch (error) {
+    console.log("[NOTIFICATION_DELETE]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }

@@ -21,6 +21,8 @@ import {
   Trash,
   Upload,
   X,
+  MoreVertical,
+  MoreHorizontal,
 } from "lucide-react";
 
 import {
@@ -114,6 +116,8 @@ export const Icons = {
   upload: Upload,
   close: X,
   reset: ResetIcon,
+  moreVertical: MoreVertical,
+  moreHorizontal:MoreHorizontal,
   thumbFill: ({ ...props }: LucideProps) => (
     <svg
       viewBox="-6.24 -6.24 36.48 36.48"

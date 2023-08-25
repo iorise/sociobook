@@ -210,7 +210,7 @@ export function FileDialog<TFieldValues extends FieldValues>({
           type="button"
           variant="ghost"
           size="icon"
-          className="active:bg-black/70 rounded-full"
+          className={cn("rounded-full", showDropImage ? "bg-black/70" : "")}
           disabled={disabled}
           onClick={() => setShowDropImage(!showDropImage)}
         >
