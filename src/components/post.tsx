@@ -20,19 +20,24 @@ import { CommentForm } from "@/components/forms/comment-form";
 import { CommentList } from "@/components/comment-list";
 import { useLike } from "@/hooks/use-like";
 import { UserName } from "@/components/ui/user-name";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { usePost } from "@/hooks/use-post";
 
 interface PostProps {
   data: extendedPost;
-  currentUser: User | null ;
+  currentUser: User | null;
 }
 
 export function Post({ data, currentUser }: PostProps) {
+  const postId = data.id;
   const [showComment, setShowComment] = React.useState(false);
   const [showMoreText, setShowMoreText] = React.useState(false);
+  const { deletePost, isDeletingPost } = usePost(postId);
+  const { hasLiked, toggleLike, likeCount } = useLike(postId);
 
-  const postId = data.id;
-
-  const { hasLiked, toggleLike } = useLike(postId);
+  const postByCurrentUser = React.useMemo(() => {
+    return data.userId === currentUser?.externalId;
+  }, [data.userId, currentUser?.externalId]);
 
   const createdAt = React.useMemo(() => {
     return formatDates(data.createdAt);
@@ -46,41 +51,73 @@ export function Post({ data, currentUser }: PostProps) {
     setShowMoreText((prev) => !prev);
   }, []);
 
+  const onDelete = React.useCallback(async () => {
+    await deletePost();
+  }, [deletePost]);
+
   return (
     <div className="flex flex-col gap-5">
       <Card>
         <CardHeader className="space-y-1 p-4">
-          <div className="flex gap-2 items-center">
-            <Avatar>
-              <AvatarImage
-                src={data.user?.externalImage ?? data.user.profileImage ?? ""}
-                alt={data.user?.firstName ?? ""}
-              />
-              <AvatarFallback>
-                <img src="/images/placeholder.png" />
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex flex-col px-[-1rem]">
-              <UserName
-                firstName={currentUser?.firstName}
-                lastName={currentUser?.lastName}
-                verified={currentUser?.verified}
-                className="text-lg font-medium"
-              />
-              <span className="font-normal text-muted-foreground text-xs">
-                {createdAt}
-              </span>
+          <div className="flex justify-between">
+            <div className="flex gap-2 items-center">
+              <Avatar>
+                <AvatarImage
+                  src={data.user?.externalImage ?? data.user.profileImage ?? ""}
+                  alt={data.user?.firstName ?? ""}
+                />
+                <AvatarFallback>
+                  <img src="/images/placeholder.png" />
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col px-[-1rem]">
+                <UserName
+                  firstName={data.user?.firstName}
+                  lastName={data.user?.lastName}
+                  verified={data.user?.verified}
+                  className="text-lg font-medium"
+                />
+                <span className="font-normal text-muted-foreground text-xs">
+                  {createdAt}
+                </span>
+              </div>
             </div>
+            {postByCurrentUser && (
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="ghost" className="rounded-full">
+                    <Icons.moreHorizontal className="w-4 h-4" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent
+                  className="w-40 bg-background p-2"
+                  align="end"
+                  sideOffset={2}
+                >
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={onDelete}
+                    disabled={isDeletingPost}
+                    className="rounded-md w-full"
+                  >
+                    {isDeletingPost ? (
+                      <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Icons.trash className="w-4 h-4 mr-2" />
+                    )}
+                    <span className="font-medium text-sm">Delete</span>
+                  </Button>
+                </PopoverContent>
+              </Popover>
+            )}
           </div>
         </CardHeader>
         <CardContent>
-          <div className="w-full">
+          <div className="w-full flex flex-col">
             <p
               onClick={toggleShowMoreText}
-              className={cn(
-                "mb-2",
-                showMoreText ? "line-clamp-none" : "line-clamp-3"
-              )}
+              className={cn(showMoreText ? "line-clamp-none" : "line-clamp-3")}
             >
               {data.text}
             </p>
@@ -122,10 +159,10 @@ export function Post({ data, currentUser }: PostProps) {
         </CardContent>
         <CardFooter className="flex flex-col text-muted-foreground">
           <div className="flex w-full justify-between text-muted-foreground text-sm mb-1">
-            {data.likeIds.length !== 0 && (
+            {likeCount > 0 && (
               <div className="flex items-center gap-1">
                 <Icons.thumbFill className="text-facebook-primary w-4 h-4" />
-                <span>{data.likeIds.length}</span>
+                <span>{likeCount}</span>
               </div>
             )}
 
