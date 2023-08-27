@@ -1,20 +1,39 @@
 import { auth } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 
 import { ProfileView } from "@/components/profile/profile-view";
 import { InfoView } from "@/components/profile/info-view";
 import prismadb from "@/lib/prismadb";
-import { redirect } from "next/navigation";
+import { Metadata, ResolvingMetadata } from "next";
 
-export default async function ProfilePage({
-  params,
-}: {
+interface ProfilePageProps {
   params: { userId: string };
-}) {
+}
 
-  const {userId} = auth()
+export async function generateMetadata({ params }: ProfilePageProps): Promise<Metadata> {
+
+  const initialData = await prismadb.user.findUnique({
+    where: {
+      externalId: params.userId,
+    },
+  });
+
+  const title = `${initialData?.firstName || ""} ${initialData?.lastName || ""} | Profile`
+  const description = `Explore the profile of ${initialData?.firstName} ${initialData?.lastName}.`;
+
+  return {
+    title,
+    description
+  }
+}
+
+export default async function ProfilePage(
+  { params }: ProfilePageProps,
+){
+  const { userId } = auth();
 
   if (!userId) {
-    redirect("/login")
+    redirect("/login");
   }
 
   const initialData = await prismadb.user.findUnique({
@@ -25,15 +44,25 @@ export default async function ProfilePage({
 
   const currentUser = await prismadb.user.findUnique({
     where: {
-      externalId: userId
-    }
-  })
+      externalId: userId,
+    },
+  });
 
-  const isCurrentUser = userId === params.userId
+  const isCurrentUser = userId === params.userId;
   return (
     <>
-      <ProfileView isCurrentUser={isCurrentUser} currentUser={currentUser} userId={userId} initialData={initialData}/>
-      <InfoView isCurrentUser={isCurrentUser} currentUser={currentUser} externalId={params.userId} initialData={initialData}/>
+      <ProfileView
+        isCurrentUser={isCurrentUser}
+        currentUser={currentUser}
+        userId={userId}
+        initialData={initialData}
+      />
+      <InfoView
+        isCurrentUser={isCurrentUser}
+        currentUser={currentUser}
+        externalId={params.userId}
+        initialData={initialData}
+      />
     </>
   );
 }

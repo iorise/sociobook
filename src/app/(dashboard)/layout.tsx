@@ -1,4 +1,4 @@
-import { auth, currentUser as current } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
 import { SiteHeader } from "@/components/layouts/site-header";

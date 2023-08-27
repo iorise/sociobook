@@ -1,11 +1,19 @@
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
+import { Metadata } from "next";
 
 import { SidebarNav } from "@/components/layouts/sidebar-nav";
 import { PostFeeds } from "@/components/post-feeds";
 import { siteConfig } from "@/config/site";
 import { Aside } from "@/components/layouts/aside";
 import prismadb from "@/lib/prismadb";
+import { SidebarShell } from "@/components/shell";
+
+export const metadata: Metadata = {
+  title: "Facebook",
+  description:
+    "Connect with friends and the world around you on Facebook. Share photos, send messages, and more.",
+};
 
 export default async function DashboardPage() {
   const { userId } = auth();
@@ -34,14 +42,16 @@ export default async function DashboardPage() {
   const isCurrentUser = currentUser?.externalId === userId;
 
   return (
-    <div className="container flex-1 items-start md:grid md:grid-cols-[minmax(0,1fr)_180px] md:gap-8 lg:gap-16 lg:grid-cols-[280px_minmax(0,1fr)_240px]">
-      <aside className="fixed top-14 z-30 hidden h-[calc(100vh-3.6rem)] w-full shrink-0 lg:sticky lg:block py-4">
+    <div className="mx-auto px-2 flex-1 items-start justify-between md:grid md:grid-cols-[minmax(0,1fr)_260px] lg:grid-cols-[260px_minmax(0,1fr)_260px] p-0 m-0">
+      <SidebarShell className="hidden lg:block">
         <SidebarNav items={siteConfig.sidebarNav} />
-      </aside>
-      <PostFeeds currentUser={currentUser} isCurrentUser={isCurrentUser} />
-      <aside className="hidden md:sticky md:block fixed top-14 z-30 h-[calc(100vh-3.6rem)] w-full shrink-0  py-4">
+      </SidebarShell>
+      <main className="py-4 px-1 md:px-2 lg:px-16 xl:px-28 container">
+        <PostFeeds currentUser={currentUser} isCurrentUser={isCurrentUser} />
+      </main>
+      <SidebarShell className="hidden md:block">
         <Aside users={users} />
-      </aside>
+      </SidebarShell>
     </div>
   );
 }
