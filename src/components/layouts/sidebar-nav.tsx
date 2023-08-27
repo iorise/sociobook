@@ -8,6 +8,7 @@ import { SidebarNav } from "@/types";
 import { Icons } from "@/components/icons";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 
 interface SidebarNavProps {
   items: SidebarNav[];
@@ -15,25 +16,30 @@ interface SidebarNavProps {
 
 export function SidebarNav({ items }: SidebarNavProps) {
   return (
-    <ScrollArea className="h-full">
-      <div>
+    <ScrollArea className="w-full h-full">
+      <ul className="w-full">
         {items.map((item, index) => {
           const Icon = Icons[item.icon ?? "logo"];
           return (
-            <Link key={index} href={item.href}>
-              <span
+            <li key={index}>
+              <Button
+                variant="ghost"
                 className={cn(
-                  "group flex w-full items-center rounded-md border border-transparent px-2 py-2.5 hover:bg-accent hover:text-foreground",
-                  item.disabled && "cursor-not-allowed"
+                  item.disabled && "cursor-not-allowed",
+                  "justify-start flex gap-3 py-6 w-full"
                 )}
+                disabled={item.disabled}
+                asChild
               >
-                <Icon className="w-7 h-7 text-blue-300" />
-                <span className="ml-4">{item.title}</span>
-              </span>
-            </Link>
+                <Link href={item.href}>
+                  <Icon className="w-7 h-7 text-facebook-primary" />
+                  <span className="ml-4">{item.title}</span>
+                </Link>
+              </Button>
+            </li>
           );
         })}
-      </div>
+      </ul>
       <Separator />
     </ScrollArea>
   );

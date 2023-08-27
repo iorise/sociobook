@@ -30,24 +30,33 @@ export function InfoView({
             <CardTitle className="text-2xl">Bio</CardTitle>
           </CardHeader>
           <CardContent className="px-8 ">
-            {bio ? (
-              <div className="w-full text-center">
-                {isCurrentUser ? (
+            <div className="w-full text-center">
+              {isCurrentUser ? (
+                bio !== null || bio !== "" ? (
                   <div className="flex flex-col gap-2">
-                    <p className="break-words flex-wrap">{currentUser?.bio}</p>
+                    <p className="w-full break-words flex-wrap text-center">
+                      {bio}
+                    </p>
                     <Button variant="outline" className="w-full">
                       Edit bio
                     </Button>
                   </div>
-                ) : null}
-              </div>
-            ) : isCurrentUser ? (
-              <Button variant="outline" className="w-full">
-                Add bio
-              </Button>
-            ) : (
-              <p className="w-full text-center">No bio to show.</p>
-            )}
+                ) : (
+                  <div className="flex flex-col gap-2">
+                    <p className="w-full text-center">No bio to show.</p>
+                    <Button variant="outline" className="w-full">
+                      Add bio
+                    </Button>
+                  </div>
+                )
+              ) : (
+                <p
+                  className="w-full break-words flex-wrap text-center"
+                >
+                  {bio}
+                </p>
+              )}
+            </div>
           </CardContent>
         </Card>
       </aside>

@@ -18,6 +18,7 @@ import { NotificationItems } from "@/components/notifications-item";
 import { useCurrentUser } from "@/hooks/use-currentUser";
 import { AlertModal } from "@/components/ui/alert-modal";
 import { toast } from "react-hot-toast";
+import { cn } from "@/lib/utils";
 
 interface NotificationsDropdownProps {
   externalId: string | null | undefined;
@@ -79,7 +80,9 @@ export function NotificationsDropdown({
           size="icon"
           className="rounded-full active:scale-95 transition-all active:opacity-80 duration-0 relative"
         >
-          <Icons.notification className="w-5 h-5" />
+          <Icons.notification
+            className={cn("w-5 h-5", onOpen ? "text-facebook-primary" : "")}
+          />
           {currentUser?.hasNotifications && (
             <div className="w-3 h-3 rounded-full border border-border absolute bg-red-600 -top-0 -right-0" />
           )}

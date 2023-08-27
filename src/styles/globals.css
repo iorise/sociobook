@@ -18,7 +18,7 @@
     --card-foreground: 224 71.4% 4.1%;
 
     --border: 220 13% 91%;
-    --input: 0 0% 100%;
+    --input: 216, 20%, 95%;
 
     --primary: 220.9 39.3% 11%;
     --primary-foreground: 210 20% 98%;
@@ -26,7 +26,7 @@
     --secondary: 220 14.3% 95.9%;
     --secondary-foreground: 220.9 39.3% 11%;
 
-    --accent: 220 14.3% 95.9%;
+    --accent: 216, 10%, 90%;
     --accent-foreground: 220.9 39.3% 11%;
 
     --destructive: 0 84.2% 60.2%;

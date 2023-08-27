@@ -42,12 +42,8 @@ export function PostFeeds({
             <Button variant="ghost" className="rounded-full h-10 w-10">
               <Avatar className="active:scale-95 transition-all active:opacity-80 duration-0">
                 <AvatarImage
-                  src={
-                    externalImage ??
-                    profileImage ??
-                    ""
-                  }
-                  alt={`${firstName} ${lastName}`}
+                  src={externalImage ?? profileImage ?? ""}
+                  alt={`${firstName} ${lastName || ""}`}
                 />
                 <AvatarFallback>
                   <img src="/images/placeholder.png" />
@@ -62,9 +58,7 @@ export function PostFeeds({
             disabled={!isCurrentUser}
           >
             {isCurrentUser
-              ? `What's happening today, ${firstName} ${
-                  lastName || ""
-                } ?`
+              ? `What's happening today, ${firstName} ${lastName || ""} ?`
               : `Send message to ${initialData?.firstName} ${
                   initialData?.lastName || ""
                 }`}

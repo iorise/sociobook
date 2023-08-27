@@ -22,6 +22,7 @@ import { useLike } from "@/hooks/use-like";
 import { UserName } from "@/components/ui/user-name";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { usePost } from "@/hooks/use-post";
+import Link from "next/link";
 
 interface PostProps {
   data: extendedPost;
@@ -60,28 +61,32 @@ export function Post({ data, currentUser }: PostProps) {
       <Card>
         <CardHeader className="space-y-1 p-4">
           <div className="flex justify-between">
-            <div className="flex gap-2 items-center">
-              <Avatar>
-                <AvatarImage
-                  src={data.user?.externalImage ?? data.user.profileImage ?? ""}
-                  alt={data.user?.firstName ?? ""}
-                />
-                <AvatarFallback>
-                  <img src="/images/placeholder.png" />
-                </AvatarFallback>
-              </Avatar>
-              <div className="flex flex-col px-[-1rem]">
-                <UserName
-                  firstName={data.user?.firstName}
-                  lastName={data.user?.lastName}
-                  verified={data.user?.verified}
-                  className="text-lg font-medium"
-                />
-                <span className="font-normal text-muted-foreground text-xs">
-                  {createdAt}
-                </span>
+            <Link href={`/profile/${data.user?.externalId}`}>
+              <div className="flex gap-2 items-center">
+                <Avatar>
+                  <AvatarImage
+                    src={
+                      data.user?.externalImage ?? data.user.profileImage ?? ""
+                    }
+                    alt={data.user?.firstName ?? ""}
+                  />
+                  <AvatarFallback>
+                    <img src="/images/placeholder.png" />
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex flex-col px-[-1rem]">
+                  <UserName
+                    firstName={data.user?.firstName}
+                    lastName={data.user?.lastName}
+                    verified={data.user?.verified}
+                    className="text-lg font-medium"
+                  />
+                  <span className="font-normal text-muted-foreground text-xs">
+                    {createdAt}
+                  </span>
+                </div>
               </div>
-            </div>
+            </Link>
             {postByCurrentUser && (
               <Popover>
                 <PopoverTrigger asChild>
