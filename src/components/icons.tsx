@@ -54,6 +54,8 @@ import {
   BiSolidBell,
   BiSolidCalendarStar,
   BiSolidMessageError,
+  BiSolidUserPlus,
+  BiSolidUserX,
 } from "react-icons/bi";
 import { GiHamburgerMenu } from "react-icons/gi";
 import {
@@ -117,7 +119,9 @@ export const Icons = {
   close: X,
   reset: ResetIcon,
   moreVertical: MoreVertical,
-  moreHorizontal:MoreHorizontal,
+  moreHorizontal: MoreHorizontal,
+  userPlus: BiSolidUserPlus,
+  userX: BiSolidUserX,
   thumbFill: ({ ...props }: LucideProps) => (
     <svg
       viewBox="-6.24 -6.24 36.48 36.48"
@@ -342,7 +346,7 @@ export const Icons = {
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
       fill="#000000"
-      { ...props }
+      {...props}
     >
       <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
       <g

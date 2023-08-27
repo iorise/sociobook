@@ -4,6 +4,8 @@ import * as z from "zod";
 import { toast } from "react-hot-toast";
 import { isClerkAPIResponseError } from "@clerk/nextjs";
 import { formatDistanceToNowStrict } from "date-fns";
+import { User } from "@prisma/client";
+import { FriendshipStatus } from "@/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -54,11 +56,33 @@ export function formatDates(date: Date) {
     .replace("years", "y")
     .replace("year", "y");
 
-    return formattedDistance
+  return formattedDistance;
 }
 
 export function isArrayOfFile(files: unknown): files is File[] {
-  const isArray = Array.isArray(files)
-  if (!isArray) return false
-  return files.every((file) => file instanceof File)
+  const isArray = Array.isArray(files);
+  if (!isArray) return false;
+  return files.every((file) => file instanceof File);
+}
+
+export function checkFriendship(currentUser: User | null, otherUser: User | null) {
+  if (currentUser?.friendIds.find((friend) => friend === otherUser?.externalId)) {
+    return FriendshipStatus.FRIENDS;
+  }
+
+  if (
+    currentUser?.friendRequests.find((friend) => friend === otherUser?.externalId)
+  ) {
+    return FriendshipStatus.REQUEST_RECEIVED;
+  }
+
+  if (
+    otherUser?.friendRequests.find(
+      (friendRequest) => friendRequest === currentUser?.externalId
+    )
+  ) {
+    return FriendshipStatus.REQUEST_SENT;
+  }
+
+  return FriendshipStatus.NOT_FRIENDS;
 }

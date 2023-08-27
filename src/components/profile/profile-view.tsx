@@ -15,6 +15,9 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { UserName } from "@/components/ui/user-name";
+import { useFriendship } from "@/hooks/use-friendship";
+import { FriendshipStatus } from "@/types";
+import { checkFriendship } from "@/lib/utils";
 
 interface ProfileFormProps {
   currentUser: userDb | null;
@@ -30,6 +33,12 @@ export function ProfileView({
   isCurrentUser,
 }: ProfileFormProps) {
   const editPhotoModal = useModal();
+
+  const { acceptFriend, rejectFriend, removeFriend, requestFriend } =
+    useFriendship({
+      otherUserId: initialData?.externalId,
+      currentUserId: currentUser?.externalId,
+    });
 
   return (
     <div className="relative w-full container px-10 xl:px-36 grid grid-cols-1 ">
@@ -69,7 +78,7 @@ export function ProfileView({
                   variant="none"
                   className="active:scale-95 active:brightness-90 hover:brightness-110 w-44 h-44 rounded-full"
                 >
-                  <Avatar className="w-44 h-44 border-4 border-secondaryBackground">
+                  <Avatar className="w-44 h-44 border-[6px] border-secondaryBackground">
                     <AvatarImage
                       src={
                         initialData?.externalImage ??
@@ -128,12 +137,12 @@ export function ProfileView({
                 </Popover>
               )}
             </div>
-            <div className="flex flex-col pt-0 md:pt-10">
+            <div className="flex flex-col pt-0 md:pt-10 items-center md:items-start">
               <UserName
                 firstName={initialData?.firstName}
                 lastName={initialData?.lastName}
                 verified={initialData?.verified}
-                className="text-3xl font-bold text-white line-clamp-1"
+                className="text-3xl font-bold line-clamp-1"
                 iconClassName="w-16"
               />
               <p className="text-muted-foreground">
@@ -161,10 +170,52 @@ export function ProfileView({
               </>
             ) : (
               <>
-                <Button className="bg-facebook-primary text-white flex-1 md:flex-none">
-                  <Icons.people className="w-4 h-4 mr-2" />
-                  <span>Add friend</span>
-                </Button>
+                {checkFriendship(currentUser, initialData) ===
+                  FriendshipStatus.NOT_FRIENDS && (
+                  <Button
+                    onClick={() => requestFriend()}
+                    className="bg-facebook-primary text-white flex-1 md:flex-none"
+                  >
+                    <Icons.userPlus className="w-4 h-4 mr-2" />
+                    <span>Add friend</span>
+                  </Button>
+                )}
+                {checkFriendship(currentUser, initialData) ===
+                  FriendshipStatus.FRIENDS && (
+                  <Button
+                    onClick={() => removeFriend()}
+                    className="bg-facebook-primary text-white flex-1 md:flex-none"
+                  >
+                    <Icons.userX className="w-4 h-4 mr-2" />
+                    <span>Unfriend</span>
+                  </Button>
+                )}
+                {checkFriendship(currentUser, initialData) ===
+                  FriendshipStatus.REQUEST_RECEIVED && (
+                  <>
+                    <Button
+                      onClick={() => acceptFriend()}
+                      className="bg-facebook-primary text-white flex-1 md:flex-none"
+                    >
+                      <Icons.check className="w-4 h-4 mr-2" />
+                      <span>Accept</span>
+                    </Button>
+                    <Button
+                      onClick={() => rejectFriend()}
+                      className="bg-facebook-primary text-white flex-1 md:flex-none"
+                    >
+                      <Icons.close className="w-4 h-4 mr-2" />
+                      <span>Reject</span>
+                    </Button>
+                  </>
+                )}
+                {checkFriendship(currentUser, initialData) ===
+                  FriendshipStatus.REQUEST_SENT && (
+                  <Button className="bg-facebook-primary text-white flex-1 md:flex-none">
+                    <Icons.people className="w-4 h-4 mr-2" />
+                    <span>Invitation sent</span>
+                  </Button>
+                )}
                 <Button className="flex-1 md:flex-none">
                   <Icons.message className="w-4 h-4 mr-2" />
                   <span>Send message</span>

@@ -41,3 +41,10 @@ export type NotificationWithUser = Prisma.NotificationGetPayload<{
 export type FileWithPreview = FileWithPath & {
   preview: string
 }
+
+export enum FriendshipStatus {
+  FRIENDS = "FRIENDS",
+  NOT_FRIENDS = "NOT_FRIENDS",
+  REQUEST_SENT = "REQUEST_SENT",
+  REQUEST_RECEIVED = "REQUEST_RECEIVED",
+}
