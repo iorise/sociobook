@@ -23,6 +23,7 @@ const CommentInput = React.forwardRef<HTMLInputElement, CommentInputProps>(
             className
           )}
           ref={ref}
+          disabled={isLoading}
           {...props}
         />
         <Button

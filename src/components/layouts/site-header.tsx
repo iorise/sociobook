@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { User as userDb } from "@prisma/client";
-import Image from "next/image";
 
 import { Icons } from "@/components/icons";
 import { MainNav } from "@/components/layouts/main-nav";
@@ -13,16 +12,16 @@ import { NotificationsDropdown } from "@/components/nav-dropdowns/notificatioin-
 import { SearchBar } from "@/components/search-bar";
 
 interface SiteHeaderProps {
-  currentUser: userDb | null
+  currentUser: userDb | null;
 }
 
 export function SiteHeader({ currentUser }: SiteHeaderProps) {
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-secondaryBackground">
-      <div className="mx-6 flex h-14 items-center justify-between">
-        <div className="flex gap-2 -ml-1 items-center">
+    <header className="sticky h-14 top-0 z-40 w-full border-b bg-secondaryBackground">
+      <div className="px-1 sm:px-4 h-full flex items-center justify-between">
+        <div className="flex gap-2 items-center">
           <Link aria-label="Home" href="/">
-            <Image src="/logo.png" alt="logo" width={55} height={55} />
+            <Icons.logo className="w-11 h-11" />
           </Link>
           <SearchBar />
         </div>
@@ -47,8 +46,11 @@ export function SiteHeader({ currentUser }: SiteHeaderProps) {
           <Button variant="outline" size="icon" className="rounded-full">
             <Icons.message className="w-5 h-5" />
           </Button>
-          <NotificationsDropdown externalId={currentUser?.externalId} hasNotifications={currentUser?.hasNotifications}/>
-          <ProfileDropdown currentUser={currentUser}/>
+          <NotificationsDropdown
+            externalId={currentUser?.externalId}
+            hasNotifications={currentUser?.hasNotifications}
+          />
+          <ProfileDropdown currentUser={currentUser} />
         </div>
       </div>
     </header>

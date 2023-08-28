@@ -17,6 +17,7 @@ export function useInfinitePosts(externalId?: string) {
     getNextPageParam: (lastPage) => {
       return lastPage?.metaData.lastCursor;
     },
+    refetchOnWindowFocus: false,
   });
   return {
     data,
