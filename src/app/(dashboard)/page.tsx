@@ -42,7 +42,7 @@ export default async function DashboardPage() {
   const isCurrentUser = currentUser?.externalId === userId;
 
   return (
-    <div className="mx-auto px-2 flex-1 items-start justify-between md:grid md:grid-cols-[minmax(0,1fr)_260px] lg:grid-cols-[260px_minmax(0,1fr)_260px] p-0 m-0">
+    <div className="mx-auto px-1 flex-1 items-start justify-between md:grid md:grid-cols-[minmax(0,1fr)_260px] lg:grid-cols-[260px_minmax(0,1fr)_260px] p-0 m-0">
       <SidebarShell className="hidden lg:block">
         <SidebarNav items={siteConfig.sidebarNav} />
       </SidebarShell>

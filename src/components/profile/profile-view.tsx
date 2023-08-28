@@ -34,14 +34,22 @@ export function ProfileView({
 }: ProfileFormProps) {
   const editPhotoModal = useModal();
 
-  const { acceptFriend, rejectFriend, removeFriend, requestFriend } =
-    useFriendship({
-      otherUserId: initialData?.externalId,
-      currentUserId: currentUser?.externalId,
-    });
+  const {
+    requestFriend,
+    isLoadingRequest,
+    acceptFriend,
+    isLoadingAccept,
+    rejectFriend,
+    isLoadingReject,
+    removeFriend,
+    isLoadingRemove,
+  } = useFriendship({
+    otherUserId: initialData?.externalId,
+    currentUserId: currentUser?.externalId,
+  });
 
   return (
-    <div className="relative w-full container px-10 xl:px-36 grid grid-cols-1 ">
+    <div className="relative w-full container px-1 xm:px-10 xl:px-36 grid grid-cols-1 ">
       <div className="flex flex-col relative justify-center">
         <div className="w-full flex ">
           {initialData?.coverImage ? (
@@ -175,8 +183,13 @@ export function ProfileView({
                   <Button
                     onClick={() => requestFriend()}
                     className="bg-facebook-primary text-white flex-1 md:flex-none"
+                    disabled={isLoadingRequest}
                   >
-                    <Icons.userPlus className="w-4 h-4 mr-2" />
+                    {isLoadingRequest ? (
+                      <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Icons.userPlus className="w-5 h-5 mr-2" />
+                    )}
                     <span>Add friend</span>
                   </Button>
                 )}
@@ -185,8 +198,13 @@ export function ProfileView({
                   <Button
                     onClick={() => removeFriend()}
                     className="bg-facebook-primary text-white flex-1 md:flex-none"
+                    disabled={isLoadingRemove}
                   >
-                    <Icons.userX className="w-4 h-4 mr-2" />
+                    {isLoadingRemove ? (
+                      <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Icons.userX className="w-5 h-5 mr-2" />
+                    )}
                     <span>Unfriend</span>
                   </Button>
                 )}
@@ -196,15 +214,25 @@ export function ProfileView({
                     <Button
                       onClick={() => acceptFriend()}
                       className="bg-facebook-primary text-white flex-1 md:flex-none"
+                      disabled={isLoadingAccept}
                     >
-                      <Icons.check className="w-4 h-4 mr-2" />
+                      {isLoadingAccept ? (
+                        <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
+                      ) : (
+                        <Icons.check className="w-4 h-4 mr-2" />
+                      )}
                       <span>Accept</span>
                     </Button>
                     <Button
                       onClick={() => rejectFriend()}
                       className="bg-facebook-primary text-white flex-1 md:flex-none"
+                      disabled={isLoadingReject}
                     >
-                      <Icons.close className="w-4 h-4 mr-2" />
+                      {isLoadingReject ? (
+                        <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
+                      ) : (
+                        <Icons.close className="w-4 h-4 mr-2" />
+                      )}
                       <span>Reject</span>
                     </Button>
                   </>
@@ -212,7 +240,7 @@ export function ProfileView({
                 {checkFriendship(currentUser, initialData) ===
                   FriendshipStatus.REQUEST_SENT && (
                   <Button className="bg-facebook-primary text-white flex-1 md:flex-none">
-                    <Icons.people className="w-4 h-4 mr-2" />
+                    <Icons.peopleCheck className="w-5 h-5 mr-2" />
                     <span>Invitation sent</span>
                   </Button>
                 )}
