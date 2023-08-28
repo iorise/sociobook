@@ -27,6 +27,26 @@ export async function POST(req: Request) {
       },
     });
 
+    const currentUser = await prismadb.user.findUnique({
+      where: {
+        externalId: userId,
+      },
+    })
+
+    // Notification
+    if (comment.userId !== userId) {
+      await prismadb.notification.create({
+        data: {
+          content: comment.text,
+          userId: comment.userId,
+          senderFirstname: currentUser?.firstName,
+          senderLastname: currentUser?.lastName,
+          senderProfileImage: currentUser?.externalImage || currentUser?.profileImage || "",
+          type: "COMMENT",
+        },
+      })
+    }
+
     return NextResponse.json(comment);
   } catch (error) {
     console.log("[COMMENT_POST]", error);

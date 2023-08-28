@@ -56,13 +56,23 @@ model Comment {
    updatedAt      DateTime @updatedAt
 }
 
+enum NotificationType {
+  LIKE
+  FRIEND_REQUEST
+  COMMENT
+}
+
 model Notification {
-  id              String    @id @default(auto()) @map("_id") @db.ObjectId
-  text            String
-  userId          String    
-  user            User      @relation(fields: [userId], references: [externalId], onDelete: Cascade)
-  createdAt       DateTime  @default(now())
-  readAt          DateTime?
+  id                 String    @id @default(auto()) @map("_id") @db.ObjectId
+  content            String?
+  userId             String    
+  user               User      @relation(fields: [userId], references: [externalId], onDelete: Cascade)
+  senderFirstname    String?
+  senderLastname     String?
+  senderProfileImage String?
+  type               NotificationType?
+  createdAt          DateTime  @default(now())
+  readAt             DateTime?
 }
 
 model Image {

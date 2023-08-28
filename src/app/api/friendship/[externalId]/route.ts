@@ -18,6 +18,11 @@ export async function POST(req: NextRequest, { params }: Props) {
   try {
     const { action, friendId } = await req.json();
     const requestedId = params.externalId;
+    const currentUser = await prismadb.user.findUnique({
+      where: {
+        externalId: userId,
+      },
+    })
 
     const friend = await prismadb.user.findUnique({
       where: {
@@ -41,6 +46,17 @@ export async function POST(req: NextRequest, { params }: Props) {
           },
         },
       });
+
+      await prismadb.notification.create({
+        data: {
+          userId: requestedId,
+          senderFirstname: currentUser?.firstName,
+          senderLastname: currentUser?.lastName,
+          content: `You have a friend request from`,
+          senderProfileImage: currentUser?.externalImage || currentUser?.profileImage || "",
+          type: "FRIEND_REQUEST",
+        }
+      })
 
       return new NextResponse(
         JSON.stringify({ message: "Friend request sent" }),

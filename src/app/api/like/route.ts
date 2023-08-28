@@ -22,26 +22,35 @@ export async function POST(req: NextRequest) {
       throw new Error("Invalid ID");
     }
 
-    let updatedLikeIds = [...(post.likeIds || [])];
-
-    updatedLikeIds.push(userId);
-
     await prismadb.post.update({
       where: {
         id: postId,
       },
       data: {
-        likeIds: updatedLikeIds,
+        likeIds: {
+          push: userId,
+        },
       },
     });
 
-    // Nofitications start
+    // Nofitications
 
-    if (post.userId) {
+    const currentUser = await prismadb.user.findUnique({
+      where: {
+        externalId: userId,
+      },
+    });
+
+    if (post.userId && post.userId !== userId) {
       await prismadb.notification.create({
         data: {
-          text: "Someone liked your post",
+          content: `liked your post`,
+          senderFirstname: currentUser?.firstName,
+          senderLastname: currentUser?.lastName,
           userId: post.userId,
+          senderProfileImage:
+            currentUser?.externalImage || currentUser?.profileImage || "",
+          type: "LIKE",
         },
       });
 
@@ -55,9 +64,9 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Notification end
-
-    return new NextResponse(JSON.stringify(updatedLikeIds), { status: 200 });
+    return new NextResponse(JSON.stringify({ message: "Liked successfully" }), {
+      status: 200,
+    });
   } catch (error) {
     console.log("[LIKE_POST]", error);
     return new NextResponse(JSON.stringify({ error: "Internal error" }), {
