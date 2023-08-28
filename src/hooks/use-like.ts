@@ -19,7 +19,11 @@ export const useLike = (postId: string) => {
 
   const hasLiked = React.useMemo(() => {
     const list = fetchedPost?.likeIds || [];
-    return externalId !== undefined && externalId !== null && list.includes(externalId);
+    return (
+      externalId !== undefined &&
+      externalId !== null &&
+      list.includes(externalId)
+    );
   }, [fetchedPost?.likeIds, externalId]);
 
   const { mutateAsync } = useMutation({
@@ -46,11 +50,16 @@ export const useLike = (postId: string) => {
         ["post", postId],
         (oldData) => {
           if (oldData && externalId !== undefined && externalId !== null) {
+            let updatedLikeIds = [...oldData.likeIds];
+
+            if (hasLiked) {
+              updatedLikeIds = updatedLikeIds.filter((id) => id !== externalId);
+            } else if (!updatedLikeIds.includes(externalId)) {
+              updatedLikeIds.push(externalId);
+            }
             return {
               ...oldData,
-              likeIds: hasLiked
-                ? oldData.likeIds.filter((id) => id !== externalId)
-                : [...oldData.likeIds, externalId],
+              likeIds: updatedLikeIds,
             };
           }
           return oldData;
