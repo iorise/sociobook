@@ -31,7 +31,7 @@ export async function POST(req: Request) {
       where: {
         externalId: userId,
       },
-    })
+    });
 
     // Notification
     if (comment.userId !== userId) {
@@ -41,11 +41,21 @@ export async function POST(req: Request) {
           userId: comment.userId,
           senderFirstname: currentUser?.firstName,
           senderLastname: currentUser?.lastName,
-          senderProfileImage: currentUser?.externalImage || currentUser?.profileImage || "",
+          senderProfileImage:
+            currentUser?.externalImage || currentUser?.profileImage || "",
           type: "COMMENT",
         },
-      })
+      });
     }
+
+    await prismadb.user.update({
+      where: {
+        externalId: comment.userId,
+      },
+      data: {
+        hasNotifications: true,
+      },
+    });
 
     return NextResponse.json(comment);
   } catch (error) {
@@ -109,13 +119,14 @@ export async function GET(req: Request) {
     });
 
     const data = {
-      data: comments, metaData: {
+      data: comments,
+      metaData: {
         lastCursor: cursor,
-        hasNextPage: nextPage.length > 0
-      }
-    }
+        hasNextPage: nextPage.length > 0,
+      },
+    };
 
-    return new NextResponse(JSON.stringify(data), {status:200})
+    return new NextResponse(JSON.stringify(data), { status: 200 });
   } catch (error) {
     console.log("[COMMENT_GET]", error);
     return new NextResponse("Internal error", { status: 500 });

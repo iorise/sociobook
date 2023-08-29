@@ -18,6 +18,10 @@ import { UserName } from "@/components/ui/user-name";
 import { useFriendship } from "@/hooks/use-friendship";
 import { FriendshipStatus } from "@/types";
 import { checkFriendship } from "@/lib/utils";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 
 interface ProfileFormProps {
   currentUser: userDb | null;
@@ -33,6 +37,7 @@ export function ProfileView({
   isCurrentUser,
 }: ProfileFormProps) {
   const editPhotoModal = useModal();
+  const router = useRouter();
 
   const {
     requestFriend,
@@ -48,10 +53,26 @@ export function ProfileView({
     currentUserId: currentUser?.externalId,
   });
 
+  const { mutateAsync: toggleVerified } = useMutation({
+    mutationFn: async () => {
+      await axios.patch(`/api/subscribe/${initialData?.externalId}`, {
+        verified: !initialData?.verified,
+      });
+    },
+    onSuccess: () => {
+      toast.success(
+        initialData?.verified
+          ? "Success make user unverified !"
+          : "Success make user verified !"
+      );
+      router.refresh();
+    },
+  });
+
   return (
-    <div className="relative w-full container px-1 xm:px-10 xl:px-36 grid grid-cols-1 ">
+    <div className="relative w-full container px-1 md:px-10 xl:px-36 grid grid-cols-1 ">
       <div className="flex flex-col relative justify-center">
-        <div className="w-full flex ">
+        <div className="w-full flex">
           {initialData?.coverImage ? (
             <Image
               src={initialData.coverImage}
@@ -150,8 +171,8 @@ export function ProfileView({
                 firstName={initialData?.firstName}
                 lastName={initialData?.lastName}
                 verified={initialData?.verified}
-                className="text-3xl font-bold line-clamp-1"
-                iconClassName="w-16"
+                className="text-3xl font-bold line-clamp-1 flex items-center"
+                iconClassName="w-6 h-6 ml-1"
               />
               <p className="text-muted-foreground">
                 {initialData?.friendIds.length} Friends
@@ -244,10 +265,17 @@ export function ProfileView({
                     <span>Invitation sent</span>
                   </Button>
                 )}
-                <Button className="flex-1 md:flex-none">
+                <Button disabled className="flex-1 md:flex-none">
                   <Icons.message className="w-4 h-4 mr-2" />
                   <span>Send message</span>
                 </Button>
+                {currentUser?.role === "ADMIN" && (
+                  <Button onClick={() => toggleVerified()}>
+                    {initialData?.verified
+                      ? "Mark as Unverified"
+                      : "Mark as Verified"}
+                  </Button>
+                )}
               </>
             )}
           </div>

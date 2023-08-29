@@ -10,6 +10,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum RoleType {
+  USER
+  ADMIN
+}
+
 model User {
   id               String   @id @default(auto()) @map("_id") @db.ObjectId
   externalId       String?  @unique
@@ -21,14 +26,14 @@ model User {
   coverImage       String?
   images           Image[]
   bio              String?
-  admin            Boolean?
-  verified         Boolean?
+  role             RoleType @default(USER)
+  verified         Boolean @default(false)
   friendIds        String[]
   friendRequests   String[]
   hasNotifications Boolean?
   posts            Post[]
   comments         Comment[]
-  notifications     Notification[]
+  notifications    Notification[]
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 }
