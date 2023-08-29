@@ -126,6 +126,41 @@ export const Icons = {
   userPlus: BiSolidUserPlus,
   userX: BiSolidUserX,
   messageFill: BiSolidMessageRounded,
+  lock: ({ ...props }: LucideProps) => (
+    <svg
+      version="1.0"
+      id="Layer_1"
+      xmlns="http://www.w3.org/2000/svg"
+      width="800px"
+      height="800px"
+      viewBox="0 0 64 64"
+      enable-background="new 0 0 64 64"
+      {...props}
+    >
+      <g>
+        <path
+          fill="#7a7d81"
+          d="M8,56v4c0,2.211,1.789,4,4,4h40c2.211,0,4-1.789,4-4v-4H8z"
+        />
+        <path
+          fill="#7a7d81"
+          d="M56,54V34H8v20H56z M32,36c2.762,0,5,2.238,5,5c0,1.631-0.791,3.066-2,3.979V49c0,1.657-1.343,3-3,3
+		s-3-1.343-3-3v-4.021c-1.209-0.912-2-2.348-2-3.979C27,38.238,29.238,36,32,36z"
+        />
+        <path
+          fill="#0e8cf1"
+          d="M31,43.816V49c0,0.553,0.447,1,1,1s1-0.447,1-1v-5.184c1.163-0.413,2-1.512,2-2.816c0-1.657-1.343-3-3-3
+		s-3,1.343-3,3C29,42.305,29.837,43.403,31,43.816z"
+        />
+        <path
+          fill="#7a7d81"
+          d="M56,32v-4c0-2.211-1.789-4-4-4h-6V14c0-7.732-6.268-14-14-14S18,6.268,18,14v10h-6c-2.211,0-4,1.789-4,4v4
+		H56z M38,24H26V14c0-3.313,2.687-6,6-6s6,2.687,6,6V24z M20,14c0-6.627,5.373-12,12-12s12,5.373,12,12v10h-4V14
+		c0-4.418-3.582-8-8-8s-8,3.582-8,8v10h-4V14z"
+        />
+      </g>
+    </svg>
+  ),
   thumbFill: ({ ...props }: LucideProps) => (
     <svg
       viewBox="-6.24 -6.24 36.48 36.48"
@@ -244,15 +279,32 @@ export const Icons = {
     </svg>
   ),
   logo: ({ ...props }: LucideProps) => (
-    <svg width="800px" height="800px" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-    <circle cx="16" cy="16" r="14" fill="url(#paint0_linear_87_7208)"/>
-    <path d="M21.2137 20.2816L21.8356 16.3301H17.9452V13.767C17.9452 12.6857 18.4877 11.6311 20.2302 11.6311H22V8.26699C22 8.26699 20.3945 8 18.8603 8C15.6548 8 13.5617 9.89294 13.5617 13.3184V16.3301H10V20.2816H13.5617V29.8345C14.2767 29.944 15.0082 30 15.7534 30C16.4986 30 17.2302 29.944 17.9452 29.8345V20.2816H21.2137Z" fill="white"/>
-    <defs>
-    <linearGradient id="paint0_linear_87_7208" x1="16" y1="2" x2="16" y2="29.917" gradientUnits="userSpaceOnUse">
-    <stop stop-color="#18ACFE"/>
-    <stop offset="1" stop-color="#0163E0"/>
-    </linearGradient>
-    </defs>
+    <svg
+      width="800px"
+      height="800px"
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <circle cx="16" cy="16" r="14" fill="url(#paint0_linear_87_7208)" />
+      <path
+        d="M21.2137 20.2816L21.8356 16.3301H17.9452V13.767C17.9452 12.6857 18.4877 11.6311 20.2302 11.6311H22V8.26699C22 8.26699 20.3945 8 18.8603 8C15.6548 8 13.5617 9.89294 13.5617 13.3184V16.3301H10V20.2816H13.5617V29.8345C14.2767 29.944 15.0082 30 15.7534 30C16.4986 30 17.2302 29.944 17.9452 29.8345V20.2816H21.2137Z"
+        fill="white"
+      />
+      <defs>
+        <linearGradient
+          id="paint0_linear_87_7208"
+          x1="16"
+          y1="2"
+          x2="16"
+          y2="29.917"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stop-color="#18ACFE" />
+          <stop offset="1" stop-color="#0163E0" />
+        </linearGradient>
+      </defs>
     </svg>
   ),
   peopleTag: ({ ...props }: LucideProps) => (

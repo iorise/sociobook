@@ -1,8 +1,6 @@
 "use client";
 
 import * as React from "react";
-import axios from "axios";
-import { useMutation, useQuery } from "@tanstack/react-query";
 
 import {
   Popover,
@@ -38,7 +36,7 @@ export function NotificationsDropdown({
     }
   }, [onOpen]);
 
-  const { notifications, isLoading, deleteNotification, refetch, fetchError } =
+  const { notifications, isLoading, refetch, fetchError } =
     useNotifications();
 
   return (

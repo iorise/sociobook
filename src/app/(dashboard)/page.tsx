@@ -44,9 +44,9 @@ export default async function DashboardPage() {
   return (
     <div className="mx-auto px-1 flex-1 items-start justify-between md:grid md:grid-cols-[minmax(0,1fr)_260px] lg:grid-cols-[260px_minmax(0,1fr)_260px] p-0 m-0">
       <SidebarShell className="hidden lg:block">
-        <SidebarNav items={siteConfig.sidebarNav} />
+        <SidebarNav items={siteConfig.sidebarNav} currentUser={currentUser}/>
       </SidebarShell>
-      <main className="py-4 px-1 md:px-2 lg:px-16 xl:px-28 container">
+      <main className="px-1 md:px-2 lg:px-16 xl:px-28 container">
         <PostFeeds currentUser={currentUser} isCurrentUser={isCurrentUser} />
       </main>
       <SidebarShell className="hidden md:block">

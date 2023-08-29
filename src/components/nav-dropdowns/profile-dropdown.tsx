@@ -62,7 +62,8 @@ export function ProfileDropdown({ currentUser }: ProfileDropdownProps) {
               firstName={currentUser?.firstName}
               lastName={currentUser?.lastName}
               verified={currentUser?.verified}
-              className="text-xl font-semibold"
+              className="text-xl font-semibold line-clamp-1 flex items-center"
+              iconClassName="h-4 w-4"
             />
           </Link>
           <Separator className="my-2" />

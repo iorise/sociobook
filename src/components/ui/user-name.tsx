@@ -21,7 +21,7 @@ export function UserName({
   return (
     <p className={cn("text-sm break-words line-clamp-2", className)}>
       {firstName} {lastName}
-      <span className="inline-flex items-center ml-1">
+      <span className="inline-flex items-center ml-1.5">
         {verified && (
           <Icons.verified
             className={cn("self-center w-[0.87rem] h-[0.87rem]", iconClassName)}

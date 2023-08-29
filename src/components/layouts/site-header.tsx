@@ -30,6 +30,7 @@ export function SiteHeader({ currentUser }: SiteHeaderProps) {
         </div>
         <div className="flex items-center space-x-2">
           <Button
+            disabled
             variant="outline"
             size="icon"
             className="rounded-full hidden lg:flex"
@@ -43,7 +44,12 @@ export function SiteHeader({ currentUser }: SiteHeaderProps) {
           >
             <Icons.plus className="w-5 h-5" />
           </Button>
-          <Button variant="outline" size="icon" className="rounded-full">
+          <Button
+            disabled
+            variant="outline"
+            size="icon"
+            className="rounded-full"
+          >
             <Icons.message className="w-5 h-5" />
           </Button>
           <NotificationsDropdown

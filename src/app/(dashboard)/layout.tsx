@@ -9,8 +9,10 @@ interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 
-export default async function DashboardLayout({ children }: DashboardLayoutProps) {
-  const {userId} = auth();
+export default async function DashboardLayout({
+  children,
+}: DashboardLayoutProps) {
+  const { userId } = auth();
 
   if (!userId) {
     redirect("/login");
