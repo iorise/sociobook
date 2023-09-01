@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
       include: {
         user: true,
       },
-      take: 15,
+      take: 10,
       orderBy: {
         createdAt: "desc",
       },
