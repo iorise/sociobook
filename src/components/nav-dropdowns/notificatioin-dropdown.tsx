@@ -13,12 +13,14 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { NotificationLoader } from "@/components/ui/notification-loader";
 import { NotificationItems } from "@/components/notifications-item";
 import { useCurrentUser } from "@/hooks/use-currentUser";
+// eslint-disable-next-line no-unused-vars
 import { AlertModal } from "@/components/ui/alert-modal";
 import { cn } from "@/lib/utils";
 import { useNotifications } from "@/hooks/use-notifications";
 
 export function NotificationsDropdown() {
   const [onOpen, setOnOpen] = React.useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [alertOpen, setAlertOpen] = React.useState(false);
   const { data: currentUser } = useCurrentUser();
 
@@ -26,6 +28,7 @@ export function NotificationsDropdown() {
     if (onOpen) {
       refetch();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onOpen]);
 
   const { notifications, isLoading, refetch, fetchError } = useNotifications();

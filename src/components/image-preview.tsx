@@ -38,7 +38,7 @@ export function ImagePreview({
   React.useEffect(() => {
     const image = imagesPreview[selectedIndex];
     setSelectedImage(image);
-  }, [selectedIndex]);
+  }, [selectedIndex, imagesPreview]);
 
   function handleSelectedImage(index: number) {
     setSelectedIndex(index);

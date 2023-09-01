@@ -30,12 +30,10 @@ type Inputs = z.infer<typeof profileSchema>;
 
 interface EditPhotoProfileProps {
   currentUser: userDb | null ;
-  externalId: string;
 }
 
 export function EditProfile({
   currentUser,
-  externalId,
 }: EditPhotoProfileProps) {
   const editProfileModal = useModal();
   const queryClient = useQueryClient();

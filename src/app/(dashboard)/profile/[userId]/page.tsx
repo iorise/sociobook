@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { ProfileView } from "@/components/profile/profile-view";
 import { InfoView } from "@/components/profile/info-view";
 import prismadb from "@/lib/prismadb";
-import { Metadata, ResolvingMetadata } from "next";
+import { Metadata } from "next";
 
 interface ProfilePageProps {
   params: { userId: string };

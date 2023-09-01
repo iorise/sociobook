@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 
 import { Modal } from "@/components/ui/modal";

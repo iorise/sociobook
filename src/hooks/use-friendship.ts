@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
@@ -9,7 +9,6 @@ interface Props {
 }
 
 export function useFriendship({ otherUserId, currentUserId }: Props) {
-  const queryClient = useQueryClient();
   const router = useRouter();
 
   const { mutateAsync: requestFriend, isLoading: isLoadingRequest } =

@@ -22,17 +22,6 @@ export default async function DashboardPage() {
     redirect("/login");
   }
 
-  const users = await prismadb.user.findMany({
-    where: {
-      externalId: {
-        not: userId,
-      },
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
-
   const currentUser = await prismadb.user.findUnique({
     where: {
       externalId: userId,

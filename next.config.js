@@ -4,10 +4,6 @@ const nextConfig = {
     domains: [
       "images.clerk.com",
       "www.gravatar.com",
-      "lh3.googleusercontent.com",
-      "tenor.com",
-      "encrypted-tbn0.gstatic.com",
-      "i0.wp.com",
       "uploadthing.com"
     ],
   },

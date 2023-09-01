@@ -310,7 +310,7 @@ export function ProfileView({
           </div>
         </div>
       </div>
-      <EditProfile currentUser={currentUser} externalId={userId} />
+      <EditProfile currentUser={currentUser} />
       <ImageModal
         setIsModalOpen={setIsOpen}
         isModalOpen={isOpen}

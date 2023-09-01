@@ -136,6 +136,7 @@ export function Post({ data, currentUser }: PostProps) {
               <div className={cn(data.images.length > 1 ? "w-full grid grid-cols-2 gap-1 relative rounded-md" : "w-full grid grid-cols-1")}>
                 {data.images.map((image, i) => (
                   <ImagePreview
+                    key={i}
                     imageData={image}
                     i={i}
                     imagesLength={data.images.length}
