@@ -5,6 +5,8 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 
 import { cn } from "@/lib/utils";
+import { Button } from "./button";
+import { Icons } from "../icons";
 
 const Dialog = DialogPrimitive.Root;
 
@@ -33,10 +35,17 @@ const DialogOverlay = React.forwardRef<
 ));
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
 
+interface DialogContentProps {
+  arrows?: boolean;
+  nextFn?: () => void;
+  prevFn?: () => void;
+}
+
 const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
->(({ className, children, ...props }, ref) => (
+  DialogContentProps &
+    React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
+>(({ className, arrows, nextFn, prevFn, children, ...props }, ref) => (
   <DialogPortal>
     <DialogOverlay />
     <DialogPrimitive.Content
@@ -49,9 +58,27 @@ const DialogContent = React.forwardRef<
     >
       {children}
       <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
-        <Cross2Icon className="h-4 w-4" />
+        <Cross2Icon className="h-6 w-6" />
         <span className="sr-only">Close</span>
       </DialogPrimitive.Close>
+      {arrows && (
+        <div>
+          <Button
+            variant="none"
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 z-[99] ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+            onClick={prevFn}
+          >
+            <Icons.arrowLeft className="w-6 h-6" />
+          </Button>
+          <Button
+              variant="none"
+              className="absolute right-0 top-1/2 transform -translate-y-1/2 z-[99] ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+              onClick={nextFn}
+            >
+              <Icons.arrowRight className="w-6 h-6" />
+            </Button>
+        </div>
+      )}
     </DialogPrimitive.Content>
   </DialogPortal>
 ));

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import Image from "next/image";
 import { User } from "@prisma/client";
 
@@ -22,7 +23,7 @@ import { useLike } from "@/hooks/use-like";
 import { UserName } from "@/components/ui/user-name";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { usePost } from "@/hooks/use-post";
-import Link from "next/link";
+import {ImagePreview} from "@/components/image-preview";
 
 interface PostProps {
   data: extendedPost;
@@ -122,44 +123,26 @@ export function Post({ data, currentUser }: PostProps) {
           <div className="w-full flex flex-col">
             <p
               onClick={toggleShowMoreText}
-              className={cn(showMoreText ? "line-clamp-none" : "line-clamp-3")}
+              className={cn(
+                showMoreText
+                  ? "line-clamp-none"
+                  : data.images.length
+                  ? `line-clamp-3`
+                  : "line-clamp-6"
+              )}
             >
               {data.text}
             </p>
-            {data?.images?.length > 1 ? (
-              <div className="w-full grid grid-cols-2 gap-1 relative rounded-md">
+              <div className={cn(data.images.length > 1 ? "w-full grid grid-cols-2 gap-1 relative rounded-md" : "w-full grid grid-cols-1")}>
                 {data.images.map((image, i) => (
-                  <Image
-                    key={i}
-                    src={image.url || ""}
-                    alt="image"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    width={300}
-                    height={300}
-                    className={cn(
-                      "object-cover object-center w-full h-full",
-                      data.images.length === 3 && i === 2
-                        ? "col-span-2 aspect-[2/1]"
-                        : "col-span-1"
-                    )}
-                    loading="lazy"
+                  <ImagePreview
+                    imageData={image}
+                    i={i}
+                    imagesLength={data.images.length}
+                    imagesPreview={data.images}
                   />
                 ))}
               </div>
-            ) : (
-              data.images.map((image, i) => (
-                <Image
-                  key={i}
-                  src={image.url || ""}
-                  alt="image"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  width={300}
-                  height={300}
-                  className="object-cover object-center w-full h-full rounded-md"
-                  loading="lazy"
-                />
-              ))
-            )}
           </div>
         </CardContent>
         <CardFooter className="flex flex-col text-muted-foreground">

@@ -3,6 +3,10 @@
 import React from "react";
 import Image from "next/image";
 import { User as userDb } from "@prisma/client";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Icons } from "@/components/icons";
@@ -18,10 +22,7 @@ import { UserName } from "@/components/ui/user-name";
 import { useFriendship } from "@/hooks/use-friendship";
 import { FriendshipStatus } from "@/types";
 import { checkFriendship } from "@/lib/utils";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import { toast } from "react-hot-toast";
+import ImageModal from "@/components/image-modal";
 
 interface ProfileFormProps {
   currentUser: userDb | null;
@@ -38,6 +39,8 @@ export function ProfileView({
 }: ProfileFormProps) {
   const editPhotoModal = useModal();
   const router = useRouter();
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [selectedImage, setSelectedImage] = React.useState<string | null>(null);
 
   const {
     requestFriend,
@@ -69,6 +72,11 @@ export function ProfileView({
     },
   });
 
+  const openImageModal = (imageUrl: string) => {
+    setSelectedImage(imageUrl);
+    setIsOpen(true);
+  };
+
   return (
     <div className="relative w-full container px-1 md:px-10 xl:px-36 grid grid-cols-1 ">
       <div className="flex flex-col relative justify-center">
@@ -80,7 +88,9 @@ export function ProfileView({
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               width={1200}
               height={300}
-              className="px-0 relative aspect-[3/1.3] md:aspect-[4/1.3] overflow-hidden bg-center rounded-md object-cover"
+              className="px-0 relative aspect-[3/1.3] md:aspect-[4/1.3] overflow-hidden bg-center rounded-md object-cover cursor-pointer"
+              loading="lazy"
+              onClick={() => openImageModal(initialData?.coverImage ?? "")}
             />
           ) : (
             <div className="w-full relative aspect-[3/1.3] md:aspect-[4/1.3] overflow-hidden bg-center rounded-md bg-accent brightness-150" />
@@ -106,6 +116,13 @@ export function ProfileView({
                 <Button
                   variant="none"
                   className="active:scale-95 active:brightness-90 hover:brightness-110 w-44 h-44 rounded-full"
+                  onClick={() =>
+                    openImageModal(
+                      initialData?.externalImage ??
+                        initialData?.profileImage ??
+                        ""
+                    )
+                  }
                 >
                   <Avatar className="w-44 h-44 border-[6px] border-secondaryBackground">
                     <AvatarImage
@@ -145,23 +162,35 @@ export function ProfileView({
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-60">
-                    <div className="grid gap-5">
-                      <div className="flex">
-                        <Icons.user className="mr-2 w-5 h-5" />
-                        <span>See profile photo</span>
-                      </div>
-                      <div
-                        className="flex"
-                        onClick={() => editPhotoModal.onOpen()}
-                      >
-                        <Icons.fileImage className="mr-2 w-5 h-5" />
-                        <span>Update photo</span>
-                      </div>
-                      <div className="flex">
-                        <Icons.avatar className="mr-2 w-5 h-5" />
-                        <span>Create avatar profile</span>
-                      </div>
-                    </div>
+                    <Button
+                      variant="ghost"
+                      className="justify-start flex gap-3 py-6 w-full"
+                      onClick={() =>
+                        openImageModal(
+                          initialData?.externalImage ??
+                            initialData?.profileImage ??
+                            ""
+                        )
+                      }
+                    >
+                      <Icons.user className="mr-2 w-5 h-5" />
+                      <span>See profile photo</span>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      className="justify-start flex gap-3 py-6 w-full"
+                    >
+                      <Icons.fileImage className="mr-2 w-5 h-5" />
+                      <span>Update photo</span>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      className="justify-start flex gap-3 py-6 w-full"
+                      disabled
+                    >
+                      <Icons.avatar className="mr-2 w-5 h-5" />
+                      <span>Create avatar</span>
+                    </Button>
                   </PopoverContent>
                 </Popover>
               )}
@@ -171,8 +200,8 @@ export function ProfileView({
                 firstName={initialData?.firstName}
                 lastName={initialData?.lastName}
                 verified={initialData?.verified}
-                className="text-3xl font-bold line-clamp-1 flex items-center"
-                iconClassName="w-6 h-6 ml-1"
+                className="text-lg sm:text-xl font-semibold line-clamp-2"
+                iconClassName="w-4 h-4"
               />
               <p className="text-muted-foreground">
                 {initialData?.friendIds.length} Friends
@@ -282,6 +311,11 @@ export function ProfileView({
         </div>
       </div>
       <EditProfile currentUser={currentUser} externalId={userId} />
+      <ImageModal
+        setIsModalOpen={setIsOpen}
+        isModalOpen={isOpen}
+        imageUrl={selectedImage}
+      />
     </div>
   );
 }

@@ -40,6 +40,7 @@
     "date-fns": "^2.30.0",
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.12",
+    "framer-motion": "^10.16.2",
     "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.263.1",
     "next": "13.4.12",

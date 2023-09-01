@@ -44,19 +44,21 @@ export function Posts({ externalId, currentUser }: PostsProps) {
   }
 
   return (
-    <div className="flex flex-col gap-5">
+    <ul className="flex flex-col gap-5">
       {isSuccess &&
         data?.pages.map((page) =>
           page.data.map((post: extendedPost, index: number) => {
             // if the last element in the page is in view, add a ref to it
             if (page.data.length === index + 1) {
               return (
-                <div ref={ref} key={index}>
-                  <Post data={post} currentUser={currentUser} key={post.id}/>
-                </div>
+                <li ref={ref} key={index}>
+                  <Post data={post} currentUser={currentUser} key={post.id} />
+                </li>
               );
             } else {
-              return <Post data={post} currentUser={currentUser} key={post.id}/>;
+              return (
+                <Post data={post} currentUser={currentUser} key={post.id} />
+              );
             }
           })
         )}
@@ -74,6 +76,6 @@ export function Posts({ externalId, currentUser }: PostsProps) {
             No more post to load.
           </div>
         )}
-    </div>
+    </ul>
   );
 }
