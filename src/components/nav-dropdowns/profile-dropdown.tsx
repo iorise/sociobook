@@ -42,7 +42,7 @@ export function ProfileDropdown({ currentUser }: ProfileDropdownProps) {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-96" align="end" forceMount>
-        <div className="grid mx-1 mb-3 shadow-lg rounded-lg">
+        <div className="grid px-1 mb-3 shadow-lg rounded-lg">
           <Link
             className="flex gap-2 items-center"
             href={`/profile/${currentUser?.externalId}`}
@@ -62,7 +62,7 @@ export function ProfileDropdown({ currentUser }: ProfileDropdownProps) {
               firstName={currentUser?.firstName}
               lastName={currentUser?.lastName}
               verified={currentUser?.verified}
-              className="text-xl font-semibold line-clamp-1 flex items-center"
+              className="text-lg font-semibold line-clamp-1"
               iconClassName="h-4 w-4"
             />
           </Link>
@@ -71,7 +71,7 @@ export function ProfileDropdown({ currentUser }: ProfileDropdownProps) {
             See All Profile
           </div>
         </div>
-        <div className="relative mx-1 flex flex-col">
+        <div className="relative px-1 flex flex-col">
           <DropdownList
             title="Settings"
             icon={

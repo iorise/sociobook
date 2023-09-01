@@ -17,15 +17,7 @@ import { AlertModal } from "@/components/ui/alert-modal";
 import { cn } from "@/lib/utils";
 import { useNotifications } from "@/hooks/use-notifications";
 
-interface NotificationsDropdownProps {
-  externalId: string | null | undefined;
-  hasNotifications: boolean | null | undefined;
-}
-
-export function NotificationsDropdown({
-  externalId,
-  hasNotifications,
-}: NotificationsDropdownProps) {
+export function NotificationsDropdown() {
   const [onOpen, setOnOpen] = React.useState(false);
   const [alertOpen, setAlertOpen] = React.useState(false);
   const { data: currentUser } = useCurrentUser();
@@ -36,8 +28,7 @@ export function NotificationsDropdown({
     }
   }, [onOpen]);
 
-  const { notifications, isLoading, refetch, fetchError } =
-    useNotifications();
+  const { notifications, isLoading, refetch, fetchError } = useNotifications();
 
   return (
     <Popover open={onOpen} onOpenChange={setOnOpen}>
@@ -63,7 +54,9 @@ export function NotificationsDropdown({
             <div className="w-full text-center pt-5">Something went wrong</div>
           ) : (
             <div className="grid gap-5">
-              <div className="text-xl font-bold">Notifications</div>
+              <h1 className="text-xl font-semibold">
+                Notifications
+              </h1>
               {notifications?.length === 0 ? (
                 <div className="w-full flex flex-col gap-3 items-center justify-center">
                   <Icons.notification className="w-16 h-16" />
@@ -75,9 +68,7 @@ export function NotificationsDropdown({
                 <ul className="w-full">
                   {notifications?.map((notification) => (
                     <li key={notification.id} className="py-3 mx-1">
-                      <NotificationItems
-                        notification={notification}
-                      />
+                      <NotificationItems notification={notification} />
                     </li>
                   ))}
                 </ul>

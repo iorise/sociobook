@@ -52,10 +52,7 @@ export function SiteHeader({ currentUser }: SiteHeaderProps) {
           >
             <Icons.message className="w-5 h-5" />
           </Button>
-          <NotificationsDropdown
-            externalId={currentUser?.externalId}
-            hasNotifications={currentUser?.hasNotifications}
-          />
+          <NotificationsDropdown />
           <ProfileDropdown currentUser={currentUser} />
         </div>
       </div>

@@ -4,6 +4,7 @@ import * as React from "react";
 import { formatDates } from "@/lib/utils";
 import { CommentWithUser } from "@/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { UserName } from "@/components/ui/user-name";
 
 interface CommentItemProps {
   comment: CommentWithUser;
@@ -28,9 +29,13 @@ export function CommentItem({ comment }: CommentItemProps) {
         </Avatar>
         <div className="flex flex-col gap-1">
           <div className="flex flex-col bg-accent rounded-xl p-2">
-            <p className="text-sm font-medium text-foreground">
-              {comment.author.firstName} {comment.author.lastName}
-            </p>
+            <UserName
+              firstName={comment.author.firstName}
+              lastName={comment.author.lastName || ""}
+              verified={comment.author.verified}
+              className="text-sm font-medium text-foreground"
+              iconClassName="h-3 w-3"
+            />
             <p className="text-sm font-normal text-foreground">
               {comment.text}
             </p>

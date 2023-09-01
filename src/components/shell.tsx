@@ -8,7 +8,7 @@ const shellVariants = cva("grid items-center gap-8 pb-8 pt-6 md:py-8", {
     variant: {
       default: "container",
       sidebar:
-        "sticky top-14 z-30 h-[calc(100vh-3.6rem)] w-full shrink-0 gap-0 py-4",
+        "sticky top-14 z-30 h-[calc(100vh_-_3.5rem)] w-full shrink-0 gap-0 py-4",
       centered: "mx-auto mb-16 mt-20 max-w-md justify-center",
       markdown: "container max-w-3xl gap-0 py-8 md:py-10 lg:py-10",
     },
@@ -42,7 +42,13 @@ function SidebarShell({
   ...props
 }: ShellProps) {
   return (
-    <Comp className={cn("sticky top-14 z-30 h-[calc(100vh-3.6rem)] w-full shrink-0 gap-0 py-4", className)} {...props} />
+    <Comp
+      className={cn(
+        "sticky top-14 z-30 h-[calc(100vh_-_3.5rem)] w-full shrink-0 gap-0 py-4",
+        className
+      )}
+      {...props}
+    />
   );
 }
 

@@ -6,6 +6,7 @@ import QueryWrapper from "@/components/providers/provider-client";
 import "@/styles/globals.css";
 
 import { Toaster } from "@/components/ui/toaster";
+import { cn } from "@/lib/utils";
 
 const font = Inter({ subsets: ["latin"] });
 
@@ -37,7 +38,7 @@ export default function RootLayout({
     <ClerkProvider>
       <QueryWrapper>
         <html lang="en" suppressHydrationWarning>
-          <body className={font.className}>
+          <body className={cn(font.className, "antialiased")}>
             {children}
             <Toaster />
           </body>

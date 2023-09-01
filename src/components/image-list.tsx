@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetImage } from "@/hooks/use-getimage";
+import { useGetImage } from "@/hooks/use-get-image";
 import Image from "next/image";
 import * as React from "react";
 

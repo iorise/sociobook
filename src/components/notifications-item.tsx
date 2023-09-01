@@ -47,7 +47,7 @@ export function NotificationItems({ notification }: NotificationItemsProps) {
             </span>
             ,{" "}
             {notification.type === "COMMENT" && (
-              <span>
+              <span className="lowercase">
                 {senderName} commented on your post:{" "}
                 <span className="italic">&ldquo;</span>
                 <span className="italic">{notification.content}</span>
@@ -55,12 +55,12 @@ export function NotificationItems({ notification }: NotificationItemsProps) {
               </span>
             )}
             {notification.type === "LIKE" && (
-              <span>
+              <span className="lowercase">
                 {senderName} {notification.content}
               </span>
             )}
             {notification.type === "FRIEND_REQUEST" && (
-              <span>
+              <span className="lowercase">
                 {notification.content} {senderName}
               </span>
             )}

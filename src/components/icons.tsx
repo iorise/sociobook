@@ -23,6 +23,8 @@ import {
   X,
   MoreVertical,
   MoreHorizontal,
+  ArrowLeft,
+  ArrowRight,
 } from "lucide-react";
 
 import {
@@ -126,6 +128,8 @@ export const Icons = {
   userPlus: BiSolidUserPlus,
   userX: BiSolidUserX,
   messageFill: BiSolidMessageRounded,
+  arrowLeft: ArrowLeft,
+  arrowRight: ArrowRight,
   lock: ({ ...props }: LucideProps) => (
     <svg
       version="1.0"

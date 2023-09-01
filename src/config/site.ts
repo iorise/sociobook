@@ -10,51 +10,57 @@ export const siteConfig = {
       allowed: true,
       hidden: false,
       show: false,
+      disabled: false
     },
     {
       title: "Video",
       icon: "video",
       iconFill: "videoFill",
-      href: "/video",
+      href: "#",
       allowed: false,
       hidden: false,
       show: false,
+      disabled: true
     },
     {
       title: "Marketplace",
       icon: "marketplace",
       iconFill: "marketplaceFill",
-      href: "/marketplace",
+      href: "#",
       allowed: false,
       hidden: false,
       show: false,
+      disabled: true
     },
     {
       title: "Group",
       icon: "group",
       iconFill: "groupFill",
-      href: "/group",
+      href: "#",
       allowed: false,
       hidden: false,
       show: false,
+      disabled: true
     },
     {
       title: "Games",
       icon: "game",
       iconFill: "gameFill",
-      href: "/games",
+      href: "#",
       allowed: false,
       hidden: true,
       show: false,
+      disabled: true
     },
     {
       title: "Other",
       icon: "hamburger",
       iconFill: "hamburger",
-      href: "/bookmarks",
+      href: "#",
       allowed: true,
       hidden: false,
       show: true,
+      disabled: true
     },
   ] satisfies MainNav[],
   sidebarNav: [
@@ -62,7 +68,7 @@ export const siteConfig = {
       title: "Friends",
       href: "/friends",
       icon: "people",
-      disabled: false,
+      disabled: true,
     },
     {
       title: "Group",

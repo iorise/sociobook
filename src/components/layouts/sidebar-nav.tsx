@@ -57,17 +57,11 @@ export function SidebarNav({ items, currentUser }: SidebarNavProps) {
             <li key={index}>
               <Button
                 variant="ghost"
-                className={cn(
-                  item.disabled && "cursor-not-allowed",
-                  "justify-start flex gap-3 py-6 w-full"
-                )}
-                disabled={item.disabled}
-                asChild
+                className={cn("justify-start flex gap-3 py-6 w-full")}
+                disabled
               >
-                <Link href={item.href}>
-                  <Icon className="w-9 h-9 text-facebook-primary" />
-                  <span>{item.title}</span>
-                </Link>
+                <Icon className="w-9 h-9 text-facebook-primary" />
+                <span>{item.title}</span>
               </Button>
             </li>
           );
