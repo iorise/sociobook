@@ -41,7 +41,7 @@ export function NotificationItems({ notification }: NotificationItemsProps) {
           )}
         </div>
         <div>
-          <p className="text-base line-clamp-3 break-words text-foreground/80">
+          <p className="text-base line-clamp-3 break-words text-foreground/80 leading-tight">
             <span className="font-medium text-foreground">
               {notification.user?.firstName || ""}
             </span>

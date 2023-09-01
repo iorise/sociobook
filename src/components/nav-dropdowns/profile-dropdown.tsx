@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { SignOutButton } from "@clerk/nextjs";
 import { User as userDb } from "@prisma/client";
+import { useRouter } from "next/navigation";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -21,6 +22,7 @@ interface ProfileDropdownProps {
 }
 
 export function ProfileDropdown({ currentUser }: ProfileDropdownProps) {
+  const router = useRouter();
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -46,6 +48,7 @@ export function ProfileDropdown({ currentUser }: ProfileDropdownProps) {
           <Link
             className="flex gap-2 items-center"
             href={`/profile/${currentUser?.externalId}`}
+            onClick={() => router.refresh()}
           >
             <Avatar className="w-9 h-9">
               <AvatarImage

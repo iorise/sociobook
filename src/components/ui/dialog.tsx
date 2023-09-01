@@ -35,17 +35,10 @@ const DialogOverlay = React.forwardRef<
 ));
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
 
-interface DialogContentProps {
-  arrows?: boolean;
-  nextFn?: () => void;
-  prevFn?: () => void;
-}
-
 const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
-  DialogContentProps &
     React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
->(({ className, arrows, nextFn, prevFn, children, ...props }, ref) => (
+>(({ className, children, ...props }, ref) => (
   <DialogPortal>
     <DialogOverlay />
     <DialogPrimitive.Content
@@ -61,24 +54,6 @@ const DialogContent = React.forwardRef<
         <Cross2Icon className="h-6 w-6" />
         <span className="sr-only">Close</span>
       </DialogPrimitive.Close>
-      {arrows && (
-        <div>
-          <Button
-            variant="none"
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 z-[99] ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
-            onClick={prevFn}
-          >
-            <Icons.arrowLeft className="w-6 h-6" />
-          </Button>
-          <Button
-              variant="none"
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 z-[99] ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
-              onClick={nextFn}
-            >
-              <Icons.arrowRight className="w-6 h-6" />
-            </Button>
-        </div>
-      )}
     </DialogPrimitive.Content>
   </DialogPortal>
 ));

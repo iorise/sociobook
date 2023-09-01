@@ -17,9 +17,6 @@ interface ModalProps {
   isOpen: boolean;
   className?: string;
   images?: boolean;
-  arrows?: boolean;
-  prevFn?: () => void;
-  nextFn?: () => void;
   children?: React.ReactNode;
 }
 
@@ -30,9 +27,6 @@ export function Modal({
   isOpen,
   children,
   images,
-  arrows,
-  prevFn,
-  nextFn,
   className,
   ...props
 }: ModalProps) {
@@ -44,7 +38,7 @@ export function Modal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onChange} {...props}>
-      <DialogContent className={cn("px-2", className)} prevFn={prevFn} nextFn={nextFn}>
+      <DialogContent className={cn("px-2", className)}>
         {images ? null : (
           <>
             <DialogHeader>

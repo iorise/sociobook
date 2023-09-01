@@ -23,6 +23,24 @@ const shadowImages = {
   MozBoxShadow: "0px 1px 212px -49px rgba(35, 145, 247, 1)",
 };
 
+const variants = {
+  hidden: { opacity: 0, scale: 0.9 },
+  open: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.3,
+    },
+  },
+  out: {
+    scale: 0.9,
+    opacity: 0,
+    transition: {
+      duration: 0.3,
+    },
+  },
+};
+
 export function ImagePreview({
   imageData,
   imagesPreview,
@@ -78,24 +96,6 @@ export function ImagePreview({
     };
   }, [isModalOpen]);
 
-  const variants = {
-    hidden: { opacity: 0, scale: 0.9 },
-    open: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.3,
-      },
-    },
-    out: {
-      scale: 0.9,
-      opacity: 0,
-      transition: {
-        duration: 0.3,
-      },
-    },
-  };
-
   return (
     <div>
       <Image
@@ -118,19 +118,12 @@ export function ImagePreview({
           images
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-          arrows
-          prevFn={() => {
-            imagesLength !== 1 && handleNextImage("prev");
-          }}
-          nextFn={() => {
-            imagesLength !== 1 && handleNextImage("next");
-          }}
           className="w-[80%] h-[80%] max-w-[80%] bg-transparent border-none justify-center items-center shadow-none"
         >
           {imagesLength !== 1 && (
             <Button
               variant="none"
-              className="absolute left-0 top-1/2 transform -translate-y-1/2 z-[99]"
+              className="absolute left-0 top-1/2 transform -translate-y-1/2 z-[99] opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
               onClick={() => handleNextImage("prev")}
             >
               <Icons.arrowLeft className="w-6 h-6" />
@@ -158,6 +151,16 @@ export function ImagePreview({
                 loading="lazy"
               />
             </motion.div>
+          )}
+
+          {imagesLength !== 1 && (
+            <Button
+              variant="none"
+              className="absolute right-0 top-1/2 transform -translate-y-1/2 z-[99] opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+              onClick={() => handleNextImage("next")}
+            >
+              <Icons.arrowRight className="w-6 h-6" />
+            </Button>
           )}
         </Modal>
       </AnimatePresence>
