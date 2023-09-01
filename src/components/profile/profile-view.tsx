@@ -200,7 +200,7 @@ export function ProfileView({
                 firstName={initialData?.firstName}
                 lastName={initialData?.lastName}
                 verified={initialData?.verified}
-                className="text-lg sm:text-xl font-semibold line-clamp-2"
+                className="text-xl text-center md:text-left font-semibold line-clamp-2"
                 iconClassName="w-4 h-4"
               />
               <p className="text-muted-foreground">
