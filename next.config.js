@@ -4,7 +4,8 @@ const nextConfig = {
     domains: [
       "images.clerk.com",
       "www.gravatar.com",
-      "uploadthing.com"
+      "uploadthing.com",
+      "images.clerk.dev"
     ],
   },
 };
