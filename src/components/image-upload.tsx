@@ -87,14 +87,20 @@ export function ImageUpload({
           className="group w-full rounded-md border border-border cursor-pointer"
         >
           <input {...getInputProps()} />
-          <div className="grid place-items-center gap-1 sm:px-5">
+          <div className="grid place-items-center gap-1 py-2 sm:px-5">
             <Icons.upload
               className="h-8 w-8 text-muted-foreground"
               aria-hidden="true"
             />
-            <p className="mt-2 text-base font-medium text-foreground">
-              Add Profile Image
-            </p>
+            {isCover ? (
+              <p className="mt-2 text-base font-medium text-foreground">
+                Add Cover Image
+              </p>
+            ) : (
+              <p className="mt-2 text-base font-medium text-foreground">
+                Add Profile Image
+              </p>
+            )}
             <p className="text-center text-xs text-muted-foreground">
               or drag and drop here
             </p>

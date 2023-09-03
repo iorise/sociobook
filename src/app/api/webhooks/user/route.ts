@@ -1,6 +1,5 @@
 import prismadb from "@/lib/prismadb";
 import { User } from "@clerk/nextjs/api";
-import { headers } from "next/headers";
 import { Webhook } from "svix";
 
 type UnwantedKeys =
@@ -14,7 +13,7 @@ type UnwantedKeys =
 interface UserInterface extends Omit<User, UnwantedKeys> {
   id: string;
   image_url: string;
-  profile_image_url: string
+  profile_image_url: string;
   email_addresses: {
     email_address: string;
     id: string;
@@ -39,20 +38,10 @@ type Event = {
 const webHookSecret: string = process.env.WEBHOOK_SECRET || "";
 
 async function handler(req: Request) {
-  const payload = await req.json();
-  const payloadString = JSON.stringify(payload);
-  const headerPayload = headers();
-  const svixId = headerPayload.get("svix-id");
-  const svixIdTimeStamp = headerPayload.get("svix-timestamp");
-  const svixSignature = headerPayload.get("svix-signature");
-  if (!svixId || !svixIdTimeStamp || !svixSignature) {
-    console.log("svixId", svixId);
-    console.log("svixIdTimeStamp", svixIdTimeStamp);
-    console.log("svixSignature", svixSignature);
-    return new Response("Error occured", {
-      status: 400,
-    });
-  }
+  const body = await req.text();
+  const svix_id = req.headers.get("svix-id") ?? "";
+  const svix_timestamp = req.headers.get("svix-timestamp") ?? "";
+  const svix_signature = req.headers.get("svix-signature") ?? "";
 
   if (!webHookSecret) {
     throw new Error(
@@ -60,17 +49,16 @@ async function handler(req: Request) {
     );
   }
 
-  const svixHeaders = {
-    "svix-id": svixId,
-    "svix-timestamp": svixIdTimeStamp,
-    "svix-signature": svixSignature,
-  };
-
   const wh = new Webhook(webHookSecret);
   let evt: Event | null = null;
 
   try {
-    evt = wh.verify(payloadString, svixHeaders) as Event;
+    evt = wh.verify(body, {
+      "svix-id": svix_id,
+      "svix-timestamp": svix_timestamp,
+      "svix-signature": svix_signature,
+    }) as Event;
+    console.log(evt);
   } catch (err) {
     console.log(err);
     return new Response("Error occured", {
@@ -81,15 +69,10 @@ async function handler(req: Request) {
   // handle the webhook
   const eventType: EventType = evt.type;
   if (eventType === "user.created" || eventType === "user.updated") {
-    const {
-      id,
-      first_name,
-      last_name,
-      profile_image_url,
-      email_addresses,
-    } = evt.data;
+    const { id, first_name, last_name, profile_image_url, email_addresses } =
+      evt.data;
 
-    const email = email_addresses[0].email_address
+    const email = email_addresses[0].email_address;
 
     await prismadb.user.upsert({
       where: { externalId: id },

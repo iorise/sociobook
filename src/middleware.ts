@@ -6,6 +6,7 @@ import { NextResponse } from "next/server";
 // See https://clerk.com/docs/nextjs/middleware for more information about configuring your middleware
 export default authMiddleware({
   publicRoutes: ["/", "/sso-callback(.*)", "/api(.*)"],
+  ignoredRoutes: ['/api/webhooks/user'],
   async afterAuth(auth, req) {
     if (auth.isPublicRoute) {
       return NextResponse.next();
