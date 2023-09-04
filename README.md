@@ -60,7 +60,7 @@ npm i
 1. Set up .env file
 
 ```js
-DATABASE_URL="mongodb+srv://iori:hieumong2007@cluster0.jlc3mzy.mongodb.net/test"
+DATABASE_URL=
 
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
 CLERK_SECRET_KEY=
