@@ -22,7 +22,7 @@ export default function FriendList({ user }: FriendListProps) {
       <Link href={`/profile/${user?.externalId}`}>
         <Avatar className="w-9 h-9">
           <AvatarImage
-            src={user.profileImage ?? user?.externalImage ?? ""}
+            src={ user?.externalImage ?? user.profileImage ?? ""}
             alt={user?.firstName ?? ""}
           />
           <AvatarFallback>
