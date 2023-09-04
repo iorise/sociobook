@@ -1,6 +1,7 @@
 "use client";
 
-import React from "react";
+import * as React from "react";
+import { formatDistanceToNowStrict } from "date-fns";
 
 import { NotificationWithUser } from "@/types";
 import { Icons } from "@/components/icons";
@@ -23,6 +24,13 @@ export function NotificationItems({ notification }: NotificationItemsProps) {
     await deleteNotification(notification.id);
   }, [deleteNotification, notification.id]);
 
+  const createdAt = React.useMemo(() => {
+    const distance = formatDistanceToNowStrict(
+      new Date(notification.createdAt)
+    );
+    return `${distance} ago`;
+  }, [notification.createdAt]);
+
   return (
     <div className="flex justify-between">
       <div className="flex items-center gap-2">
@@ -40,31 +48,34 @@ export function NotificationItems({ notification }: NotificationItemsProps) {
             <Icons.messageFill className="absolute w-4 h-4 bottom-0 right-0" />
           )}
         </div>
-        <div>
-          <p className="text-base line-clamp-3 break-words text-foreground/80 leading-tight">
-            <span className="font-medium text-foreground">
-              {notification.user?.firstName || ""}
-            </span>
-            ,{" "}
-            {notification.type === "COMMENT" && (
-              <span className="lowercase">
-                {senderName} commented on your post:{" "}
-                <span className="italic">&ldquo;</span>
-                <span className="italic">{notification.content}</span>
-                <span className="italic">&rdquo;</span>
+        <div className="flex flex-col">
+          <div>
+            <p className="text-base line-clamp-3 break-words text-foreground/80 leading-tight">
+              <span className="font-medium text-foreground">
+                {notification.user?.firstName || ""}
               </span>
-            )}
-            {notification.type === "LIKE" && (
-              <span className="lowercase">
-                {senderName} {notification.content}
-              </span>
-            )}
-            {notification.type === "FRIEND_REQUEST" && (
-              <span className="lowercase">
-                {notification.content} {senderName}
-              </span>
-            )}
-          </p>
+              ,{" "}
+              {notification.type === "COMMENT" && (
+                <span className="lowercase">
+                  {senderName} commented on your post:{" "}
+                  <span className="italic">&lsquo;</span>
+                  <span className="italic">{notification.content}</span>
+                  <span className="italic">&rsquo;</span>
+                </span>
+              )}
+              {notification.type === "LIKE" && (
+                <span className="lowercase">
+                  {senderName} {notification.content}
+                </span>
+              )}
+              {notification.type === "FRIEND_REQUEST" && (
+                <span className="lowercase">
+                  {notification.content} {senderName}
+                </span>
+              )}
+            </p>
+            <p className="text-xs text-muted-foreground">{createdAt}</p>
+          </div>
         </div>
       </div>
       <Button variant="ghost" onClick={onDelete}>
