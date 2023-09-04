@@ -88,6 +88,7 @@ async function handler(req: Request) {
         lastName: last_name,
         profileImage: profile_image_url,
         email: email,
+        bio: null,
       },
     });
     return new Response("", {
