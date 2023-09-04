@@ -52,16 +52,16 @@ export const siteConfig = {
       show: false,
       disabled: true
     },
-    {
-      title: "Other",
-      icon: "hamburger",
-      iconFill: "hamburger",
-      href: "#",
-      allowed: true,
-      hidden: false,
-      show: true,
-      disabled: true
-    },
+    // {
+    //   title: "Other",
+    //   icon: "hamburger",
+    //   iconFill: "hamburger",
+    //   href: "#",
+    //   allowed: true,
+    //   hidden: false,
+    //   show: true,
+    //   disabled: true
+    // },
   ] satisfies MainNav[],
   sidebarNav: [
     {
