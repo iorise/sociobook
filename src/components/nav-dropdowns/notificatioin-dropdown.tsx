@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 import {
   Popover,
@@ -20,13 +21,16 @@ import { useNotifications } from "@/hooks/use-notifications";
 
 export function NotificationsDropdown() {
   const [onOpen, setOnOpen] = React.useState(false);
+  const queryClient = useQueryClient();
   // eslint-disable-next-line no-unused-vars
   const [alertOpen, setAlertOpen] = React.useState(false);
   const { data: currentUser } = useCurrentUser();
 
   React.useEffect(() => {
     if (onOpen) {
-      refetch();
+      refetch().then(() => {
+        queryClient.invalidateQueries(["currentUser"]);
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onOpen]);
@@ -57,9 +61,7 @@ export function NotificationsDropdown() {
             <div className="w-full text-center pt-5">Something went wrong</div>
           ) : (
             <div className="grid gap-5">
-              <h1 className="text-xl font-semibold">
-                Notifications
-              </h1>
+              <h1 className="text-xl font-semibold">Notifications</h1>
               {notifications?.length === 0 ? (
                 <div className="w-full flex flex-col gap-3 items-center justify-center">
                   <Icons.notification className="w-16 h-16" />
