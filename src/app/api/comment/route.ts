@@ -27,6 +27,15 @@ export async function POST(req: Request) {
       },
     });
 
+    const post = await prismadb.post.findUnique({
+      where: {
+        id: postId,
+      },
+      include: {
+        user: true,
+      },
+    });
+
     const currentUser = await prismadb.user.findUnique({
       where: {
         externalId: userId,
@@ -34,11 +43,11 @@ export async function POST(req: Request) {
     });
 
     // Notification
-    if (comment.userId && comment.userId !== currentUser?.externalId) {
+    if (post?.userId !== currentUser?.id) {
       await prismadb.notification.create({
         data: {
           content: comment.text,
-          userId: comment.userId,
+          userId: post?.userId!,
           senderFirstname: currentUser?.firstName,
           senderLastname: currentUser?.lastName,
           senderProfileImage:
