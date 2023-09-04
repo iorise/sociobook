@@ -124,6 +124,7 @@ export function Post({ data, currentUser }: PostProps) {
             <p
               onClick={toggleShowMoreText}
               className={cn(
+                "break-words",
                 showMoreText
                   ? "line-clamp-none"
                   : data.images.length
