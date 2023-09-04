@@ -43,7 +43,7 @@ export async function POST(req: Request) {
     });
 
     // Notification
-    if (post?.userId !== currentUser?.id) {
+    if (post?.userId !== currentUser?.externalId) {
       await prismadb.notification.create({
         data: {
           content: comment.text,
