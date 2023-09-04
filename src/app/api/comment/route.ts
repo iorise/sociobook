@@ -55,16 +55,15 @@ export async function POST(req: Request) {
           type: "COMMENT",
         },
       });
+      await prismadb.user.update({
+        where: {
+          externalId: comment.userId,
+        },
+        data: {
+          hasNotifications: true,
+        },
+      });
     }
-
-    await prismadb.user.update({
-      where: {
-        externalId: comment.userId,
-      },
-      data: {
-        hasNotifications: true,
-      },
-    });
 
     return NextResponse.json(comment);
   } catch (error) {
