@@ -26,6 +26,12 @@
 - [x] Like and unlike posts
 - [x] Comment post
 
+### Notifications 📬
+
+- [x] Receive notifications for Likes
+- [x] Receive notifications for Comments
+- [x] Receive notifications for Friend Requests
+
 ### Additional Features 🌟
 
 - [x] Beautiful UI using TailwindCSS and ShadcnUI
