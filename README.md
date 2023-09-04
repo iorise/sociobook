@@ -38,7 +38,7 @@
 - [TypeScript](https://www.typescriptlang.org)
 - [Tailwind CSS](https://tailwindcss.com)
 - [Prisma](https://www.prisma.io/)
-- [MongoDB] (https://www.mongodb.com/)
+- [MongoDB](https://www.mongodb.com/)
 - [Tanstack Query](https://tanstack.com/query/latest)
 - [Shadcn UI](https://ui.shadcn.com/)
 - [React Hot Toast](https://react-hot-toast.com)
