@@ -27,6 +27,7 @@ export function LoginForm() {
   const router = useRouter();
   const { isLoaded, signIn, setActive } = useSignIn();
   const [isLoading, setIsLoading] = React.useState(false);
+  const [testLoading, setTestLoading] = React.useState(false);
 
   // react-hook-form
   const form = useForm<Inputs>({
@@ -36,6 +37,27 @@ export function LoginForm() {
       password: "",
     },
   });
+
+  async function testUser() {
+    if (!isLoaded) return null;
+    try {
+      setTestLoading(true);
+      const result = await signIn.create({
+        identifier: "tu2873614@gmail.com",
+        password: "tester06092023",
+      });
+      if (result.status === "complete") {
+        await setActive({ session: result.createdSessionId });
+        router.push(`${window.location.origin}/`);
+      } else {
+        console.log(result);
+      }
+    } catch (err) {
+      catchClerkError(err);
+    } finally {
+      setTestLoading(false);
+    }
+  }
 
   async function onSubmit(data: Inputs) {
     if (!isLoaded) return;
@@ -88,7 +110,10 @@ export function LoginForm() {
             </FormItem>
           )}
         />
-        <Button disabled={isLoading} className="bg-facebook-primary text-lg">
+        <Button
+          disabled={isLoading || testLoading}
+          className="bg-facebook-primary text-lg text-primary"
+        >
           {isLoading && (
             <Icons.spinner
               className="mr-2 h-4 w-4 animate-spin"
@@ -97,6 +122,21 @@ export function LoginForm() {
           )}
           Log in
           <span className="sr-only">Log in</span>
+        </Button>
+        <Button
+          type="button"
+          disabled={isLoading || testLoading}
+          className="text-lg"
+          onClick={() => void testUser()}
+        >
+          {testLoading && (
+            <Icons.spinner
+              className="mr-2 h-4 w-4 animate-spin"
+              aria-hidden="true"
+            />
+          )}
+          Test user
+          <span className="sr-only">Test user</span>
         </Button>
       </form>
     </Form>
