@@ -1,4 +1,3 @@
-import { Image } from "next/dist/client/image-component";
 import Link from "next/link";
 import { type Metadata } from "next";
 import { currentUser } from "@clerk/nextjs";
@@ -30,7 +29,7 @@ export default async function LoginPage() {
   return (
     <>
       <Shell className="flex flex-col w-full min-h-screen items-center  gap-6">
-        <h1 className="text-4xl text-facebook-primary font-bold">SocioBook</h1>
+        <h1 className="text-4xl text-facebook-primary font-bold">{siteConfig.title}</h1>
         <Card>
           <CardHeader className="space-y-1">
             <CardTitle className="text-center font-normal">

@@ -1,4 +1,3 @@
-import { Image } from "next/dist/client/image-component";
 import Link from "next/link";
 import { type Metadata } from "next";
 import { currentUser } from "@clerk/nextjs";
@@ -32,7 +31,7 @@ export default async function SignUpPage() {
   return (
     <>
       <Shell className="flex flex-col w-full min-h-screen items-center gap-6">
-        <Image src="/rectangle.png" alt="image" width={180} height={100} />
+      <h1 className="text-4xl text-facebook-primary font-bold">{siteConfig.title}</h1>
         <Card className="sm:w-[26rem] w-auto">
           <CardHeader className="space-y-1">
             <CardTitle className="text-center text-xl">
