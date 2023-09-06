@@ -5,6 +5,7 @@ import { ProfileView } from "@/components/profile/profile-view";
 import { InfoView } from "@/components/profile/info-view";
 import prismadb from "@/lib/prismadb";
 import { Metadata } from "next";
+import { siteConfig } from "@/config/site";
 
 interface ProfilePageProps {
   params: { userId: string };
@@ -19,7 +20,7 @@ export async function generateMetadata({ params }: ProfilePageProps): Promise<Me
   });
 
   const title = `${initialData?.firstName || ""} ${initialData?.lastName || ""} | Profile`
-  const description = `Explore the profile of ${initialData?.firstName} ${initialData?.lastName}.`;
+  const description = `Explore the profile of ${initialData?.firstName} ${initialData?.lastName} in ${siteConfig.title}.`;
 
   return {
     title,

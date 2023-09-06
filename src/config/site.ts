@@ -1,6 +1,8 @@
 import { MainNav, SidebarNav } from "@/types";
 
 export const siteConfig = {
+  title: "SocioBook",
+  description: "Social Networking built on Next.js",
   MainNav: [
     {
       title: "Home",

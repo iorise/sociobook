@@ -21,7 +21,7 @@ export function SiteHeader({ currentUser }: SiteHeaderProps) {
       <div className="px-1 sm:px-4 h-full flex items-center justify-between">
         <div className="flex gap-2 items-center">
           <Link aria-label="Home" href="/">
-            <Icons.logo className="w-11 h-11" />
+            <Icons.logo className="w-10 h-10" />
           </Link>
           <SearchBar />
         </div>

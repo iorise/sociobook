@@ -10,9 +10,8 @@ import prismadb from "@/lib/prismadb";
 import { SidebarShell } from "@/components/shell";
 
 export const metadata: Metadata = {
-  title: "Facebook",
-  description:
-    "Connect with friends and the world around you on Facebook. Share photos, send messages, and more.",
+  title: siteConfig.title,
+  description: siteConfig.description,
 };
 
 export default async function DashboardPage() {

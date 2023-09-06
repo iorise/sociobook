@@ -16,10 +16,11 @@ import {
 import { LoginForm } from "@/components/forms/login-form";
 import { Button } from "@/components/ui/button";
 import { AuthFooter } from "@/components/layouts/auth-footer";
+import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: "Log in to Facebook",
-  description: "Log in to your Facebook account",
+  title: `Log in to ${siteConfig.title}`,
+  description: `Log in to your ${siteConfig.title} account`,
 };
 
 export default async function LoginPage() {
@@ -29,11 +30,11 @@ export default async function LoginPage() {
   return (
     <>
       <Shell className="flex flex-col w-full min-h-screen items-center  gap-6">
-        <Image src="/rectangle.png" alt="image" width={180} height={100} />
+        <h1 className="text-4xl text-facebook-primary font-bold">SocioBook</h1>
         <Card>
           <CardHeader className="space-y-1">
             <CardTitle className="text-center font-normal">
-              Log in to Facebook
+              Log in to {siteConfig.title}
             </CardTitle>
           </CardHeader>
           <CardContent className="grid gap-4">

@@ -16,6 +16,7 @@ import {
 import { User } from "@prisma/client";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useOnClickOutside } from "@/hooks/use-onclick-outside";
+import { siteConfig } from "@/config/site";
 
 export function SearchBar() {
   const [input, setInput] = React.useState("");
@@ -69,7 +70,7 @@ export function SearchBar() {
         }}
         value={input}
         className="outline-none border-none focus:border-none focus:outline-none ring-0 rounded-full"
-        placeholder="Search in Facebook"
+        placeholder={`Search in ${siteConfig.title}`}
       />
       {input.length > 0 && (
         <CommandList className="absolute top-full bg-secondaryBackground inset-x-0 shadow rounded-b-md">

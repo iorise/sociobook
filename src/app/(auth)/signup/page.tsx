@@ -18,10 +18,11 @@ import { Separator } from "@/components/ui/separator";
 import { SignUpForm } from "@/components/forms/signup-form";
 import { OAuthSignIn } from "@/components/auth/oauth-signin";
 import { AuthFooter } from "@/components/layouts/auth-footer";
+import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: "Sign up for Facebook",
-  description: "Sign up for your Facebook account",
+  title: `Sign up for ${siteConfig.title}`,
+  description: `Sign up for your ${siteConfig.title} account`,
 };
 
 export default async function SignUpPage() {
