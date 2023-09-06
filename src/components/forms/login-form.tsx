@@ -112,7 +112,7 @@ export function LoginForm() {
         />
         <Button
           disabled={isLoading || testLoading}
-          className="bg-facebook-primary text-lg text-primary"
+          className="bg-facebook-primary text-lg"
         >
           {isLoading && (
             <Icons.spinner
