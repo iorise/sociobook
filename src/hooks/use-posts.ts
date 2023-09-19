@@ -13,7 +13,7 @@ export function useInfinitePosts(externalId?: string) {
   } = useInfiniteQuery({
     queryFn: ({ pageParam = "" }) =>
       fetchPosts({ externalId, take: 6, lastCursor: pageParam }),
-    queryKey: ["posts"],
+    queryKey: externalId ? ["posts", externalId] : ["posts"],
     getNextPageParam: (lastPage) => {
       return lastPage?.metaData.lastCursor;
     },
