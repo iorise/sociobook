@@ -138,19 +138,19 @@ export function ImagePreview({
               animate="open"
               exit="out"
             >
-              <div className="border-4 border-background bg-background rounded-md">
-              <Image
-                src={selectedImage?.url || ""}
-                alt={`image ${i}`}
-                width={600}
-                height={600}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className={cn(
-                  shadowImages,
-                  "object-contain border-border aspect-square"
-                )}
-                loading="lazy"
-              />
+              <div className="bg-accent rounded-md w-full">
+                <Image
+                  src={selectedImage?.url || ""}
+                  alt={`image ${i}`}
+                  width={500}
+                  height={500}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className={cn(
+                    shadowImages,
+                    "object-contain border-border aspect-square"
+                  )}
+                  loading="lazy"
+                />
               </div>
             </motion.div>
           )}
