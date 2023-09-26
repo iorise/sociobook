@@ -1,6 +1,6 @@
 import { auth } from "@clerk/nextjs";
 
-import { FriendsCard } from "@/components/profile/friend-card";
+import { FriendsCard } from "@/components/profile/friends";
 import { Shell } from "@/components/shell";
 import { Separator } from "@/components/ui/separator";
 import prismadb from "@/lib/prismadb";

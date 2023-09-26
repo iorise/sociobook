@@ -7,7 +7,7 @@ import prismadb from "@/lib/prismadb";
 import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 import { PostFeeds } from "@/components/post-feeds";
-import { FriendsCard } from "@/components/profile/friend-card";
+import { FriendsCard } from "@/components/profile/friends";
 
 interface ProfilePageProps {
   params: { userId: string };
