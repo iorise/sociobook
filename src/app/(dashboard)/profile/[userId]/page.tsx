@@ -69,8 +69,8 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
         currentUser={currentUser}
         initialData={initialData}
       />
-      <div className="container px-1 sm:px-10 xl:px-36 grid grid-cols-1 lg:grid-cols-[29rem_minmax(0,1fr)] gap-6">
-        <aside className="top-14 z-30 w-full shrink-0 py-4 block md:sticky h-full">
+      <div className="container px-1 sm:px-10 xl:px-36 grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] gap-6">
+        <aside className="top-14 z-30 w-full shrink-0 py-4 h-full">
           <div className="flex flex-col gap-3">
             <InfoView
               isCurrentUser={isCurrentUser}

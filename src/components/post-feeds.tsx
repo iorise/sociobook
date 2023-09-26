@@ -79,10 +79,7 @@ export function PostFeeds({
             <Icons.fileImage className="w-6 h-6 mr-2 text-[#58c472]" />
             <span>Photo/Video</span>
           </Button>
-          <Button
-            variant="ghost"
-            className="flex-1 hidden sm:flex lg:hidden xl:flex"
-          >
+          <Button variant="ghost" className="flex-1 hidden xl:flex">
             <Icons.emoji className="w-6 h-6 mr-2 text-[#f8c03e]" />
             <span>Feels/activity</span>
           </Button>
