@@ -23,16 +23,15 @@ import { useFriendship } from "@/hooks/use-friendship";
 import { FriendshipStatus } from "@/types";
 import { checkFriendship } from "@/lib/utils";
 import ImageModal from "@/components/image-modal";
+import { UserAvatar } from "../user-avatar";
 
 interface ProfileFormProps {
   currentUser: userDb | null;
   initialData: userDb | null;
-  userId: string;
   isCurrentUser: boolean;
 }
 
 export function ProfileView({
-  userId,
   currentUser,
   initialData,
   isCurrentUser,
@@ -78,7 +77,7 @@ export function ProfileView({
   };
 
   return (
-    <div className="relative w-full container px-1 md:px-10 xl:px-36 grid grid-cols-1 ">
+    <section id="profile" className="relative w-full container px-1 md:px-10 xl:px-36 grid grid-cols-1 ">
       <div className="flex flex-col relative justify-center">
         <div className="w-full flex">
           {initialData?.coverImage ? (
@@ -115,7 +114,7 @@ export function ProfileView({
               {!isCurrentUser ? (
                 <Button
                   variant="none"
-                  className="active:scale-95 active:brightness-90 hover:brightness-110 w-44 h-44 rounded-full"
+                  className="active:scale-95 transition active:brightness-90 hover:brightness-110 w-44 h-44 rounded-full"
                   onClick={() =>
                     openImageModal(
                       initialData?.externalImage ??
@@ -124,20 +123,15 @@ export function ProfileView({
                     )
                   }
                 >
-                  <Avatar className="w-44 h-44 border-[6px] border-secondaryBackground">
-                    <AvatarImage
-                      src={
-                        initialData?.externalImage ??
-                        initialData?.profileImage ??
-                        ""
-                      }
-                      alt="Profile image"
-                      className="object-cover"
-                    />
-                    <AvatarFallback>
-                      <img src="/images/placeholder.png" />
-                    </AvatarFallback>
-                  </Avatar>
+                  <UserAvatar
+                    src={
+                      initialData?.externalImage ??
+                      initialData?.profileImage ??
+                      ""
+                    }
+                    alt="Profile image"
+                    size="xl"
+                  />
                 </Button>
               ) : (
                 <Popover>
@@ -146,19 +140,15 @@ export function ProfileView({
                       variant="none"
                       className="active:scale-95 active:brightness-90 hover:brightness-110 w-44 h-44 rounded-full"
                     >
-                      <Avatar className="w-44 h-44 border-4 border-secondaryBackground">
-                        <AvatarImage
-                          src={
-                            initialData?.externalImage ??
-                            initialData?.profileImage ??
-                            ""
-                          }
-                          alt={initialData?.firstName ?? ""}
-                        />
-                        <AvatarFallback>
-                          <img src="/images/placeholder.png" />
-                        </AvatarFallback>
-                      </Avatar>
+                      <UserAvatar
+                        src={
+                          initialData?.externalImage ??
+                          initialData?.profileImage ??
+                          ""
+                        }
+                        alt={initialData?.firstName ?? ""}
+                        size="xl"
+                      />
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-60">
@@ -316,6 +306,6 @@ export function ProfileView({
         isModalOpen={isOpen}
         imageUrl={selectedImage}
       />
-    </div>
+    </section>
   );
 }

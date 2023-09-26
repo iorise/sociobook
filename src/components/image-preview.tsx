@@ -97,7 +97,7 @@ export function ImagePreview({
   }, [isModalOpen]);
 
   return (
-    <div>
+    <>
       <Image
         src={imageData?.url || ""}
         alt={`image ${i}`}
@@ -105,7 +105,7 @@ export function ImagePreview({
         height={300}
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         className={cn(
-          "object-cover object-center w-full h-full cursor-pointer",
+          "aspect-square object-cover object-center w-full h-full cursor-pointer",
           imagesLength === 3 && i === 2
             ? "col-span-2 aspect-[2/1]"
             : "col-span-1"
@@ -138,6 +138,7 @@ export function ImagePreview({
               animate="open"
               exit="out"
             >
+              <div className="border-4 border-background bg-background rounded-md">
               <Image
                 src={selectedImage?.url || ""}
                 alt={`image ${i}`}
@@ -146,10 +147,11 @@ export function ImagePreview({
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className={cn(
                   shadowImages,
-                  "object-contain rounded-2xl border-4 border-border "
+                  "object-contain border-border aspect-square"
                 )}
                 loading="lazy"
               />
+              </div>
             </motion.div>
           )}
 
@@ -164,6 +166,6 @@ export function ImagePreview({
           )}
         </Modal>
       </AnimatePresence>
-    </div>
+    </>
   );
 }
