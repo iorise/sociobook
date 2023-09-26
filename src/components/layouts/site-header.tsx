@@ -10,12 +10,14 @@ import { siteConfig } from "@/config/site";
 import { ProfileDropdown } from "@/components/nav-dropdowns/profile-dropdown";
 import { NotificationsDropdown } from "@/components/nav-dropdowns/notificatioin-dropdown";
 import { SearchBar } from "@/components/search-bar";
+import { useRouter } from "next/navigation";
 
 interface SiteHeaderProps {
   currentUser: userDb | null;
 }
 
 export function SiteHeader({ currentUser }: SiteHeaderProps) {
+  const router = useRouter();
   return (
     <header className="sticky h-14 top-0 z-40 w-full border-b bg-secondaryBackground">
       <div className="px-1 sm:px-4 h-full flex items-center justify-between">
@@ -45,10 +47,18 @@ export function SiteHeader({ currentUser }: SiteHeaderProps) {
             <Icons.plus className="w-5 h-5" />
           </Button>
           <Button
+            variant="outline"
+            size="icon"
+            className="rounded-full flex lg:hidden duration-0 active:scale-95 transition-all active:opacity-80"
+            onClick={() => router.push("/friends")}
+          >
+            <Icons.people className="w-5 h-5" />
+          </Button>
+          <Button
             disabled
             variant="outline"
             size="icon"
-            className="rounded-full"
+            className="rounded-full hidden lg:flex"
           >
             <Icons.message className="w-5 h-5" />
           </Button>

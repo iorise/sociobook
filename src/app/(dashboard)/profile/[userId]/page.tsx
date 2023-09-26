@@ -7,7 +7,7 @@ import prismadb from "@/lib/prismadb";
 import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 import { PostFeeds } from "@/components/post-feeds";
-import { FriendsCard } from "@/components/profile/friend-card";
+import { FriendsCard } from "@/components/profile/friends";
 
 interface ProfilePageProps {
   params: { userId: string };
@@ -74,11 +74,14 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
           <div className="flex flex-col gap-3">
             <InfoView
               isCurrentUser={isCurrentUser}
-              currentUser={currentUser}
-              externalId={params.userId}
               initialData={initialData}
             />
-            <FriendsCard friends={friends} />
+            <FriendsCard
+              friends={friends}
+              type="Friends"
+              emptyState="No Friends"
+              filled
+            />
           </div>
         </aside>
         <PostFeeds

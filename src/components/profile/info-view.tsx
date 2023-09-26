@@ -7,24 +7,20 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface infoViewProps {
-  currentUser: userDb | null;
   initialData: userDb | null;
-  externalId?: string | null;
   isCurrentUser?: boolean;
 }
 
 export function InfoView({
   initialData,
-  externalId,
   isCurrentUser,
-  currentUser,
 }: infoViewProps) {
   const bio = initialData?.bio;
 
   return (
     <Card>
       <CardHeader className="p-6 pb-2">
-        <CardTitle className="text-2xl">Bio</CardTitle>
+        <CardTitle className="text-xl">Bio</CardTitle>
       </CardHeader>
       <CardContent className="px-8 ">
         <div className="w-full text-center">
@@ -40,7 +36,9 @@ export function InfoView({
               </div>
             ) : (
               <div className="flex flex-col gap-2">
-                <p className="w-full text-center text-muted-foreground">No bio to show.</p>
+                <p className="w-full text-center text-muted-foreground">
+                  No bio to show.
+                </p>
                 <Button disabled variant="outline" className="w-full">
                   Add bio
                 </Button>
@@ -48,9 +46,13 @@ export function InfoView({
             )
           ) : (
             <p className="w-full break-words flex-wrap text-center">
-              {bio !== null && bio !== "" && bio !== undefined
-                ? bio
-                :  <p className="w-full text-center text-muted-foreground">No bio to show.</p>}
+              {bio !== null && bio !== "" && bio !== undefined ? (
+                bio
+              ) : (
+                <p className="w-full text-center text-muted-foreground">
+                  No bio to show.
+                </p>
+              )}
             </p>
           )}
         </div>
