@@ -58,10 +58,17 @@ export function SidebarNav({ items, currentUser }: SidebarNavProps) {
               <Button
                 variant="ghost"
                 className={cn("justify-start flex gap-3 py-6 w-full")}
-                disabled
+                asChild
               >
-                <Icon className="w-9 h-9 text-facebook-primary" />
-                <span>{item.title}</span>
+                <Link
+                  href={item.href}
+                  className={cn(
+                    item.disabled ? "pointer-events-none opacity-60" : ""
+                  )}
+                >
+                  <Icon className="w-9 h-9 text-facebook-primary" />
+                  <span>{item.title}</span>
+                </Link>
               </Button>
             </li>
           );

@@ -78,7 +78,12 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
               externalId={params.userId}
               initialData={initialData}
             />
-            <FriendsCard friends={friends} />
+            <FriendsCard
+              friends={friends}
+              type="Friends"
+              emptyState="No Friends"
+              filled
+            />
           </div>
         </aside>
         <PostFeeds

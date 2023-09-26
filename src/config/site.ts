@@ -70,7 +70,7 @@ export const siteConfig = {
       title: "Friends",
       href: "/friends",
       icon: "people",
-      disabled: true,
+      disabled: false,
     },
     {
       title: "Group",
