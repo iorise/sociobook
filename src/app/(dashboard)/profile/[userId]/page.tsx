@@ -74,8 +74,6 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
           <div className="flex flex-col gap-3">
             <InfoView
               isCurrentUser={isCurrentUser}
-              currentUser={currentUser}
-              externalId={params.userId}
               initialData={initialData}
             />
             <FriendsCard

@@ -13,7 +13,7 @@ export function SidebarNavFriends() {
   const pathname = usePathname();
   return (
     <div className="flex flex-col gap-1.5 w-full h-full bg-card font-semibold px-1 py-2.5 ">
-      <h1 className="">Friends</h1>
+      <h1 className="mb-2.5">Friends</h1>
       <ScrollArea className="w-full h-full">
         <ul className="flex flex-col gap-1.5 w-full">
           {siteFriends.map((item) => {
@@ -31,9 +31,7 @@ export function SidebarNavFriends() {
                   <Link
                     href={item.href}
                     className={cn(
-                      pathname === item.href
-                        ? "font-semibold"
-                        : ""
+                      pathname === item.href ? "font-semibold" : ""
                     )}
                   >
                     <Icon className="w-5 h-5" />
