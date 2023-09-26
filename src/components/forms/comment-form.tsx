@@ -13,7 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CommentInput } from "@/components/inputs/comment-input";
 
 interface CommentFormProps {
-  currentUser: User | null;
+  currentUser: User | null | undefined;
   postId: string | null;
 }
 
