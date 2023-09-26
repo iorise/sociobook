@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Inter } from "next/font/google";
 import { siteConfig } from "@/config/site";
-import QueryWrapper from "@/components/providers/provider-client";
+import QueryWrapper from "@/components/providers/query-provider";
 
 import "@/styles/globals.css";
 
@@ -17,7 +17,14 @@ export const metadata: Metadata = {
   icons: {
     icon: "/favicon.ico",
   },
-  keywords: ["Next.js", "React", "Tailwind CSS", "Clone app", "SocioBook", "Social network"],
+  keywords: [
+    "Next.js",
+    "React",
+    "Tailwind CSS",
+    "Clone app",
+    "SocioBook",
+    "Social network",
+  ],
   authors: [
     {
       name: "iori",
