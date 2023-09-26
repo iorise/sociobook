@@ -60,7 +60,7 @@ export function Post({ data, currentUser }: PostProps) {
   return (
     <div className="flex flex-col gap-5">
       <Card>
-        <Link href={`/post/${data.id}`}>
+        {/* <Link href={`/post/${data.id}`}> */}
           <CardHeader className="space-y-1 p-4">
             <div className="flex justify-between">
               <Link href={`/profile/${data.user?.externalId}`}>
@@ -120,7 +120,7 @@ export function Post({ data, currentUser }: PostProps) {
               )}
             </div>
           </CardHeader>
-        </Link>
+        {/* </Link> */}
         <CardContent>
           <div className="w-full flex flex-col">
             <p
