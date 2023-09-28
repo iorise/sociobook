@@ -36,7 +36,7 @@ export function InfoView({
               </div>
             ) : (
               <div className="flex flex-col gap-2">
-                <p className="w-full text-center text-muted-foreground">
+                <p className="w-full text-center text-muted-foreground py-6">
                   No bio to show.
                 </p>
                 <Button disabled variant="outline" className="w-full">
@@ -49,7 +49,7 @@ export function InfoView({
               {bio !== null && bio !== "" && bio !== undefined ? (
                 bio
               ) : (
-                <p className="w-full text-center text-muted-foreground">
+                <p className="w-full text-center text-muted-foreground py-6">
                   No bio to show.
                 </p>
               )}

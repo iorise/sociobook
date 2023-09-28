@@ -3,12 +3,13 @@
 import * as React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Image as imageType } from "@prisma/client";
-import Image from "next/image";
+import NextImage from "next/image";
 
 import { Icons } from "@/components/icons";
 import { Modal } from "@/components/ui/modal";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { setTransition } from "@/lib/transition";
 
 interface ImagePreviewProps {
   imageData: imageType;
@@ -16,30 +17,6 @@ interface ImagePreviewProps {
   imagesLength: number;
   i: number;
 }
-
-const shadowImages = {
-  boxShadow: "0px 1px 212px -49px rgba(35, 145, 247, 1)",
-  WebkitBoxShadow: "0px 1px 212px -49px rgba(35, 145, 247, 1)",
-  MozBoxShadow: "0px 1px 212px -49px rgba(35, 145, 247, 1)",
-};
-
-const variants = {
-  hidden: { opacity: 0, scale: 0.9 },
-  open: {
-    opacity: 1,
-    scale: 1,
-    transition: {
-      duration: 0.3,
-    },
-  },
-  out: {
-    scale: 0.9,
-    opacity: 0,
-    transition: {
-      duration: 0.3,
-    },
-  },
-};
 
 export function ImagePreview({
   imageData,
@@ -52,10 +29,16 @@ export function ImagePreview({
     null
   );
   const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   React.useEffect(() => {
-    const image = imagesPreview[selectedIndex];
-    setSelectedImage(image);
+    setIsLoading(true);
+    const image = new Image();
+    image.src = imageData.url;
+    image.onload = () => {
+      setIsLoading(false);
+      setSelectedImage(imagesPreview[selectedIndex]);
+    };
   }, [selectedIndex, imagesPreview]);
 
   function handleSelectedImage(index: number) {
@@ -98,7 +81,7 @@ export function ImagePreview({
 
   return (
     <>
-      <Image
+      <NextImage
         src={imageData?.url || ""}
         alt={`image ${i}`}
         width={300}
@@ -116,9 +99,9 @@ export function ImagePreview({
       <AnimatePresence>
         <Modal
           images
+          className="p-0 px-0 dark:bg-black bg-white"
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-          className="w-[80%] h-[80%] max-w-[80%] bg-transparent border-none justify-center items-center shadow-none"
         >
           {imagesLength !== 1 && (
             <Button
@@ -130,31 +113,29 @@ export function ImagePreview({
             </Button>
           )}
 
-          {isModalOpen && (
-            <motion.div
-              key={selectedImage?.url}
-              variants={variants}
-              initial="hidden"
-              animate="open"
-              exit="out"
-            >
-              <div className="bg-accent rounded-md w-full">
-                <Image
-                  src={selectedImage?.url || ""}
-                  alt={`image ${i}`}
-                  width={500}
-                  height={500}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className={cn(
-                    shadowImages,
-                    "object-contain border-border aspect-square"
-                  )}
-                  loading="lazy"
-                />
-              </div>
-            </motion.div>
-          )}
-
+          <motion.div
+            key={selectedIndex}
+            {...setTransition({
+              scale: 0.9,
+              opacity: 0.5,
+              duration: 0.3,
+            })}
+            className="aspect-square flex w-full h-full items-center justify-center"
+          >
+            {isModalOpen && isLoading ? (
+              <Icons.spinner className="w-6 h-6 text-facebook-primary animate-spin" />
+            ) : (
+              <NextImage
+                src={selectedImage?.url || ""}
+                alt={`image ${i}`}
+                width={500}
+                height={500}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className={cn("object-contain w-full rounded-lg aspect-square")}
+                loading="lazy"
+              />
+            )}
+          </motion.div>
           {imagesLength !== 1 && (
             <Button
               variant="none"

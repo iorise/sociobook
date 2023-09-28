@@ -54,7 +54,7 @@ export function NotificationsDropdown() {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-96" align="end" forceMount>
-        <ScrollArea className="h-[40rem] w-full rounded-md">
+        <ScrollArea className="h-[calc(100vh_-_7rem)] w-full rounded-md">
           {isLoading ? (
             <NotificationLoader />
           ) : fetchError ? (

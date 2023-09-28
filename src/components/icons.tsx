@@ -25,6 +25,7 @@ import {
   MoreHorizontal,
   ArrowLeft,
   ArrowRight,
+  Search,
 } from "lucide-react";
 
 import {
@@ -130,6 +131,7 @@ export const Icons = {
   messageFill: BiSolidMessageRounded,
   arrowLeft: ArrowLeft,
   arrowRight: ArrowRight,
+  search: Search,
   lock: ({ ...props }: LucideProps) => (
     <svg
       version="1.0"

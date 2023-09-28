@@ -11,6 +11,7 @@ import { ProfileDropdown } from "@/components/nav-dropdowns/profile-dropdown";
 import { NotificationsDropdown } from "@/components/nav-dropdowns/notificatioin-dropdown";
 import { SearchBar } from "@/components/search-bar";
 import { useRouter } from "next/navigation";
+import { SearchInput } from "../search-input";
 
 interface SiteHeaderProps {
   currentUser: userDb | null;
@@ -25,7 +26,7 @@ export function SiteHeader({ currentUser }: SiteHeaderProps) {
           <Link aria-label="Home" href="/">
             <Icons.logo className="w-10 h-10" />
           </Link>
-          <SearchBar />
+          <SearchInput />
         </div>
         <div className="flex-1 md:flex-none">
           <MainNav items={siteConfig.MainNav} />
