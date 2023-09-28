@@ -44,7 +44,11 @@ export function FriendCard({ friend, currentUser }: FriendCardProps) {
         <CardHeader className="border-b p-0">
           <AspectRatio ratio={10 / 10}>
             <Image
-              src={friend.externalImage ?? friend.profileImage ?? ""}
+              src={
+                friend.externalImage ??
+                friend.profileImage ??
+                "/images/placeholder.png"
+              }
               alt={friend.firstName ?? ""}
               sizes="(min-width: 1024px) 20vw, (min-width: 768px) 25vw, (min-width: 640px) 33vw, (min-width: 475px) 50vw, 100vw"
               fill
