@@ -99,7 +99,7 @@ export function ImagePreview({
       <AnimatePresence>
         <Modal
           images
-          className="p-0 px-0 bg-black "
+          className="p-0 px-0 dark:bg-black bg-white"
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
         >
