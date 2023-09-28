@@ -4,10 +4,12 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
   const query = url.searchParams.get("q");
+  const take = url.searchParams.get("take");
 
-  if (!query) {
-    return new NextResponse("Invalid query", { status: 400 });
-  }
+  try {
+    if (!query) {
+      return new NextResponse("Invalid query", { status: 400 });
+    }
 
     const users = await prismadb.user.findMany({
       where: {
@@ -23,13 +25,17 @@ export async function GET(req: NextRequest) {
               contains: query,
               mode: "insensitive",
             },
-          }
-        ]
+          },
+        ],
       },
-      take: 8,
+      take: take ? parseInt(take as string) : 8,
     });
 
     return new NextResponse(JSON.stringify(users), {
       status: 200,
     });
+  } catch (error) {
+    console.log(error);
+    return new NextResponse("Internal error", { status: 500 });
+  }
 }
