@@ -1,48 +1,58 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
+import NextImage from "next/image";
 
 import { Modal } from "@/components/ui/modal";
 import { cn } from "@/lib/utils";
+import { Icons } from "@/components/icons";
 
 interface ImageModal {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isModalOpen: boolean;
-  imageUrl: string | null | undefined;
+  imageUrl: string | null;
 }
-
-const shadowImages = {
-  boxShadow: "0px 1px 212px -49px rgba(35, 145, 247, 1)",
-  WebkitBoxShadow: "0px 1px 212px -49px rgba(35, 145, 247, 1)",
-  MozBoxShadow: "0px 1px 212px -49px rgba(35, 145, 247, 1)",
-};
 
 export default function ImageModal({
   setIsModalOpen,
   isModalOpen,
   imageUrl,
 }: ImageModal) {
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const image = new Image();
+    image.src = imageUrl as string;
+    image.onload = () => {
+      setIsLoading(false);
+    };
+  }, [imageUrl]);
+
   return (
     <Modal
       images
       isOpen={isModalOpen}
       onClose={() => setIsModalOpen(false)}
-      className="w-[80%] h-[80%] max-h-[80%] max-w-[80%] bg-transparent border-none justify-center items-center shadow-none"
+      className="px-0 p-0 bg-black"
     >
       {isModalOpen && (
-        <Image
-          src={imageUrl ?? ""}
-          alt={`${imageUrl}`}
-          width={500}
-          height={500}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className={cn(
-            shadowImages,
-            "object-contain rounded-2xl border-4 border-border aspect-square "
+        <div className="aspect-square">
+          {isLoading ? (
+            <div className="w-full h-full flex items-center justify-center">
+              <Icons.spinner className="w-6 h-6 text-facebook-primary animate-spin" />
+            </div>
+          ) : (
+            <NextImage
+              src={imageUrl ?? ""}
+              alt={imageUrl ?? ""}
+              width={500}
+              height={500}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className={cn("w-full object-contain rounded-lg")}
+              loading="lazy"
+            />
           )}
-          loading="lazy"
-        />
+        </div>
       )}
     </Modal>
   );
