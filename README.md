@@ -2,6 +2,11 @@
 
 [Live Demo](https://facebook-clone-iorise.vercel.app/) 👈
 
+## Preview
+
+https://github.com/iorise/sociobook/assets/134770602/0c8eef1f-ba46-4381-9c45-edb282fd1ca1
+
+
 ## Features
 
 ### Users
@@ -19,6 +24,9 @@
 - [x] Remove friend
 
 ### Posts 📝
+
+
+
 
 - [x] Create posts
 - [x] Delete posts
