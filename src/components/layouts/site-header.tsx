@@ -9,9 +9,8 @@ import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
 import { ProfileDropdown } from "@/components/nav-dropdowns/profile-dropdown";
 import { NotificationsDropdown } from "@/components/nav-dropdowns/notificatioin-dropdown";
-import { SearchBar } from "@/components/search-bar";
 import { useRouter } from "next/navigation";
-import { SearchInput } from "../search-input";
+import { SearchInput } from "@/components/search-input";
 
 interface SiteHeaderProps {
   currentUser: userDb | null;

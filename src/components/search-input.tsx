@@ -65,7 +65,7 @@ export function SearchInput() {
             setInput(e.target.value);
             debounceRequest();
           }}
-          className="flex-none rounded-full h-8 md:h-10 px-3 shrink-0"
+          className="flex-none rounded-full px-3 shrink-0"
         />
         <div
           className="absolute top-11 w-full bg-secondaryBackground inset-x-0 rounded-md"

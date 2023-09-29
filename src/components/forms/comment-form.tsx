@@ -7,10 +7,11 @@ import type { z } from "zod";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import Link from "next/link";
 
 import { commentSchema } from "@/lib/validations/comment";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CommentInput } from "@/components/inputs/comment-input";
+import { UserAvatar } from "@/components/user-avatar";
 
 interface CommentFormProps {
   currentUser: User | null | undefined;
@@ -56,15 +57,13 @@ export function CommentForm({ currentUser, postId }: CommentFormProps) {
   const disabled = isLoading || commentValue.trim() === "";
   return (
     <form onSubmit={onSubmit}>
-      <div className="flex item w-full items-center">
-        <Avatar className="w-8 h-8 mr-2">
-          <AvatarImage
+      <div className="flex item w-full items-center gap-2">
+        <Link href={`/profile/${currentUser?.externalId}`}>
+          <UserAvatar
             src={currentUser?.externalImage ?? currentUser?.profileImage ?? ""}
+            size="sm"
           />
-          <AvatarFallback>
-            <img src="/images/placeholder.png" alt="placeholder" />
-          </AvatarFallback>
-        </Avatar>
+        </Link>
         <CommentInput
           className="rounded-full text-foreground focus-visible:ring-0"
           ref={inputRef}
