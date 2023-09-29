@@ -38,7 +38,7 @@ export function FriendCard({ friend, currentUser }: FriendCardProps) {
   return (
     <Card
       key={friend.id}
-      className="rounded-sm active:scale-95 transition-all duration-150 active:opacity-80"
+      className="group rounded-sm active:scale-95 transition-all duration-150 active:opacity-80"
     >
       <Link href={`/profile/${friend.externalId}`} tabIndex={-1}>
         <CardHeader className="border-b p-0">
@@ -52,7 +52,7 @@ export function FriendCard({ friend, currentUser }: FriendCardProps) {
               alt={friend.firstName ?? ""}
               sizes="(min-width: 1024px) 20vw, (min-width: 768px) 25vw, (min-width: 640px) 33vw, (min-width: 475px) 50vw, 100vw"
               fill
-              className="object-cover rounded-t-sm"
+              className="object-cover rounded-t-sm group-hover:opacity-90 transition-all duration-150"
             />
           </AspectRatio>
         </CardHeader>
