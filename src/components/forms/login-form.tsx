@@ -19,7 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Icons } from "@/components/icons";
-import { PasswordInput } from "@/components/inputs/password-input";
+import { PasswordInput } from "@/components/input/password-input";
 
 type Inputs = z.infer<typeof loginUserSchema>;
 

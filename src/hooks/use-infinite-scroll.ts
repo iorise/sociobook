@@ -1,20 +1,31 @@
 import qs from "query-string";
 import { useInfiniteQuery } from "@tanstack/react-query";
-
-const BATCH_MESSAGES = 5;
+import { useInView } from "react-intersection-observer";
+import { batchSize } from "@/lib/limit-batch";
 
 interface InfiniteScrollProps {
   queryKey: string;
   apiUrl: string;
+  batchType: keyof typeof batchSize;
+  enabled?: boolean;
+  postId?: string
 }
 
-export function useInfiniteScroll({ queryKey, apiUrl }: InfiniteScrollProps) {
+export function useInfiniteScroll({
+  queryKey,
+  enabled,
+  apiUrl,
+  postId,
+  batchType,
+}: InfiniteScrollProps) {
+  const { ref, inView } = useInView();
   const fetchMessages = async ({ pageParam = undefined }) => {
     const url = qs.stringifyUrl(
       {
         url: apiUrl,
         query: {
-          take: BATCH_MESSAGES,
+          take: batchSize[batchType],
+          postId: postId,
           lastCursor: pageParam,
         },
       },
@@ -34,6 +45,7 @@ export function useInfiniteScroll({ queryKey, apiUrl }: InfiniteScrollProps) {
     isSuccess,
     isFetchingNextPage,
     status,
+    isFetching,
   } = useInfiniteQuery({
     queryKey: [queryKey],
     queryFn: fetchMessages,
@@ -41,6 +53,7 @@ export function useInfiniteScroll({ queryKey, apiUrl }: InfiniteScrollProps) {
       return lastPage?.metaData.lastCursor;
     },
     refetchOnWindowFocus: false,
+    enabled,
   });
 
   return {
@@ -52,5 +65,8 @@ export function useInfiniteScroll({ queryKey, apiUrl }: InfiniteScrollProps) {
     isSuccess,
     isFetchingNextPage,
     status,
+    ref,
+    inView,
+    isFetching,
   };
 }

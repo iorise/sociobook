@@ -1,8 +1,8 @@
 import { MainNav, SidebarNav } from "@/types";
 
 export const siteConfig = {
-  title: "SocioBook",
-  description: "Social Networking built on Next.js",
+  title: "Sociobook",
+  description: "Social Networking built with Next.js",
   MainNav: [
     {
       title: "Home",
@@ -12,7 +12,7 @@ export const siteConfig = {
       allowed: true,
       hidden: false,
       show: false,
-      disabled: false
+      disabled: false,
     },
     {
       title: "Video",
@@ -22,7 +22,7 @@ export const siteConfig = {
       allowed: false,
       hidden: false,
       show: false,
-      disabled: true
+      disabled: true,
     },
     {
       title: "Marketplace",
@@ -32,7 +32,7 @@ export const siteConfig = {
       allowed: false,
       hidden: false,
       show: false,
-      disabled: true
+      disabled: true,
     },
     {
       title: "Group",
@@ -42,7 +42,7 @@ export const siteConfig = {
       allowed: false,
       hidden: false,
       show: false,
-      disabled: true
+      disabled: true,
     },
     {
       title: "Games",
@@ -52,18 +52,8 @@ export const siteConfig = {
       allowed: false,
       hidden: true,
       show: false,
-      disabled: true
+      disabled: true,
     },
-    // {
-    //   title: "Other",
-    //   icon: "hamburger",
-    //   iconFill: "hamburger",
-    //   href: "#",
-    //   allowed: true,
-    //   hidden: false,
-    //   show: true,
-    //   disabled: true
-    // },
   ] satisfies MainNav[],
   sidebarNav: [
     {
@@ -74,25 +64,25 @@ export const siteConfig = {
     },
     {
       title: "Group",
-      href: "/group",
+      href: "#",
       icon: "groupFill",
       disabled: true,
     },
     {
       title: "News",
-      href: "/news",
+      href: "#",
       icon: "news",
       disabled: true,
     },
     {
       title: "Marketplace",
-      href: "/marketplace",
+      href: "#",
       icon: "marketplaceFill",
       disabled: true,
     },
     {
       title: "Video",
-      href: "/video",
+      href: "#",
       icon: "videoFill",
       disabled: true,
     },

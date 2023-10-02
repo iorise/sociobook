@@ -10,7 +10,7 @@ import { Icons } from "@/components/icons";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { UserName } from "@/components/ui/user-name";
+import { UserName } from "@/components/user/user-name";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface SidebarNavProps {
@@ -62,9 +62,7 @@ export function SidebarNav({ items, currentUser }: SidebarNavProps) {
               >
                 <Link
                   href={item.href}
-                  className={cn(
-                    item.disabled ? "pointer-events-none opacity-60" : ""
-                  )}
+                  className={cn(item.disabled && "cursor-not-allowed")}
                 >
                   <Icon className="w-9 h-9 text-facebook-primary" />
                   <span>{item.title}</span>

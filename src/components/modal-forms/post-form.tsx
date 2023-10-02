@@ -22,14 +22,15 @@ import { Modal } from "@/components/ui/modal";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
-import { PostInput } from "@/components/inputs/post-input";
+import { PostInput } from "@/components/input/post-input";
 import { usePostModal } from "@/hooks/use-post-modal";
-import { FileDialog } from "@/components/file-dialog";
-import { UserName } from "@/components/ui/user-name";
+import { FileDialog } from "@/components/image/file-dialog";
+import { UserName } from "@/components/user/user-name";
 import { FileWithPreview } from "@/types";
 import { OurFileRouter } from "@/app/api/uploadthing/core";
 import { cn, isArrayOfFile } from "@/lib/utils";
 import { Scrollbox } from "@/components/ui/scrollbox";
+import { UserAvatar } from "../user/user-avatar";
 
 interface PostForm {
   currentUser: userDb | null | undefined;
@@ -103,6 +104,15 @@ export function PostForm({
     },
     [form, addPostMutation]
   );
+
+  const currentUserProfile =
+    currentUser?.externalImage ?? currentUser?.profileImage ?? "";
+  const firstName = currentUser?.firstName || "";
+  const lastName = currentUser?.lastName || "";
+  const textValue = form.getValues("text");
+  const isImagesEmpty = !files || files.length === 0;
+  const isFormEmpty = !textValue && isImagesEmpty;
+  const isButtonDisabled = isLoading || isFormEmpty;
   return (
     <Modal
       title="Create Post"
@@ -111,21 +121,11 @@ export function PostForm({
     >
       <Scrollbox className="max-h-[25rem] md:max-h-[30rem]">
         <div className="px-3 flex items-center gap-2">
-          <Avatar className="w-8 h-8">
-            <AvatarImage
-              src={
-                currentUser?.externalImage ?? currentUser?.profileImage ?? ""
-              }
-              alt={`${currentUser?.firstName ?? ""} ${currentUser?.lastName}`}
-            />
-            <AvatarFallback>
-              <img src="/images/placeholder.png" alt="" />
-            </AvatarFallback>
-          </Avatar>
+          <UserAvatar size="sm" src={currentUserProfile} alt={firstName} />
           <span className="flex flex-col -space-y-1">
             <UserName
-              firstName={currentUser?.firstName}
-              lastName={currentUser?.lastName}
+              firstName={firstName}
+              lastName={lastName}
               verified={currentUser?.verified}
             />
             <span>
@@ -163,9 +163,7 @@ export function PostForm({
                       )}
                       placeholder={
                         isCurrentUser
-                          ? `What's happening today, ${
-                              currentUser?.firstName
-                            } ${currentUser?.lastName || ""} ?`
+                          ? `What's happening today, ${firstName} ${lastName} ?`
                           : `Send message to ${initialData?.firstName} ${
                               initialData?.lastName || ""
                             }`
@@ -193,7 +191,7 @@ export function PostForm({
               <FormMessage />
             </FormItem>
             <Button
-              disabled={isLoading || !form.formState.isValid}
+              disabled={isButtonDisabled}
               size="sm"
               className="bg-facebook-primary text-white"
             >
