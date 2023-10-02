@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/icons";
-import { PasswordInput } from "@/components/inputs/password-input";
+import { PasswordInput } from "@/components/input/password-input";
 
 type Inputs = z.infer<typeof registerUserSchema>;
 

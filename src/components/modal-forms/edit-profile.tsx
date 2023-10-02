@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
-import { ImageUpload } from "@/components/image-upload";
+import { ImageUpload } from "@/components/image/image-upload";
 import { Textarea } from "@/components/ui/textarea";
 import { useRouter } from "next/navigation";
 

@@ -1,4 +1,3 @@
-import { fetchPost } from "@/app/_action/posts";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
@@ -8,7 +7,10 @@ export function usePost(postId: string) {
   const queryClient = useQueryClient();
 
   const { data, isLoading, isError, isSuccess } = useQuery({
-    queryFn: () => fetchPost(postId),
+    queryFn: async () => {
+      const { data } = await axios.get(`/api/posts/${postId}`);
+      return data;
+    },
     queryKey: ["post", postId],
     refetchOnWindowFocus: false,
   });

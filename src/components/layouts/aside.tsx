@@ -4,14 +4,12 @@ import * as React from "react";
 import { User } from "@prisma/client";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { getFriendList } from "@/app/_action/users";
-import { useInView } from "react-intersection-observer";
-import FriendList from "@/components/friend-list";
+import { FriendListItem } from "@/components/list/friend-list-item";
 import { Icons } from "@/components/icons";
+import { useInfiniteScroll } from "@/hooks/use-infinite-scroll";
+import { BatchType } from "@/lib/limit-batch";
 
 export function Aside() {
-  const { ref, inView } = useInView();
   const {
     data,
     isLoading,
@@ -20,24 +18,18 @@ export function Aside() {
     isSuccess,
     isFetchingNextPage,
     isFetching,
-  } = useInfiniteQuery({
-    queryKey: ["friendList"],
-    queryFn: ({ pageParam = "" }) =>
-      getFriendList({ take: 18, lastCursor: pageParam }),
-    getNextPageParam: (lastPage) => {
-      return lastPage?.metaData.lastCursor;
-    },
-    refetchOnWindowFocus: false,
+    ref,
+    inView,
+  } = useInfiniteScroll({
+    apiUrl: "/api/friends",
+    queryKey: "friendList",
+    batchType: BatchType.FRIENDS,
   });
   React.useEffect(() => {
-    if (inView && hasNextPage) {
+    if (inView && hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }
-  }, [hasNextPage, inView, fetchNextPage]);
-
-  const userCount = isSuccess
-    ? data.pages.flatMap((page) => page.data).length
-    : 0;
+  }, [hasNextPage, inView, fetchNextPage, isFetchingNextPage]);
 
   return (
     <ScrollArea className="w-full h-[calc(100vh_-_3.5rem)]">
@@ -45,26 +37,25 @@ export function Aside() {
         Friend List
       </h1>
       <ul className="w-full">
-        {isSuccess &&
-          data.pages.map((page) =>
+        {(isSuccess && data?.pages.length === 0) ||
+        data?.pages[0].data.length === 0 ? (
+          <div className="w-full text-center text-muted-foreground">
+            No friends.
+          </div>
+        ) : (
+          data?.pages.map((page) =>
             page.data.map((user: User, index: number) => {
-              if (page.data.length === index + 1) {
-                return (
-                  <li ref={ref} key={user.id}>
-                    <FriendList user={user} />
-                  </li>
-                );
-              } else {
-                return <FriendList user={user} key={user.id} />;
-              }
+              return page.data.length === index + 1 ? (
+                <li ref={ref} key={user.id}>
+                  <FriendListItem user={user} />
+                </li>
+              ) : (
+                <FriendListItem user={user} key={user.id} />
+              );
             })
-          )}
+          )
+        )}
       </ul>
-      {userCount === 0 && (
-        <div className="w-full text-center text-muted-foreground">
-          No friends.
-        </div>
-      )}
       {isLoading ||
         isFetching ||
         (isFetchingNextPage && (

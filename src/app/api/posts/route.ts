@@ -19,8 +19,8 @@ export async function POST(req: NextRequest) {
       return new NextResponse("No user id", { status: 401 });
     }
 
-    if (!text) {
-      return new NextResponse("Text is required", { status: 400 });
+    if (!text && !images) {
+      return new NextResponse("No text or images", { status: 400 });
     }
 
     const newPost = await prismadb.post.create({
@@ -29,10 +29,15 @@ export async function POST(req: NextRequest) {
         userId: user.id,
       },
     });
-    
-    let newImages: { imageId: string, url: string, userId: string, postId: string }[] = [];
+
+    let newImages: {
+      imageId: string;
+      url: string;
+      userId: string;
+      postId: string;
+    }[] = [];
     if (Array.isArray(images)) {
-      newImages = images.map((image: { imageId: string, url: string }) => ({
+      newImages = images.map((image: { imageId: string; url: string }) => ({
         imageId: image.imageId,
         url: image.url,
         userId: user.id,
@@ -104,7 +109,7 @@ export async function GET(req: NextRequest) {
               author: true,
             },
           },
-          images:true
+          images: true,
         },
         orderBy: {
           createdAt: "desc",

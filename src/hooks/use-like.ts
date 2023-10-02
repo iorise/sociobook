@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 
-import { useCurrentUser } from "@/hooks/use-currentUser";
+import { useCurrentUser } from "@/hooks/use-current-user";
 import { usePost } from "@/hooks/use-post";
 
 interface PostData {
@@ -67,9 +67,6 @@ export const useLike = (postId: string) => {
       );
 
       return { previousPostData };
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries(["posts"]);
     },
     onError: (_, variables, context) => {
       queryClient.setQueryData(["post", postId], context?.previousPostData);

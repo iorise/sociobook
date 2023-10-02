@@ -1,7 +1,7 @@
 import * as z from "zod";
 
 export const postSchema = z.object({
-  text: z.string().min(1).optional(),
+  text: z.string().max(300).optional(),
   images: z
   .unknown()
   .refine((val) => {

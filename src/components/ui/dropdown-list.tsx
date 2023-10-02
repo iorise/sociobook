@@ -5,10 +5,11 @@ import { useTheme } from "next-themes";
 
 import { cn } from "@/lib/utils";
 import { Switch } from "@/components/ui/switch";
+import { LucideIcon } from "lucide-react";
 
 interface DropdownListProps {
   title: string;
-  icon: React.ReactElement;
+  icon: LucideIcon;
   item?: boolean;
 }
 
@@ -22,15 +23,18 @@ export function DropdownList({ title, icon, item }: DropdownListProps) {
   return (
     <div
       className={cn(
-        "flex cursor-pointer items-center hover:bg-accent py-1.5 px-3 rounded-lg",
+        "flex cursor-pointer items-center hover:bg-accent py-1.5 px-3 rounded-lg transition-all duration-150",
         item ? "justify-between" : ""
       )}
     >
       <div className="flex items-center">
         <div className="mr-2 bg-accent brightness-110 rounded-full p-2">
-          {icon}
+          {React.createElement(icon, {
+            className: "w-4 h-4 md:w-5 md:h-5",
+            "aria-hidden": true,
+          })}
         </div>
-        <span>{title}</span>
+        <span className="text-sm md:text-base">{title}</span>
       </div>
       <div>
         {item && (

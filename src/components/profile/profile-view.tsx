@@ -18,12 +18,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { UserName } from "@/components/ui/user-name";
+import { UserName } from "@/components/user/user-name";
 import { useFriendship } from "@/hooks/use-friendship";
 import { FriendshipStatus } from "@/types";
 import { checkFriendship } from "@/lib/utils";
-import ImageModal from "@/components/image-modal";
-import { UserAvatar } from "../user-avatar";
+import ImageModal from "@/components/image/image-modal";
+import { UserAvatar } from "../user/user-avatar";
 
 interface ProfileFormProps {
   currentUser: userDb | null;
@@ -77,7 +77,10 @@ export function ProfileView({
   };
 
   return (
-    <section id="profile" className="relative w-full container px-1 md:px-10 xl:px-36 grid grid-cols-1 ">
+    <section
+      id="profile"
+      className="relative w-full container px-1 md:px-10 xl:px-36 grid grid-cols-1 "
+    >
       <div className="flex flex-col relative justify-center">
         <div className="w-full flex">
           {initialData?.coverImage ? (

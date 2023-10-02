@@ -8,10 +8,11 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
+import qs from "query-string";
 
 import { commentSchema } from "@/lib/validations/comment";
-import { CommentInput } from "@/components/inputs/comment-input";
-import { UserAvatar } from "@/components/user-avatar";
+import { CommentInput } from "@/components/input/comment-input";
+import { UserAvatar } from "@/components/user/user-avatar";
 
 interface CommentFormProps {
   currentUser: User | null | undefined;
@@ -31,10 +32,17 @@ export function CommentForm({ currentUser, postId }: CommentFormProps) {
   const queryClient = useQueryClient();
 
   const { mutateAsync: mutateComment, isLoading } = useMutation({
-    mutationFn: async (data: Inputs) =>
-      await axios.post(`/api/comment?postId=${postId}`, data),
+    mutationFn: async (data: Inputs) => {
+      const url = qs.stringifyUrl({
+        url: "/api/comments",
+        query: {
+          postId: postId,
+        },
+      });
+      await axios.post(url, data);
+    },
     onSuccess: () => {
-      queryClient.invalidateQueries(["comment", postId]);
+      queryClient.invalidateQueries([`comments, ${postId}`]);
       queryClient.invalidateQueries(["posts"]);
       toast.success("Your Comment has been published.", {
         position: "bottom-left",
