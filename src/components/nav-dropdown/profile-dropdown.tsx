@@ -71,14 +71,14 @@ export function ProfileDropdown({ currentUser }: ProfileDropdownProps) {
             })}
             <li>
               <SignOutButton>
-                <div className="flex cursor-pointer items-center hover:bg-accent py-1.5 px-3 rounded-lg">
+                <div className="flex cursor-pointer items-center hover:bg-accent py-1.5 px-3 rounded-lg ">
                   <div className="mr-2 bg-accent brightness-110 rounded-full p-2">
                     <Icons.logout
-                      className="w-4 h-4 md:w-5 md:h-5 text-sm md:text-base"
+                      className="w-4 h-4 md:w-5 md:h-5 "
                       aria-hidden="true"
                     />
                   </div>
-                  <span>Log out</span>
+                  <span className="text-sm md:text-base">Log out</span>
                 </div>
               </SignOutButton>
             </li>
