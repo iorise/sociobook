@@ -30,7 +30,7 @@ export function ProfileDropdown({ currentUser }: ProfileDropdownProps) {
           variant="ghost"
           className="rounded-full w-9 h-9 md:h-10 md:w-10 active:scale-95 active:brightness-90 "
         >
-          <UserAvatar src={src} alt={alt} size="md" className="w-9 h-9"/>
+          <UserAvatar src={src} alt={alt} size="md" className="w-9 h-9" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-96" align="end" forceMount>
@@ -74,7 +74,7 @@ export function ProfileDropdown({ currentUser }: ProfileDropdownProps) {
                 <div className="flex cursor-pointer items-center hover:bg-accent py-1.5 px-3 rounded-lg">
                   <div className="mr-2 bg-accent brightness-110 rounded-full p-2">
                     <Icons.logout
-                      className="w-4 h-4 md:w-5 md:h-5"
+                      className="w-4 h-4 md:w-5 md:h-5 text-sm md:text-base"
                       aria-hidden="true"
                     />
                   </div>
