@@ -37,7 +37,7 @@ export default async function HomePage() {
         <SidebarNav items={siteConfig.sidebarNav} currentUser={currentUser} />
       </SidebarShell>
       <main className="px-0 md:px-2 lg:px-16 xl:px-28 container">
-        <div className="py-4 flex flex-col gap-5">
+        <div className="py-4 flex flex-col gap-2.5">
           <PostButton currentUser={currentUser} isCurrentUser={isCurrentUser} />
           <PostForm currentUser={currentUser} isCurrentUser={isCurrentUser} />
           <Posts

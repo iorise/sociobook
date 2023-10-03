@@ -49,21 +49,31 @@ export function Posts({ currentUser, apiUrl, queryKey }: PostsProps) {
   }
 
   return (
-    <ul className="flex flex-col gap-5">
+    <ul className="flex flex-col gap-2.5">
       {isSuccess &&
         data?.pages.map((page) =>
           page.data.map((post: extendedPost, index: number) => {
             return page.data.length === index + 1 ? (
               <li ref={ref} key={index}>
-                <Post data={post} currentUser={currentUser} key={post.id} />
+                <Post
+                  data={post}
+                  currentUser={currentUser}
+                  key={post.id}
+                  queryKey={queryKey}
+                />
               </li>
             ) : (
-              <Post data={post} currentUser={currentUser} key={post.id} />
+              <Post
+                data={post}
+                currentUser={currentUser}
+                key={post.id}
+                queryKey={queryKey}
+              />
             );
           })
         )}
       {(isLoading || isFetchingNextPage) && (
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-2.5">
           <PostLoader />
           <PostLoader />
         </div>

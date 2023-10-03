@@ -84,7 +84,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
             />
           </div>
         </aside>
-        <div className="py-4 flex flex-col gap-5">
+        <div className="py-4 flex flex-col gap-2.5">
           <PostButton
             currentUser={currentUser}
             initialData={initialData}
