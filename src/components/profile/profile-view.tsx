@@ -8,7 +8,6 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Icons } from "@/components/icons";
 import { useModal } from "@/hooks/use-modal";
 import { EditProfile } from "@/components/modal-forms/edit-profile";
@@ -23,7 +22,7 @@ import { useFriendship } from "@/hooks/use-friendship";
 import { FriendshipStatus } from "@/types";
 import { checkFriendship } from "@/lib/utils";
 import ImageModal from "@/components/image/image-modal";
-import { UserAvatar } from "../user/user-avatar";
+import { UserAvatar } from "@/components/user/user-avatar";
 
 interface ProfileFormProps {
   currentUser: userDb | null;
@@ -76,62 +75,44 @@ export function ProfileView({
     setIsOpen(true);
   };
 
+  const profileImage =
+    initialData?.externalImage ?? initialData?.profileImage ?? "";
+  const coverImage = initialData?.coverImage;
+  const firstName = initialData?.firstName;
+
   return (
     <section
       id="profile"
-      className="relative w-full container px-1 md:px-10 xl:px-36 grid grid-cols-1 "
+      className="relative w-full container px-1 sm:px-10 xl:px-36 grid grid-cols-1 "
     >
       <div className="flex flex-col relative justify-center">
         <div className="w-full flex">
-          {initialData?.coverImage ? (
+          {coverImage ? (
             <Image
-              src={initialData.coverImage}
+              src={coverImage}
               alt="Cover image"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               width={1200}
               height={300}
               className="px-0 relative aspect-[3/1.3] md:aspect-[4/1.3] overflow-hidden bg-center rounded-md object-cover cursor-pointer"
               loading="lazy"
-              onClick={() => openImageModal(initialData?.coverImage ?? "")}
+              onClick={() => openImageModal(coverImage ?? "")}
             />
           ) : (
             <div className="w-full relative aspect-[3/1.3] md:aspect-[4/1.3] overflow-hidden bg-center rounded-md bg-accent brightness-150" />
           )}
         </div>
         <div className="flex-col md:flex">
-          <div
-            className="
-        w-full
-        gap-4
-        flex
-        flex-col
-        md:flex
-        md:flex-row
-        justify-center
-        items-center
-        md:justify-start
-        -top-16
-        relative"
-          >
+          <div className="w-full gap-4 flex flex-col md:flex md:flex-row justify-center items-center md:justify-start -top-16 relative">
             <div className="pl-0 md:pl-10">
               {!isCurrentUser ? (
                 <Button
                   variant="none"
-                  className="active:scale-95 transition active:brightness-90 hover:brightness-110 w-44 h-44 rounded-full"
-                  onClick={() =>
-                    openImageModal(
-                      initialData?.externalImage ??
-                        initialData?.profileImage ??
-                        ""
-                    )
-                  }
+                  className="active:scale-95 transition-all duration-200 active:brightness-90 hover:brightness-110 w-44 h-44 rounded-full"
+                  onClick={() => openImageModal(profileImage)}
                 >
                   <UserAvatar
-                    src={
-                      initialData?.externalImage ??
-                      initialData?.profileImage ??
-                      ""
-                    }
+                    src={profileImage}
                     alt="Profile image"
                     size="xl"
                   />
@@ -144,42 +125,34 @@ export function ProfileView({
                       className="active:scale-95 active:brightness-90 hover:brightness-110 w-44 h-44 rounded-full"
                     >
                       <UserAvatar
-                        src={
-                          initialData?.externalImage ??
-                          initialData?.profileImage ??
-                          ""
-                        }
-                        alt={initialData?.firstName ?? ""}
+                        src={profileImage}
+                        alt={firstName ?? ""}
                         size="xl"
                       />
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-60">
                     <Button
+                      size="md"
                       variant="ghost"
                       className="justify-start flex gap-3 py-6 w-full"
-                      onClick={() =>
-                        openImageModal(
-                          initialData?.externalImage ??
-                            initialData?.profileImage ??
-                            ""
-                        )
-                      }
+                      onClick={() => openImageModal(profileImage)}
                     >
                       <Icons.user className="mr-2 w-5 h-5" />
                       <span>See profile photo</span>
                     </Button>
                     <Button
+                      size="md"
                       variant="ghost"
-                      className="justify-start flex gap-3 py-6 w-full"
+                      className="justify-start flex gap-3 py-6 w-full cursor-not-allowed"
                     >
                       <Icons.fileImage className="mr-2 w-5 h-5" />
                       <span>Update photo</span>
                     </Button>
                     <Button
+                      size="md"
                       variant="ghost"
-                      className="justify-start flex gap-3 py-6 w-full"
-                      disabled
+                      className="justify-start flex gap-3 py-6 w-full cursor-not-allowed"
                     >
                       <Icons.avatar className="mr-2 w-5 h-5" />
                       <span>Create avatar</span>
@@ -190,7 +163,7 @@ export function ProfileView({
             </div>
             <div className="flex flex-col pt-0 md:pt-10 items-center md:items-start">
               <UserName
-                firstName={initialData?.firstName}
+                firstName={firstName}
                 lastName={initialData?.lastName}
                 verified={initialData?.verified}
                 className="text-xl text-center md:text-left font-semibold line-clamp-2"
@@ -206,6 +179,7 @@ export function ProfileView({
               <>
                 <Button
                   disabled
+                  size="md"
                   className="bg-facebook-primary text-white flex-1 md:flex-none"
                 >
                   <Icons.plus className="w-4 h-4 mr-2" />
@@ -213,6 +187,7 @@ export function ProfileView({
                 </Button>
                 <Button
                   className="flex-1 md:flex-none"
+                  size="md"
                   onClick={() => editPhotoModal.onOpen()}
                 >
                   <Icons.pencil className="w-4 h-4 mr-2" />
@@ -224,6 +199,7 @@ export function ProfileView({
                 {checkFriendship(currentUser, initialData) ===
                   FriendshipStatus.NOT_FRIENDS && (
                   <Button
+                    size="md"
                     onClick={() => requestFriend()}
                     className="bg-facebook-primary text-white flex-1 md:flex-none"
                     disabled={isLoadingRequest}
@@ -239,6 +215,7 @@ export function ProfileView({
                 {checkFriendship(currentUser, initialData) ===
                   FriendshipStatus.FRIENDS && (
                   <Button
+                    size="md"
                     onClick={() => removeFriend()}
                     className="bg-facebook-primary text-white flex-1 md:flex-none"
                     disabled={isLoadingRemove}
@@ -255,6 +232,7 @@ export function ProfileView({
                   FriendshipStatus.REQUEST_RECEIVED && (
                   <>
                     <Button
+                      size="md"
                       onClick={() => acceptFriend()}
                       className="bg-facebook-primary text-white flex-1 md:flex-none"
                       disabled={isLoadingAccept}
@@ -267,6 +245,7 @@ export function ProfileView({
                       <span>Accept</span>
                     </Button>
                     <Button
+                      size="md"
                       onClick={() => rejectFriend()}
                       className="bg-facebook-primary text-white flex-1 md:flex-none"
                       disabled={isLoadingReject}
@@ -282,17 +261,23 @@ export function ProfileView({
                 )}
                 {checkFriendship(currentUser, initialData) ===
                   FriendshipStatus.REQUEST_SENT && (
-                  <Button className="bg-facebook-primary text-white flex-1 md:flex-none">
+                  <Button
+                    size="md"
+                    className="bg-facebook-primary text-white flex-1 md:flex-none"
+                  >
                     <Icons.peopleCheck className="w-5 h-5 mr-2" />
                     <span>Invitation sent</span>
                   </Button>
                 )}
-                <Button disabled className="flex-1 md:flex-none">
+                <Button
+                  size="md"
+                  className="flex-1 md:flex-none cursor-not-allowed"
+                >
                   <Icons.message className="w-4 h-4 mr-2" />
                   <span>Send message</span>
                 </Button>
                 {currentUser?.role === "ADMIN" && (
-                  <Button onClick={() => toggleVerified()}>
+                  <Button size="md" onClick={() => toggleVerified()}>
                     {initialData?.verified
                       ? "Mark as Unverified"
                       : "Mark as Verified"}
