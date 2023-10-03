@@ -44,7 +44,7 @@ export function SiteHeader({ currentUser }: SiteHeaderProps) {
           <Button
             variant="outline"
             size="icon"
-            className="rounded-full lg:hidden hidden"
+            className="rounded-full lg:hidden flex"
             onClick={() => onOpen()}
           >
             <Icons.plus className="w-4 h-4 md:w-5 md:h-5 " />
