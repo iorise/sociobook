@@ -73,7 +73,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
         initialData={initialData}
       />
       <div className="container px-1 sm:px-10 xl:px-36 grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] gap-6">
-        <aside className="top-14 z-30 w-full shrink-0 py-4 h-full">
+        <aside className="block md:sticky top-14 z-30 h-full md:h-[calc(100vh_-_3.5rem)] w-full shrink-0 gap-0 py-4">
           <div className="flex flex-col gap-3">
             <InfoView isCurrentUser={isCurrentUser} initialData={initialData} />
             <FriendsCard
@@ -91,14 +91,15 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
             isCurrentUser={isCurrentUser}
             externalId={params.userId}
           />
+          <Posts
+            currentUser={currentUser}
+            apiUrl={`/api/posts?userId=${externalId}`}
+            queryKey={`posts:${externalId}`}
+          />
           <PostForm
             currentUser={currentUser}
             initialData={initialData}
             isCurrentUser={isCurrentUser}
-          />
-          <Posts
-            currentUser={currentUser}
-            apiUrl={`/api/posts?userId=${externalId}`}
             queryKey={`posts:${externalId}`}
           />
         </div>

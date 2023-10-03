@@ -36,6 +36,7 @@ interface PostForm {
   currentUser: userDb | null | undefined;
   initialData?: userDb | null;
   isCurrentUser?: boolean;
+  queryKey: string;
 }
 
 type Inputs = z.infer<typeof postSchema>;
@@ -46,6 +47,7 @@ export function PostForm({
   currentUser,
   initialData,
   isCurrentUser,
+  queryKey,
 }: PostForm) {
   const [files, setFiles] = React.useState<FileWithPreview[] | null>(null);
   const { isUploading, startUpload } = useUploadThing("imageUploader");
@@ -76,7 +78,7 @@ export function PostForm({
       await axios.post("/api/posts", postData);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["posts"]);
+      queryClient.invalidateQueries([queryKey]);
       toast.success("Your post has been published.", {
         position: "bottom-left",
       });

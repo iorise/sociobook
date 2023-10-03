@@ -28,7 +28,6 @@ export function SiteHeader({ currentUser }: SiteHeaderProps) {
           <Link aria-label="Home" href="/">
             <Icons.logo id="logo" className="w-9 h-9 md:w-10 md:h-10" />
           </Link>
-
           <SearchInput />
         </div>
         <div className="flex-1 md:flex-none">
@@ -45,10 +44,10 @@ export function SiteHeader({ currentUser }: SiteHeaderProps) {
           <Button
             variant="outline"
             size="icon"
-            className="rounded-full lg:hidden flex"
+            className="rounded-full lg:hidden hidden"
             onClick={() => onOpen()}
           >
-            <Icons.plus className="w-4 h-4 md:w-5 md:h-5" />
+            <Icons.plus className="w-4 h-4 md:w-5 md:h-5 " />
           </Button>
           <Button
             variant="outline"

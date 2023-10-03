@@ -39,7 +39,7 @@ export default async function HomePage() {
       <main className="px-0 md:px-2 lg:px-16 xl:px-28 container">
         <div className="py-4 flex flex-col gap-2.5">
           <PostButton currentUser={currentUser} isCurrentUser={isCurrentUser} />
-          <PostForm currentUser={currentUser} isCurrentUser={isCurrentUser} />
+          <PostForm currentUser={currentUser} isCurrentUser={isCurrentUser} queryKey="posts"/>
           <Posts
             currentUser={currentUser}
             apiUrl="/api/posts"

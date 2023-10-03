@@ -31,13 +31,15 @@ import { UserAvatar } from "@/components/user/user-avatar";
 interface PostProps {
   data: extendedPost;
   currentUser?: User | null;
+  queryKey: string;
 }
 
-export function Post({ data, currentUser }: PostProps) {
+export function Post({ data, currentUser, queryKey }: PostProps) {
   const postId = data.id;
   const [showComment, setShowComment] = React.useState(false);
   const [showMoreText, setShowMoreText] = React.useState(false);
-  const { deletePost, isDeletingPost } = usePost(postId);
+
+  const { deletePost, isDeletingPost } = usePost(postId, queryKey);
   const { hasLiked, toggleLike, likeCount } = useLike(postId);
 
   const postByCurrentUser = React.useMemo(() => {
