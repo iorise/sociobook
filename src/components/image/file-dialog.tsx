@@ -20,7 +20,6 @@ import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 import { ImageCropper } from "@/components/ui/image-cropper";
 
-
 interface FileDialogProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
@@ -51,6 +50,8 @@ export function FileDialog<TFieldValues extends FieldValues>({
   className,
   ...props
 }: FileDialogProps<TFieldValues>) {
+  const [showDropImage, setShowDropImage] = React.useState(false);
+
   const onDrop = React.useCallback(
     (acceptedFiles: FileWithPath[], rejectedFiles: FileRejection[]) => {
       acceptedFiles.forEach((file) => {
@@ -105,8 +106,6 @@ export function FileDialog<TFieldValues extends FieldValues>({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const [showDropImage, setShowDropImage] = React.useState(false);
 
   return (
     <div className="">
@@ -216,19 +215,28 @@ export function FileDialog<TFieldValues extends FieldValues>({
           <Icons.fileImage className="w-6 h-6" />
           <span className="sr-only">Upload Images</span>
         </Button>
-        <Button disabled variant="ghost" size="icon">
-          <Icons.peopleTag className="w-6 h-6" />
-        </Button>
-        <Button disabled variant="ghost" size="icon">
-          <Icons.emoji className="w-6 h-6" />
-        </Button>
-        <Button disabled variant="ghost" size="icon">
-          <Icons.location className="w-6 h-6" />
-        </Button>
-        <Button disabled variant="ghost" size="icon">
-          <Icons.gif className="w-6 h-6" />
-        </Button>
+        {items.map((item) => {
+          const Icon = Icons[item.icon];
+          return (
+            <Button
+              disabled={disabled}
+              key={item.icon}
+              variant="ghost"
+              size="icon"
+              className="cursor-not-allowed"
+            >
+              <Icon className="w-6 h-6" />
+            </Button>
+          );
+        })}
       </div>
     </div>
   );
 }
+
+const items = [
+  { icon: "peopleTag" },
+  { icon: "emoji" },
+  { icon: "location" },
+  { icon: "gif" },
+] as { icon: keyof typeof Icons }[];
