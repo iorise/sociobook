@@ -56,13 +56,11 @@ export function Aside() {
           )
         )}
       </ul>
-      {isLoading ||
-        isFetching ||
-        (isFetchingNextPage && (
-          <div className="w-full">
-            <Icons.spinner className="my-2 mx-auto w-6 h-6 animate-spin" />
-          </div>
-        ))}
+      {isLoading || isFetchingNextPage ? (
+        <div className="w-full">
+          <Icons.spinner className="my-2 mx-auto w-6 h-6 animate-spin" />
+        </div>
+      ) : null}
     </ScrollArea>
   );
 }
