@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/card";
 import { LoginForm } from "@/components/forms/login-form";
 import { Button } from "@/components/ui/button";
-import { AuthFooter } from "@/components/layouts/auth-footer";
 import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
@@ -28,8 +27,10 @@ export default async function LoginPage() {
 
   return (
     <>
-      <Shell className="flex flex-col w-full min-h-screen items-center  gap-6">
-        <h1 className="text-4xl text-facebook-primary font-bold">{siteConfig.title}</h1>
+      <Shell className="flex flex-col w-full min-h-screen items-center gap-6">
+        <h1 className="text-4xl text-facebook-primary font-bold">
+          {siteConfig.title}
+        </h1>
         <Card>
           <CardHeader className="space-y-1">
             <CardTitle className="text-center font-normal">
@@ -73,7 +74,6 @@ export default async function LoginPage() {
           </CardFooter>
         </Card>
       </Shell>
-      <AuthFooter />
     </>
   );
 }

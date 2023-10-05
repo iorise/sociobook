@@ -16,7 +16,6 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SignUpForm } from "@/components/forms/signup-form";
 import { OAuthSignIn } from "@/components/auth/oauth-signin";
-import { AuthFooter } from "@/components/layouts/auth-footer";
 import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
@@ -71,7 +70,6 @@ export default async function SignUpPage() {
           </CardFooter>
         </Card>
       </Shell>
-      <AuthFooter />
     </>
   );
 }
