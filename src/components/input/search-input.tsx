@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import debounce from "lodash.debounce";
 import Link from "next/link";
 import { User } from "@prisma/client";
+import { motion, AnimatePresence } from "framer-motion";
 
 import { useOnClickOutside } from "@/hooks/use-onclick-outside";
 import { siteConfig } from "@/config/site";
@@ -13,6 +14,7 @@ import { UserAvatar } from "@/components/user/user-avatar";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { useSearchQuery } from "@/hooks/use-search-query";
+import { setTransition } from "@/lib/transition";
 
 export function SearchInput() {
   const router = useRouter();
@@ -67,53 +69,59 @@ export function SearchInput() {
           }}
           className="flex-none rounded-full h-9 md:h-10 px-3 shrink-0"
         />
-        <div
-          className="absolute top-11 w-full bg-secondaryBackground inset-x-0 rounded-md"
-          role="listbox"
-          aria-label="Search Results"
-        >
-          {input.length > 0 ? (
-            isFetched && userQueryResult?.length === 0 ? (
-              <div className="py-6 w-full flex items-center justify-center rounded-sm text-muted-foreground">
-                <p className="text-xs line-clamp-1">No Result found.</p>
-              </div>
-            ) : (
-              <ul>
-                {userQueryResult?.map((item: User) => (
-                  <li key={item.id}>
-                    <Link
-                      href={`/profile/${item.externalId}`}
-                      className="flex gap-2 items-center p-2 hover:bg-accent transition-all duration-300 rounded-sm"
-                    >
-                      <UserAvatar
-                        src={item.externalImage ?? item.profileImage ?? ""}
-                        size="sm"
-                      />
-                      <p className="text-xs md:text-sm line-clamp-1">{`${
-                        item.firstName
-                      } ${item.lastName || ""}`}</p>
-                    </Link>
-                  </li>
-                ))}
+        <AnimatePresence>
+          <motion.div
+            {...setTransition()}
+            className="absolute top-11 w-full bg-secondaryBackground inset-x-0 rounded-md"
+            role="listbox"
+            aria-label="Search Results"
+          >
+            {input.length > 0 ? (
+              isFetched && userQueryResult?.length === 0 ? (
+                <motion.div
+                  {...setTransition()}
+                  className="py-6 w-full flex items-center justify-center rounded-sm text-muted-foreground"
+                >
+                  <p className="text-xs line-clamp-1">No Result found.</p>
+                </motion.div>
+              ) : (
+                <ul>
+                  {userQueryResult?.map((user: User) => (
+                    <motion.li {...setTransition()} key={user.id}>
+                      <Link
+                        href={`/profile/${user.externalId}`}
+                        className="flex gap-2 items-center p-2 hover:bg-accent transition-all duration-300 rounded-sm"
+                      >
+                        <UserAvatar
+                          src={user.externalImage ?? user.profileImage ?? ""}
+                          size="sm"
+                        />
+                        <p className="text-xs md:text-sm line-clamp-1">{`${
+                          user.firstName
+                        } ${user.lastName || ""}`}</p>
+                      </Link>
+                    </motion.li>
+                  ))}
 
-                <li>
-                  <Button
-                    type="submit"
-                    variant="outline"
-                    size="sm"
-                    className="w-full rounded-sm text-facebook-primary duration-300 line-clamp-1"
-                  >
-                    Search
-                    <span className="inline-flex ml-1 items-center">
-                      {input}
-                      <Icons.search className="w-4 h-4 ml-1" />
-                    </span>
-                  </Button>
-                </li>
-              </ul>
-            )
-          ) : null}
-        </div>
+                  <motion.li {...setTransition()}>
+                    <Button
+                      type="submit"
+                      variant="outline"
+                      size="sm"
+                      className="w-full rounded-sm text-facebook-primary duration-300 line-clamp-1"
+                    >
+                      Search
+                      <span className="inline-flex ml-1 items-center">
+                        {input}
+                        <Icons.search className="w-4 h-4 ml-1" />
+                      </span>
+                    </Button>
+                  </motion.li>
+                </ul>
+              )
+            ) : null}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </form>
   );

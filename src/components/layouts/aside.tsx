@@ -8,6 +8,8 @@ import { FriendListItem } from "@/components/list/friend-list-item";
 import { Icons } from "@/components/icons";
 import { useInfiniteScroll } from "@/hooks/use-infinite-scroll";
 import { BatchType } from "@/lib/limit-batch";
+import { AnimatePresence, motion } from "framer-motion";
+import { setTransition } from "@/lib/transition";
 
 export function Aside() {
   const {
@@ -37,24 +39,33 @@ export function Aside() {
         Friend List
       </h1>
       <ul className="w-full">
-        {(isSuccess && data?.pages.length === 0) ||
-        data?.pages[0].data.length === 0 ? (
-          <div className="w-full text-center text-muted-foreground">
-            No friends.
-          </div>
-        ) : (
-          data?.pages.map((page) =>
-            page.data.map((user: User, index: number) => {
-              return page.data.length === index + 1 ? (
-                <li ref={ref} key={user.id}>
-                  <FriendListItem user={user} />
-                </li>
-              ) : (
-                <FriendListItem user={user} key={user.id} />
-              );
-            })
-          )
-        )}
+        <AnimatePresence mode="popLayout">
+          {(isSuccess && data?.pages.length === 0) ||
+          data?.pages[0].data.length === 0 ? (
+            <div className="w-full text-center text-muted-foreground">
+              No friends.
+            </div>
+          ) : (
+            data?.pages.map((page) =>
+              page.data.map((user: User, index: number) => {
+                return page.data.length === index + 1 ? (
+                  <motion.li layout {...setTransition()} ref={ref} key={index}>
+                    <FriendListItem user={user} />
+                  </motion.li>
+                ) : (
+                  <motion.li
+                    layout
+                    {...setTransition()}
+                    ref={ref}
+                    key={user.id}
+                  >
+                    <FriendListItem user={user} key={user.id} />
+                  </motion.li>
+                );
+              })
+            )
+          )}
+        </AnimatePresence>
       </ul>
       {isLoading || isFetchingNextPage ? (
         <div className="w-full">

@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { Icons } from "@/components/icons";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -10,6 +11,7 @@ import { NotificationItem } from "@/components/notifications/notifications-item"
 import { useInfiniteScroll } from "@/hooks/use-infinite-scroll";
 import { BatchType } from "@/lib/limit-batch";
 import { NotificationWithUser } from "@/types";
+import { setTransition } from "@/lib/transition";
 
 export function NotificationList() {
   const queryClient = useQueryClient();
@@ -42,21 +44,34 @@ export function NotificationList() {
   return (
     <ScrollArea className="h-[calc(100vh_-_7rem)] w-full rounded-md">
       {isSuccess && (
-        <ul className="w-full">
-          {data?.pages.map((page) =>
-            page.data.map((notification: NotificationWithUser, i: number) => {
-              return page.data.length === i + 1 ? (
-                <li ref={ref} key={notification.id} className="py-3 mx-1">
-                  <NotificationItem notification={notification} />
-                </li>
-              ) : (
-                <li key={notification.id} className="py-3 mx-1">
-                  <NotificationItem notification={notification} />
-                </li>
-              );
-            })
-          )}
-        </ul>
+        <AnimatePresence mode="popLayout">
+          <ul className="w-full">
+            {data?.pages.map((page) =>
+              page.data.map((notification: NotificationWithUser, i: number) => {
+                return page.data.length === i + 1 ? (
+                  <motion.li
+                    layout
+                    {...setTransition()}
+                    ref={ref}
+                    key={i}
+                    className="py-3 mx-1"
+                  >
+                    <NotificationItem notification={notification} />
+                  </motion.li>
+                ) : (
+                  <motion.li
+                    layout
+                    {...setTransition()}
+                    key={notification.id}
+                    className="py-3 mx-1"
+                  >
+                    <NotificationItem notification={notification} />
+                  </motion.li>
+                );
+              })
+            )}
+          </ul>
+        </AnimatePresence>
       )}
       {isLoading ? (
         <NotificationLoader />
