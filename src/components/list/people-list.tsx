@@ -55,12 +55,12 @@ export default function PeopleList({ apiUrl, queryKey }: PeopleListProps) {
               <CardTitle>People</CardTitle>
             </CardHeader>
             <CardContent>
-              <ul className="w-full flex flex-col gap-3">
+              <ul className="w-full flex flex-col gap-1.5">
                 {data?.map((user: User) => (
                   <li key={user.id}>
                     <Link
                       href={`/profile/${user.externalId}`}
-                      className="flex gap-2 p-2 items-center hover:bg-accent transition-all duration-300"
+                      className="flex gap-2 p-2 items-center hover:bg-accent transition-all duration-200 rounded-md"
                     >
                       <UserAvatar
                         src={user.externalImage ?? user.profileImage ?? ""}

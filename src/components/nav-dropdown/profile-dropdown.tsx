@@ -35,7 +35,12 @@ export function ProfileDropdown({ currentUser }: ProfileDropdownProps) {
       </PopoverTrigger>
       <PopoverContent className="w-96" align="end" forceMount>
         <div className="grid px-1 py-2 mb-3 shadow-glow-sm rounded-lg ">
-          <Button variant="ghost" className="flex justify-start py-6" asChild>
+          <Button
+            variant="ghost"
+            size="md"
+            className="flex justify-start py-6"
+            asChild
+          >
             <Link
               className="flex gap-2 items-center"
               href={`/profile/${currentUser?.externalId}`}
@@ -51,9 +56,13 @@ export function ProfileDropdown({ currentUser }: ProfileDropdownProps) {
             </Link>
           </Button>
           <Separator className="my-2" />
-          <p className="px-3 text-facebook-primary cursor-not-allowed text-sm md:text-base tracking-tighter">
+          <Button
+            size="md"
+            variant="ghost"
+            className="flex justify-start cursor-not-allowed text-facebook-primary hover:text-facebook-primary"
+          >
             See All Profile
-          </p>
+          </Button>
         </div>
         <div className="relative px-1 flex flex-col">
           <ul>

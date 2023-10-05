@@ -67,7 +67,7 @@ export function ImageCropper({ i, file, files, setFiles }: ImageCropperProps) {
         src={cropData ? cropData : file.preview}
         alt={file.name}
         className={cn(
-          "object-cover object-center w-full h-full aspect-square rounded-lg",
+          "object-cover object-center w-full h-full aspect-square rounded-lg shadow-glow-sm",
           files?.length === 3 && i === 2 && "col-span-2 aspect-[2/1]"
         )}
         width={200}

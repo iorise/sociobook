@@ -88,7 +88,7 @@ export function ImagePreview({
         height={300}
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         className={cn(
-          "aspect-square object-cover object-center w-full h-full cursor-pointer",
+          "aspect-square object-cover object-center w-full h-full cursor-pointer rounded-md",
           imagesLength === 3 && i === 2
             ? "col-span-2 aspect-[2/1]"
             : "col-span-1"
@@ -99,7 +99,7 @@ export function ImagePreview({
       <AnimatePresence>
         <Modal
           images
-          className="shadow-glow-sm p-0 px-0 dark:bg-black bg-white"
+          className="shadow-glow-md p-0 px-0 dark:bg-black bg-white"
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
         >
