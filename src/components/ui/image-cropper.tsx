@@ -2,7 +2,6 @@ import * as React from "react";
 import type { FileWithPreview } from "@/types";
 import Cropper, { type ReactCropperElement } from "react-cropper";
 import Image from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
 
 import "cropperjs/dist/cropper.css";
 
@@ -10,7 +9,6 @@ import { cn } from "@/lib/utils";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
-import { setTransition } from "@/lib/transition";
 
 interface ImageCropperProps {
   i: number;
