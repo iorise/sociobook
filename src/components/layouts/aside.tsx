@@ -38,8 +38,8 @@ export function Aside() {
       <h1 className="text-lg font-semibold text-muted-foreground mb-5 ml-3">
         Friend List
       </h1>
-      <ul className="w-full">
-        <AnimatePresence mode="popLayout">
+      <AnimatePresence mode="popLayout">
+        <ul className="w-full">
           {(isSuccess && data?.pages.length === 0) ||
           data?.pages[0].data.length === 0 ? (
             <div className="w-full text-center text-muted-foreground">
@@ -65,8 +65,8 @@ export function Aside() {
               })
             )
           )}
-        </AnimatePresence>
-      </ul>
+        </ul>
+      </AnimatePresence>
       {isLoading || isFetchingNextPage ? (
         <div className="w-full">
           <Icons.spinner className="my-2 mx-auto w-6 h-6 animate-spin" />
