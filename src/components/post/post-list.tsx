@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { User } from "@prisma/client";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { extendedPost } from "@/types";
 import { Post } from "@/components/post/post-item";
@@ -9,6 +10,7 @@ import { PostLoader } from "@/components/ui/post-loader";
 import { Icons } from "@/components/icons";
 import { useInfiniteScroll } from "@/hooks/use-infinite-scroll";
 import { BatchType } from "@/lib/limit-batch";
+import { setTransition } from "@/lib/transition";
 
 interface PostsProps {
   currentUser: User | null;
@@ -49,43 +51,47 @@ export function Posts({ currentUser, apiUrl, queryKey }: PostsProps) {
   }
 
   return (
-    <ul className="flex flex-col gap-2.5">
-      {isSuccess &&
-        data?.pages.map((page) =>
-          page.data.map((post: extendedPost, index: number) => {
-            return page.data.length === index + 1 ? (
-              <li ref={ref} key={index}>
-                <Post
-                  data={post}
-                  currentUser={currentUser}
-                  key={post.id}
-                  queryKey={queryKey}
-                />
-              </li>
-            ) : (
-              <Post
-                data={post}
-                currentUser={currentUser}
-                key={post.id}
-                queryKey={queryKey}
-              />
-            );
-          })
-        )}
-      {(isLoading || isFetchingNextPage) && (
-        <div className="flex flex-col gap-2.5">
-          <PostLoader />
-          <PostLoader />
-        </div>
-      )}
-      {!isLoading &&
-        !isFetchingNextPage &&
-        !hasNextPage &&
-        data?.pages[data.pages.length - 1]?.data.length === 0 && (
-          <div className="flex justify-center text-muted-foreground">
-            No more post to load.
+    <AnimatePresence mode="popLayout">
+      <ul className="flex flex-col gap-2.5">
+        {isSuccess &&
+          data?.pages.map((page) =>
+            page.data.map((post: extendedPost, index: number) => {
+              return page.data.length === index + 1 ? (
+                <motion.li {...setTransition()} layout ref={ref} key={index}>
+                  <Post
+                    data={post}
+                    currentUser={currentUser}
+                    key={post.id}
+                    queryKey={queryKey}
+                  />
+                </motion.li>
+              ) : (
+                <motion.li {...setTransition()} layout key={post.id}>
+                  <Post
+                    data={post}
+                    currentUser={currentUser}
+                    key={post.id}
+                    queryKey={queryKey}
+                  />
+                </motion.li>
+              );
+            })
+          )}
+        {(isLoading || isFetchingNextPage) && (
+          <div className="flex flex-col gap-2.5">
+            <PostLoader />
+            <PostLoader />
           </div>
         )}
-    </ul>
+        {!isLoading &&
+          !isFetchingNextPage &&
+          !hasNextPage &&
+          data?.pages[data.pages.length - 1]?.data.length === 0 && (
+            <div className="flex justify-center text-muted-foreground">
+              No more post to load.
+            </div>
+          )}
+      </ul>
+    </AnimatePresence>
   );
 }
