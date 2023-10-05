@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { cn } from "@/lib/utils";
 import { CommentWithUser } from "@/types";
@@ -10,6 +11,7 @@ import { CommentsLoader } from "@/components/ui/comments-loader";
 import { Icons } from "@/components/icons";
 import { useInfiniteScroll } from "@/hooks/use-infinite-scroll";
 import { BatchType } from "@/lib/limit-batch";
+import { setTransition } from "@/lib/transition";
 
 interface PostCommentProps {
   postId: string;
@@ -59,25 +61,34 @@ export function CommentList({ postId }: PostCommentProps) {
   return (
     <div className={cn(data?.pages.length !== 0 ? "mt-1 mb-3" : "mt-0 mb-0")}>
       <Scrollbox>
-        <div className="flex flex-col gap-1">
-          {isSuccess &&
-            data?.pages.map((page) =>
-              page.data.map((comment: CommentWithUser, index: number) => {
-                return page.data.length === index + 1 ? (
-                  <div ref={ref} key={index}>
-                    <CommentItem comment={comment} key={comment.id} />
-                  </div>
-                ) : (
-                  <CommentItem comment={comment} key={comment.id} />
-                );
-              })
-            )}
-          {isFetchingNextPage && hasNextPage && !isLoading && (
-            <div className="w-full">
-              <Icons.spinner className="my-2 mx-auto w-6 h-6 animate-spin" />
-            </div>
-          )}
-        </div>
+        <AnimatePresence mode="popLayout">
+          <ul className="flex flex-col gap-1">
+            {isSuccess &&
+              data?.pages.map((page) =>
+                page.data.map((comment: CommentWithUser, index: number) => {
+                  return page.data.length === index + 1 ? (
+                    <motion.li
+                      layout
+                      {...setTransition()}
+                      ref={ref}
+                      key={index}
+                    >
+                      <CommentItem comment={comment} key={comment.id} />
+                    </motion.li>
+                  ) : (
+                    <motion.li layout {...setTransition()} key={comment.id}>
+                      <CommentItem comment={comment} key={comment.id} />
+                    </motion.li>
+                  );
+                })
+              )}
+          </ul>
+        </AnimatePresence>
+        {isFetchingNextPage && hasNextPage && !isLoading && (
+          <div className="w-full">
+            <Icons.spinner className="my-2 mx-auto w-6 h-6 animate-spin" />
+          </div>
+        )}
       </Scrollbox>
     </div>
   );
