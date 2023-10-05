@@ -4,6 +4,8 @@ import * as React from "react";
 import Link from "next/link";
 import { User } from "@prisma/client";
 import { AnimatePresence, MotionConfig, motion } from "framer-motion";
+import { format } from "date-fns";
+
 
 import {
   Card,
@@ -30,6 +32,7 @@ import { ImagePreview } from "@/components/image/image-preview";
 import { UserAvatar } from "@/components/user/user-avatar";
 import useMeasure from "react-use-measure";
 import { setTransition } from "@/lib/transition";
+import { UserTooltip } from "@/components/user-tooltip";
 
 interface PostProps {
   data: extendedPost;
@@ -67,30 +70,48 @@ export function Post({ data, currentUser, queryKey }: PostProps) {
 
   const src = data.user?.externalImage ?? data.user.profileImage ?? "";
   const alt = data.user?.firstName ?? "";
+  const href = `/profile/${data.user?.externalId}`;
+  const firstName = data.user?.firstName;
+  const lastName = data.user?.lastName || "";
+  const verified = data.user?.verified;
+  const userCreatedAt = format(new Date(data.user.createdAt), "MMMM  d  yyyy");
 
   const [ref, { height }] = useMeasure();
 
   return (
-    <MotionConfig transition={{ duration: 0.6 }}>
+    <MotionConfig transition={{ duration: 0.3 }}>
       <Card className="rounded-sm">
         <CardHeader className="space-y-1 md:space-y-1.5 p-4">
           <div className="flex justify-between">
-            <Link href={`/profile/${data.user?.externalId}`}>
-              <div className="flex gap-1.5 md:gap-2 items-center">
-                <UserAvatar src={src} alt={alt} size="md" />
-                <div className="flex flex-col">
+            <div className="flex gap-1.5 md:gap-2 items-center">
+              <UserTooltip
+                firstName={firstName}
+                lastName={lastName}
+                verified={verified}
+                userCreatedAt={userCreatedAt}
+                imageUrl={src}
+                href={href}
+                size="lg"
+                larger
+              >
+                <Link href={href}>
+                  <UserAvatar src={src} alt={alt} size="md" />
+                </Link>
+              </UserTooltip>
+              <div className="flex flex-col">
+                <Link href={`/profile/${data.user?.externalId}`}>
                   <UserName
-                    firstName={data.user?.firstName}
-                    lastName={data.user?.lastName}
-                    verified={data.user?.verified}
+                    firstName={firstName}
+                    lastName={lastName}
+                    verified={verified}
                     className="md:text-lg font-medium"
                   />
-                  <span className="font-light text-muted-foreground text-[0.6rem] md:text-xs leading-3">
-                    {createdAt}
-                  </span>
-                </div>
+                </Link>
+                <span className="font-light text-muted-foreground text-[0.6rem] md:text-xs leading-3">
+                  {createdAt}
+                </span>
               </div>
-            </Link>
+            </div>
             {postByCurrentUser && (
               <Popover>
                 <PopoverTrigger asChild>
@@ -141,7 +162,7 @@ export function Post({ data, currentUser, queryKey }: PostProps) {
               className={cn(
                 "w-full grid",
                 data.images.length > 1
-                  ? "grid-cols-2 gap-1 relative rounded-md"
+                  ? "grid-cols-2 relative gap-1"
                   : "grid-cols-1"
               )}
             >

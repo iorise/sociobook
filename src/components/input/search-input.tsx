@@ -90,7 +90,7 @@ export function SearchInput() {
                     <motion.li {...setTransition()} key={user.id}>
                       <Link
                         href={`/profile/${user.externalId}`}
-                        className="flex gap-2 items-center p-2 hover:bg-accent transition-all duration-300 rounded-sm"
+                        className="flex gap-2 items-center p-2 hover:bg-accent transition-all duration-200 rounded-sm"
                       >
                         <UserAvatar
                           src={user.externalImage ?? user.profileImage ?? ""}
@@ -106,9 +106,9 @@ export function SearchInput() {
                   <motion.li {...setTransition()}>
                     <Button
                       type="submit"
-                      variant="outline"
+                      variant="ghost"
                       size="sm"
-                      className="w-full rounded-sm text-facebook-primary duration-300 line-clamp-1"
+                      className="w-full rounded-sm text-facebook-primary hover:text-facebook-primary mt-0.5 duration-200 line-clamp-1"
                     >
                       Search
                       <span className="inline-flex ml-1 items-center">
