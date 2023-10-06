@@ -7,7 +7,7 @@ import type { z } from "zod";
 import { User as userDb } from "@prisma/client";
 import { toast } from "react-hot-toast";
 import axios from "axios";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
 import { Modal } from "@/components/ui/modal";
 import { profileSchema } from "@/lib/validations/profile";
@@ -36,7 +36,6 @@ export function EditProfile({
   currentUser,
 }: EditPhotoProfileProps) {
   const editProfileModal = useModal();
-  const queryClient = useQueryClient();
   const router = useRouter()
 
   // react-hook-form
@@ -44,9 +43,9 @@ export function EditProfile({
     resolver: zodResolver(profileSchema),
     defaultValues: {
       externalImage:
-        currentUser?.externalImage || currentUser?.profileImage || "",
-      coverImage: currentUser?.coverImage || "",
-      bio: currentUser?.bio || "",
+        currentUser?.externalImage ?? currentUser?.profileImage ?? "",
+      coverImage: currentUser?.coverImage ?? "",
+      bio: currentUser?.bio ?? "",
     },
   });
 
@@ -62,7 +61,6 @@ export function EditProfile({
   const { isLoading, mutateAsync: editProfileMutate } = useMutation({
     mutationFn: async (data: Inputs) => await axios.patch(`/api/edit`, data),
     onSuccess: () => {
-      queryClient.invalidateQueries(["posts"]);
       router.refresh()
       toast.success("Profile updated !");
       editProfileModal.onClose();
