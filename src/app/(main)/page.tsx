@@ -31,21 +31,29 @@ export default async function HomePage() {
 
   const owner = await prismadb.user.findUnique({
     where: {
-      externalId: "user_2Uvhjj7uB3Uphd8PvXk83jKqQq5"
-    }
-  })
+      externalId: "user_2Uvhjj7uB3Uphd8PvXk83jKqQq5",
+    },
+  });
 
   const isCurrentUser = currentUser?.externalId === userId;
 
   return (
     <div className="mx-auto min-h-[calc(100vh_-_3.5rem)] px-1 flex-1 items-start justify-between md:grid md:grid-cols-[minmax(0,1fr)_260px] lg:grid-cols-[260px_minmax(0,1.5fr)_260px] p-0 m-0">
       <SidebarShell className="hidden lg:block">
-        <SidebarNav items={siteConfig.sidebarNav} currentUser={currentUser} owner={owner}/>
+        <SidebarNav
+          items={siteConfig.sidebarNav}
+          currentUser={currentUser}
+          owner={owner}
+        />
       </SidebarShell>
-      <main className="px-0 md:px-2 lg:px-16 xl:px-28 container">
+      <main className="px-0 md:px-2 lg:px-16 xl:px-28 max-w-4xl container">
         <div className="py-4 flex flex-col gap-2.5">
           <PostButton currentUser={currentUser} isCurrentUser={isCurrentUser} />
-          <PostForm currentUser={currentUser} isCurrentUser={isCurrentUser} queryKey="posts"/>
+          <PostForm
+            currentUser={currentUser}
+            isCurrentUser={isCurrentUser}
+            queryKey="posts"
+          />
           <Posts
             currentUser={currentUser}
             apiUrl="/api/posts"
