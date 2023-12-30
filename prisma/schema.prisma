@@ -57,6 +57,7 @@ model Comment {
    author         User     @relation(fields: [userId], references: [externalId], onDelete: Cascade)
    postId         String   @db.ObjectId
    post           Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+   likeIds        String[]
    createdAt      DateTime @default(now())
    updatedAt      DateTime @updatedAt
 }
