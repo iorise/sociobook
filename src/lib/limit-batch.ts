@@ -6,7 +6,7 @@ export enum BatchType {
 }
 
 export const batchSize = {
-  [BatchType.POSTS]: 7,
+  [BatchType.POSTS]: 2,
   [BatchType.COMMENTS]: 3,
   [BatchType.NOTIFICATIONS]: 10,
   [BatchType.FRIENDS]: 3,

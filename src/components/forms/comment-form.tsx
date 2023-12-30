@@ -15,13 +15,18 @@ import { CommentInput } from "@/components/input/comment-input";
 import { UserAvatar } from "@/components/user/user-avatar";
 
 interface CommentFormProps {
-  currentUser: User | null | undefined;
+  currentUserId: string;
   postId: string | null;
+  currentUserImage: string;
 }
 
 type Inputs = z.infer<typeof commentSchema>;
 
-export function CommentForm({ currentUser, postId }: CommentFormProps) {
+export function CommentForm({
+  currentUserId,
+  postId,
+  currentUserImage,
+}: CommentFormProps) {
   const [commentValue, setCommentValue] = useInputState("");
   const inputRef = React.useRef<HTMLInputElement | null>(null);
 
@@ -43,7 +48,6 @@ export function CommentForm({ currentUser, postId }: CommentFormProps) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries([`comments, ${postId}`]);
-      queryClient.invalidateQueries(["posts"]);
       toast.success("Your Comment has been published.", {
         position: "bottom-left",
       });
@@ -66,11 +70,8 @@ export function CommentForm({ currentUser, postId }: CommentFormProps) {
   return (
     <form onSubmit={onSubmit}>
       <div className="flex item w-full items-center gap-2">
-        <Link href={`/profile/${currentUser?.externalId}`}>
-          <UserAvatar
-            src={currentUser?.externalImage ?? currentUser?.profileImage ?? ""}
-            size="sm"
-          />
+        <Link href={`/profile/${currentUserId}`}>
+          <UserAvatar src={currentUserImage} size="sm" />
         </Link>
         <CommentInput
           className="rounded-full text-foreground focus-visible:ring-0"

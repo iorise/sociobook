@@ -15,9 +15,11 @@ import { setTransition } from "@/lib/transition";
 
 interface PostCommentProps {
   postId: string;
+  currentUserId: string;
 }
 
-export function CommentList({ postId }: PostCommentProps) {
+export function CommentList({ postId, currentUserId }: PostCommentProps) {
+  const queryKey = `comments, ${postId}`;
   const {
     data,
     error,
@@ -30,7 +32,7 @@ export function CommentList({ postId }: PostCommentProps) {
     inView,
   } = useInfiniteScroll({
     apiUrl: `/api/comments`,
-    queryKey: `comments, ${postId}`,
+    queryKey,
     postId,
     batchType: BatchType.COMMENTS,
   });
@@ -73,11 +75,21 @@ export function CommentList({ postId }: PostCommentProps) {
                       ref={ref}
                       key={index}
                     >
-                      <CommentItem comment={comment} key={comment.id} />
+                      <CommentItem
+                        comment={comment}
+                        key={comment.id}
+                        queryKey={queryKey}
+                        currentUserId={currentUserId}
+                      />
                     </motion.li>
                   ) : (
                     <motion.li layout {...setTransition()} key={comment.id}>
-                      <CommentItem comment={comment} key={comment.id} />
+                      <CommentItem
+                        comment={comment}
+                        key={comment.id}
+                        queryKey={queryKey}
+                        currentUserId={currentUserId}
+                      />
                     </motion.li>
                   );
                 })
