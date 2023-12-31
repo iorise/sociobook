@@ -1,22 +1,15 @@
-import React from "react";
-import { DialogShell } from "../dialog-shell";
-import { AlertDialogAction } from "@/components/ui/alert-dialog";
-import { Modal } from "../ui/modal";
-import { AspectRatio } from "../ui/aspect-ratio";
+import React from "react"
 import { Image as ImageType } from "@prisma/client";
 import Image from "next/image";
 
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
 import { ScrollArea } from "../ui/scroll-area";
-import { Button } from "../ui/button";
 import { CommentList } from "../comment/comment-list";
 import Link from "next/link";
 import { UserAvatar } from "../user/user-avatar";
