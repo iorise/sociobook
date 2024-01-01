@@ -43,9 +43,10 @@ interface PostProps {
   data: extendedPost;
   currentUser?: User | null;
   queryKey: string;
+  hiddenImage?: boolean;
 }
 
-export function Post({ data, currentUser, queryKey }: PostProps) {
+export function Post({ data, currentUser, queryKey, hiddenImage }: PostProps) {
   const postId = data.id;
   const [showComment, setShowComment] = React.useState(false);
   const [showMoreText, setShowMoreText] = React.useState(false);
@@ -124,6 +125,9 @@ export function Post({ data, currentUser, queryKey }: PostProps) {
         toggleLike={toggleLike}
         currentUserId={currentUser?.externalId ?? ""}
         src={currentUserSrc}
+        commentLength={data.comments.length}
+        likeCount={likeCount}
+        queryKey={queryKey }
       />
       <AlertModal
         isOpen={alertModal}
@@ -173,34 +177,35 @@ export function Post({ data, currentUser, queryKey }: PostProps) {
                   </span>
                 </div>
               </div>
-              {postByCurrentUser && (
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button variant="ghost" className="rounded-full">
-                      <Icons.moreHorizontal className="w-4 h-4" />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent
-                    className="w-40 bg-background p-2"
-                    align="end"
-                    sideOffset={2}
-                  >
+
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="ghost" className="rounded-full">
+                    <Icons.moreHorizontal className="w-4 h-4" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent
+                  className="w-40 bg-background p-2"
+                  align="end"
+                  sideOffset={2}
+                >
+                  {postByCurrentUser && (
                     <Button
                       variant="ghost"
                       onClick={() => setAlertModal(true)}
                       disabled={isDeletingPost}
                       className="rounded-md w-full"
                     >
-                      {isDeletingPost ? (
-                        <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
-                      ) : (
-                        <Icons.trash className="w-4 h-4 mr-2" />
-                      )}
+                      <Icons.trash className="w-4 h-4 mr-2" />
+
                       <span className="font-medium text-sm">Delete</span>
                     </Button>
-                  </PopoverContent>
-                </Popover>
-              )}
+                  )}
+                  <Button variant="ghost" className="rounded-md w-full" asChild>
+                    <Link href={`/posts/${data.id}`}>See post</Link>
+                  </Button>
+                </PopoverContent>
+              </Popover>
             </div>
           </CardHeader>
           <CardContent>
@@ -219,6 +224,9 @@ export function Post({ data, currentUser, queryKey }: PostProps) {
               >
                 {data.text}
               </p>
+              {!hiddenImage && 
+              (
+
               <div
                 className={cn(
                   "w-full grid",
@@ -237,34 +245,17 @@ export function Post({ data, currentUser, queryKey }: PostProps) {
                   />
                 ))}
               </div>
+              )}
             </div>
           </CardContent>
           <CardFooter className="flex flex-col text-muted-foreground">
-            <div className="flex w-full justify-between text-muted-foreground text-sm mb-1">
-              {likeCount > 0 && (
-                <div className="flex items-center gap-1">
-                  <Icons.thumbFill className="text-facebook-primary w-4 h-4" />
-                  <span>{likeCount}</span>
-                </div>
-              )}
-
-              {data.comments.length !== 0 ? (
-                <div className="flex w-full justify-end">
-                  <span
-                    className="flex items-center gap-1 cursor-pointer hover:underline"
-                    onClick={() => setModalOpen(true)}
-                  >
-                    <p>{data.comments.length}</p>
-                    <Icons.comment className="w-4 h-4 md:hidden" />
-                    <p className="hidden md:block">Comments</p>
-                  </span>
-                </div>
-              ) : null}
-            </div>
             <LikeButton
               hasLiked={hasLiked}
               toggleLike={toggleLike}
               toggleComment={toggleComment}
+              commentLength={data.comments.length}
+              likeCount={likeCount}
+              setModalOpen={setModalOpen}
             />
             <div className="w-full">
               <motion.div
@@ -291,6 +282,7 @@ export function Post({ data, currentUser, queryKey }: PostProps) {
                             currentUserId={currentUser?.externalId as string}
                             currentUserImage={currentUserSrc}
                             postId={postId}
+                            queryKey={queryKey}
                           />
                         </motion.div>
                       </div>

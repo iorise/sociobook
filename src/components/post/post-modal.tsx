@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 import { Image as ImageType } from "@prisma/client";
 import Image from "next/image";
 
@@ -33,6 +33,9 @@ interface PostModalProps extends LikeButtonProps {
   createdAt: string;
   currentUserId: string;
   src: string;
+  likeCount: number;
+  commentLength: number;
+  queryKey: string;
 }
 
 export function PostModal({
@@ -52,6 +55,9 @@ export function PostModal({
   toggleComment,
   currentUserId,
   src,
+  likeCount,
+  commentLength,
+  queryKey,
   ...props
 }: PostModalProps) {
   return (
@@ -104,7 +110,12 @@ export function PostModal({
                   ))
                 : null}
             </div>
-            <LikeButton hasLiked={hasLiked} toggleLike={toggleLike} />
+            <LikeButton
+              hasLiked={hasLiked}
+              toggleLike={toggleLike}
+              commentLength={commentLength}
+              likeCount={likeCount}
+            />
           </div>
           <div className="py-1">
             <CommentList postId={postId} currentUserId={currentUserId} />
@@ -112,6 +123,7 @@ export function PostModal({
               currentUserId={currentUserId}
               currentUserImage={src}
               postId={postId}
+              queryKey={queryKey}
             />
           </div>
         </ScrollArea>
